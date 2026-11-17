@@ -1404,7 +1404,7 @@
 
             SoundEngine.playShutter();
             this.captureHDBurstFrame(currentBurst);
-            this.grabMainFrame();
+            await this.grabMainFrame();
             State.btsBurstGroups.push(currentBurst);
 
             State.currentPoseIndex++;
@@ -1447,7 +1447,7 @@
         burstArray.push(canvas.toDataURL('image/jpeg', 0.85));
       },
 
-      grabMainFrame() {
+      async grabMainFrame() {
         const video = document.getElementById('live-video');
         const canvas = document.createElement('canvas');
         canvas.width = 1600;
@@ -1467,7 +1467,17 @@
         ctx.drawImage(video, x, y, vW * ratio, vH * ratio);
 
         const img = new Image();
+        img.onload = () => {
+          if (State.stage === 'editor') EditorStudio.renderCanvas();
+        };
         img.src = canvas.toDataURL('image/jpeg', 0.98);
+
+        // Await full image decode so it is guaranteed ready before navigation
+        try {
+          if ('decode' in img) {
+            await img.decode();
+          }
+        } catch (e) {}
 
         if (State.activeSlotToReplace !== null) {
           State.photos[State.activeSlotToReplace] = img;
@@ -1838,6 +1848,10 @@
 
           const photo = State.photos[idx];
           if (photo) {
+            if (photo instanceof HTMLImageElement && !photo.complete) {
+              photo.onload = () => EditorStudio.renderCanvas();
+            }
+
             if (ctx.filter !== undefined && State.currentFilter) {
               const expB = 1 + (State.manualAdjust.brightness / 100);
               const expC = 1 + (State.manualAdjust.contrast / 100);
@@ -2440,6 +2454,9 @@
 
         if (stage === 'editor') {
           EditorStudio.init();
+          requestAnimationFrame(() => EditorStudio.renderCanvas());
+          setTimeout(() => EditorStudio.renderCanvas(), 60);
+          setTimeout(() => EditorStudio.renderCanvas(), 250);
         }
 
         if (stage === 'export') {
