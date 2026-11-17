@@ -50,9 +50,9 @@ Lengkap dengan thumbnail visual di 5 kategori:
 - Menggambar bebas langsung di atas strip foto (ala Purikura Jepang)!
 - 10 warna spidol cerah, 3 pilihan ukuran kuas (Tipis, Sedang, Tebal), efek **Neon Glow**, tombol Undo, dan Hapus.
 
-### 7. Teks Caption, Tanggal & Barcode (Tab 5)
+### 7. Teks Caption & Tanggal (Tab 5)
 - Input caption kustom dengan 4 gaya font: *Modern Sans*, *Typewriter*, *Handwriting*, dan *Editorial Serif*.
-- Pilihan format cap tanggal analog dan watermark / barcode studio.
+- Pilihan format cap tanggal analog.
 
 ### 8. Export Foto Ultra HD & Video BTS Jernih (Stage 4)
 - **Foto Ultra HD:** Render kanvas beresolusi tinggi (> 1400px) dengan crop proporsional `object-fit: cover`.
