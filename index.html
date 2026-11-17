@@ -1,23 +1,29 @@
 ﻿<!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Pozia Studio — Korean & Y2K Photobooth Workstation</title>
-  
+
   <!-- PWA & Mobile Web Meta -->
   <meta name="theme-color" content="#FF5A79">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Pozia">
-  <meta name="description" content="Production-ready Korean & Y2K style Photobooth & Photo Strip Studio with Adorable Designer Frames">
+  <meta name="description"
+    content="Production-ready Korean & Y2K style Photobooth & Photo Strip Studio with Adorable Designer Frames">
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='128' fill='%23FF5A79'/%3E%3Ccircle cx='256' cy='256' r='90' fill='%23FFFFFF'/%3E%3Ccircle cx='256' cy='256' r='60' fill='%23FF5A79'/%3E%3Ccircle cx='380' cy='140' r='35' fill='%239B87F5'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='128' fill='%23FF5A79'/%3E%3Ccircle cx='256' cy='256' r='90' fill='%23FFFFFF'/%3E%3Ccircle cx='256' cy='256' r='60' fill='%23FF5A79'/%3E%3Ccircle cx='380' cy='140' r='35' fill='%239B87F5'/%3E%3C/svg%3E">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -69,6 +75,7 @@
       z-index: 99999;
       transition: opacity 80ms ease-out;
     }
+
     #screen-flash.flash-active {
       opacity: 1;
       transition: opacity 30ms ease-in;
@@ -78,31 +85,49 @@
     .washi-tape-pink {
       background: rgba(255, 90, 121, 0.6);
       backdrop-filter: blur(2px);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
     }
+
     .washi-tape-yellow {
       background: rgba(255, 214, 10, 0.7);
       backdrop-filter: blur(2px);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
     }
+
     .washi-tape-mint {
       background: rgba(6, 214, 160, 0.65);
       backdrop-filter: blur(2px);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
     }
 
     /* Shutter Button Glow Pulse */
     @keyframes studio-pulse {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 90, 121, 0.45); }
-      50% { transform: scale(1.05); box-shadow: 0 0 0 16px rgba(255, 90, 121, 0); }
+
+      0%,
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 90, 121, 0.45);
+      }
+
+      50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 16px rgba(255, 90, 121, 0);
+      }
     }
+
     .shutter-glow {
       animation: studio-pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
     }
 
     /* Hide scrollbars */
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
 
     /* Interactive Sticker Selected Border */
     .sticker-selected {
@@ -111,7 +136,9 @@
     }
   </style>
 </head>
-<body class="bg-pozia-bg text-pozia-charcoal font-sans selection:bg-pozia-coral selection:text-white min-h-screen flex flex-col overflow-x-hidden">
+
+<body
+  class="bg-pozia-bg text-pozia-charcoal font-sans selection:bg-pozia-coral selection:text-white min-h-screen flex flex-col overflow-x-hidden">
 
   <!-- Fullscreen Flash Overlay -->
   <div id="screen-flash"></div>
@@ -126,38 +153,52 @@
   <!-- ======================================================== -->
   <!-- GLOBAL HEADER (FULL-WIDTH WORKSTATION NAVBAR)           -->
   <!-- ======================================================== -->
-  <header id="main-header" class="w-full z-40 bg-white/95 backdrop-blur-md px-4 md:px-8 py-3 flex items-center justify-between border-b border-pozia-charcoal/5 shadow-sm sticky top-0 transition-colors">
+  <header id="main-header"
+    class="w-full z-40 bg-white/95 backdrop-blur-md px-4 md:px-8 py-3 flex items-center justify-between border-b border-pozia-charcoal/5 shadow-sm sticky top-0 transition-colors">
     <!-- Brand Logo -->
     <div class="flex items-center gap-3 cursor-pointer" onclick="App.navigate('home')">
-      <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-pozia-coral to-pozia-lilac flex items-center justify-center text-white font-extrabold text-lg shadow-md shadow-pozia-coral/20">
+      <div
+        class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-pozia-coral to-pozia-lilac flex items-center justify-center text-white font-extrabold text-lg shadow-md shadow-pozia-coral/20">
         P
       </div>
       <div>
         <div class="flex items-center gap-2">
           <span class="font-extrabold text-xl tracking-tight text-pozia-charcoal">Pozia</span>
-          <span class="px-2 py-0.5 rounded-full bg-pozia-coral/10 text-pozia-coral text-[10px] font-extrabold tracking-wider uppercase">Studio v2.2</span>
+          <span
+            class="px-2 py-0.5 rounded-full bg-pozia-coral/10 text-pozia-coral text-[10px] font-extrabold tracking-wider uppercase">Studio
+            v2.2</span>
         </div>
-        <span class="text-[10px] uppercase tracking-widest text-gray-400 font-semibold block -mt-0.5">Korean & Y2K Photobooth</span>
+        <span class="text-[10px] uppercase tracking-widest text-gray-400 font-semibold block -mt-0.5">Korean & Y2K
+          Photobooth</span>
       </div>
     </div>
 
     <!-- Navigation Status & Actions -->
     <div class="flex items-center gap-2 md:gap-3">
-      
+
 
       <!-- Bilingual Switcher Pill -->
-      <button id="lang-btn" onclick="App.toggleLanguage()" class="px-3 py-1.5 text-xs font-bold rounded-full bg-pozia-softgray text-pozia-charcoal hover:bg-pozia-coral hover:text-white transition-all shadow-sm">
+      <button id="lang-btn" onclick="App.toggleLanguage()"
+        class="px-3 py-1.5 text-xs font-bold rounded-full bg-pozia-softgray text-pozia-charcoal hover:bg-pozia-coral hover:text-white transition-all shadow-sm">
         ID | EN
       </button>
 
       <!-- System Diagnostics Modal Button -->
-      <button onclick="App.openDiagnosticsModal()" title="Diagnostik Sistem & Telemetry" class="w-9 h-9 rounded-full bg-pozia-softgray flex items-center justify-center text-pozia-charcoal hover:bg-pozia-lilac hover:text-white transition-colors shadow-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+      <button onclick="App.openDiagnosticsModal()" title="Diagnostik Sistem & Telemetry"
+        class="w-9 h-9 rounded-full bg-pozia-softgray flex items-center justify-center text-pozia-charcoal hover:bg-pozia-lilac hover:text-white transition-colors shadow-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
       </button>
 
       <!-- Saved History Gallery Button -->
-      <button onclick="App.openHistoryModal()" title="Galeri Hasil Tersimpan" class="w-9 h-9 rounded-full bg-pozia-softgray flex items-center justify-center text-pozia-charcoal hover:bg-pozia-coral hover:text-white transition-colors shadow-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      <button onclick="App.openHistoryModal()" title="Galeri Hasil Tersimpan"
+        class="w-9 h-9 rounded-full bg-pozia-softgray flex items-center justify-center text-pozia-charcoal hover:bg-pozia-coral hover:text-white transition-colors shadow-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
       </button>
     </div>
   </header>
@@ -175,7 +216,8 @@
       <div class="w-full md:w-1/2 p-6 md:p-12 flex flex-col justify-center gap-6">
         <div>
           <div class="flex items-center gap-2 mb-1.5">
-            <span class="text-xs px-2.5 py-1 rounded-full bg-pink-100 text-pozia-coral font-bold tracking-wide">포지아 스튜디오</span>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-pink-100 text-pozia-coral font-bold tracking-wide">포지아
+              스튜디오</span>
             <span class="text-xs text-gray-400 font-medium">Self Photobox</span>
           </div>
           <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-pozia-charcoal">
@@ -185,13 +227,23 @@
 
         <!-- CTA Action Buttons -->
         <div class="flex flex-col sm:flex-row items-center gap-3">
-          <button onclick="App.startStudio('camera')" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-pozia-coral text-white font-bold text-sm shadow-xl shadow-pozia-coral/25 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center justify-center gap-2.5">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <button onclick="App.startStudio('camera')"
+            class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-pozia-coral text-white font-bold text-sm shadow-xl shadow-pozia-coral/25 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center justify-center gap-2.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
             <span data-i18n="cta_camera">Mulai Foto</span>
           </button>
 
-          <button onclick="App.startStudio('upload')" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white border border-gray-200 text-pozia-charcoal font-semibold text-sm hover:bg-gray-50 active:scale-95 transition-all shadow-sm flex items-center justify-center gap-2">
-            <svg class="w-4 h-4 text-pozia-lilac" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+          <button onclick="App.startStudio('upload')"
+            class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white border border-gray-200 text-pozia-charcoal font-semibold text-sm hover:bg-gray-50 active:scale-95 transition-all shadow-sm flex items-center justify-center gap-2">
+            <svg class="w-4 h-4 text-pozia-lilac" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+            </svg>
             <span data-i18n="cta_upload">Pilih dari Galeri</span>
           </button>
         </div>
@@ -203,22 +255,26 @@
           </span>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
             <!-- 1x4 -->
-            <div onclick="App.setLayout('1x4')" id="home-card-1x4" class="p-3 rounded-2xl bg-white border-2 border-pozia-coral shadow-sm cursor-pointer hover:shadow-md transition-all flex flex-col items-center text-center gap-1.5">
+            <div onclick="App.setLayout('1x4')" id="home-card-1x4"
+              class="p-3 rounded-2xl bg-white border-2 border-pozia-coral shadow-sm cursor-pointer hover:shadow-md transition-all flex flex-col items-center text-center gap-1.5">
               <span class="font-extrabold text-sm text-pozia-charcoal">Strip 4 Pose</span>
               <span class="text-[10px] text-gray-400">1x4 Photobox</span>
             </div>
             <!-- 1x3 -->
-            <div onclick="App.setLayout('1x3')" id="home-card-1x3" class="p-3 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col items-center text-center gap-1.5">
+            <div onclick="App.setLayout('1x3')" id="home-card-1x3"
+              class="p-3 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col items-center text-center gap-1.5">
               <span class="font-extrabold text-sm text-pozia-charcoal">Strip 3 Pose</span>
               <span class="text-[10px] text-gray-400">1x3 Vertical</span>
             </div>
             <!-- 2x2 -->
-            <div onclick="App.setLayout('2x2')" id="home-card-2x2" class="p-3 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col items-center text-center gap-1.5">
+            <div onclick="App.setLayout('2x2')" id="home-card-2x2"
+              class="p-3 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col items-center text-center gap-1.5">
               <span class="font-extrabold text-sm text-pozia-charcoal">Grid 2x2</span>
               <span class="text-[10px] text-gray-400">Square Collage</span>
             </div>
             <!-- Polaroid -->
-            <div onclick="App.setLayout('polaroid')" id="home-card-polaroid" class="p-3 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col items-center text-center gap-1.5">
+            <div onclick="App.setLayout('polaroid')" id="home-card-polaroid"
+              class="p-3 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col items-center text-center gap-1.5">
               <span class="font-extrabold text-sm text-pozia-charcoal">Polaroid</span>
               <span class="text-[10px] text-gray-400">Single Classic</span>
             </div>
@@ -226,57 +282,50 @@
         </div>
 
         <!-- PWA Install Banner -->
-        <div id="pwa-install-banner" class="hidden p-4 rounded-2xl bg-gradient-to-r from-pozia-coral/10 to-pozia-lilac/10 border border-pozia-coral/20 flex items-center justify-between">
+        <div id="pwa-install-banner"
+          class="hidden p-4 rounded-2xl bg-gradient-to-r from-pozia-coral/10 to-pozia-lilac/10 border border-pozia-coral/20 flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-pozia-coral/15 flex items-center justify-center text-pozia-coral">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-            </div>
+            <span class="text-2xl">📲</span>
             <div>
               <h4 class="font-bold text-xs text-pozia-charcoal">Install Pozia App</h4>
               <p class="text-[10px] text-gray-500">Pasang di Desktop / HP untuk akses offline cepat</p>
             </div>
           </div>
-          <button id="pwa-install-btn" class="px-4 py-1.5 rounded-xl bg-pozia-coral text-white text-xs font-bold shadow-sm">
+          <button id="pwa-install-btn"
+            class="px-4 py-1.5 rounded-xl bg-pozia-coral text-white text-xs font-bold shadow-sm">
             Install
           </button>
         </div>
       </div>
 
       <!-- Right Visual Studio Showcase -->
-      <div class="w-full md:w-1/2 studio-dot-grid p-6 md:p-12 flex items-center justify-center relative overflow-hidden">
+      <div
+        class="w-full md:w-1/2 studio-dot-grid p-6 md:p-12 flex items-center justify-center relative overflow-hidden">
         <div class="absolute w-72 h-72 rounded-full bg-pink-200/40 blur-3xl pointer-events-none"></div>
 
         <!-- Showcase Strips Cluster -->
         <div class="relative flex items-center justify-center w-full max-w-md h-[480px]">
           <!-- Tilted Left Strip (Coquette Strawberry) -->
-          <div class="absolute transform -rotate-6 -translate-x-16 bg-[#FFE8EC] p-3 rounded-2xl shadow-2xl border-2 border-pink-200 flex flex-col gap-2 w-32 md:w-36 transition-transform hover:scale-105 duration-300">
-            <div class="absolute -top-3 left-4 w-12 h-5 washi-tape-pink -rotate-12 rounded-sm pointer-events-none"></div>
-            <div class="h-20 bg-gradient-to-b from-pink-100 to-rose-50 rounded-xl flex items-center justify-center shadow-inner overflow-hidden">
-              <svg class="w-8 h-8 text-rose-300 opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          <div
+            class="absolute transform -rotate-6 -translate-x-16 bg-[#FFE8EC] p-3 rounded-2xl shadow-2xl border-2 border-pink-200 flex flex-col gap-2 w-32 md:w-36 transition-transform hover:scale-105 duration-300">
+            <div class="absolute -top-3 left-4 w-12 h-5 washi-tape-pink -rotate-12 rounded-sm pointer-events-none">
             </div>
-            <div class="h-20 bg-gradient-to-b from-rose-50 to-pink-100 rounded-xl flex items-center justify-center shadow-inner overflow-hidden">
-              <svg class="w-8 h-8 text-rose-300 opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-            </div>
-            <div class="h-20 bg-gradient-to-b from-pink-100 to-rose-50 rounded-xl flex items-center justify-center shadow-inner overflow-hidden">
-              <svg class="w-8 h-8 text-rose-300 opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-            </div>
-            <div class="text-center font-handwriting text-xs text-pink-600 font-bold pt-1">sweet memory</div>
+            <div class="h-20 bg-white/80 rounded-xl flex items-center justify-center text-2xl shadow-inner">🍓</div>
+            <div class="h-20 bg-white/80 rounded-xl flex items-center justify-center text-2xl shadow-inner">🎀</div>
+            <div class="h-20 bg-white/80 rounded-xl flex items-center justify-center text-2xl shadow-inner">💖</div>
+            <div class="text-center font-handwriting text-xs text-pink-600 font-bold pt-1">sweet strawberry</div>
           </div>
 
           <!-- Tilted Right Strip (Toploader K-Pop Deco) -->
-          <div class="absolute transform rotate-6 translate-x-16 bg-[#F3E8FF] p-3 rounded-2xl shadow-2xl border-2 border-purple-200 flex flex-col gap-2 w-32 md:w-36 transition-transform hover:scale-105 duration-300 z-10">
-            <div class="absolute -top-3 right-4 w-12 h-5 washi-tape-yellow rotate-12 rounded-sm pointer-events-none"></div>
-            <div class="h-20 bg-gradient-to-b from-purple-100 to-indigo-50 rounded-xl flex items-center justify-center shadow-inner overflow-hidden">
-              <svg class="w-8 h-8 text-purple-300 opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          <div
+            class="absolute transform rotate-6 translate-x-16 bg-[#F3E8FF] p-3 rounded-2xl shadow-2xl border-2 border-purple-200 flex flex-col gap-2 w-32 md:w-36 transition-transform hover:scale-105 duration-300 z-10">
+            <div class="absolute -top-3 right-4 w-12 h-5 washi-tape-yellow rotate-12 rounded-sm pointer-events-none">
             </div>
-            <div class="h-20 bg-gradient-to-b from-indigo-50 to-purple-100 rounded-xl flex items-center justify-center shadow-inner overflow-hidden">
-              <svg class="w-8 h-8 text-purple-300 opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-            </div>
-            <div class="h-20 bg-gradient-to-b from-purple-100 to-indigo-50 rounded-xl flex items-center justify-center shadow-inner overflow-hidden">
-              <svg class="w-8 h-8 text-purple-300 opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-            </div>
+            <div class="h-20 bg-white/80 rounded-xl flex items-center justify-center text-2xl shadow-inner">✨</div>
+            <div class="h-20 bg-white/80 rounded-xl flex items-center justify-center text-2xl shadow-inner">🐰</div>
+            <div class="h-20 bg-white/80 rounded-xl flex items-center justify-center text-2xl shadow-inner">✦</div>
             <div class="flex justify-between items-center px-1 text-[9px] font-digital text-purple-600 font-bold pt-1">
-              <span>PHOTO STUDIO</span>
+              <span>MY BIAS ♡</span>
               <span>'26 11 17</span>
             </div>
           </div>
@@ -287,32 +336,42 @@
     <!-- ====================================================== -->
     <!-- STAGE 2: UPGRADED CAMERA STUDIO (STUDIO KAMERA)        -->
     <!-- ====================================================== -->
-    <section id="stage-camera" class="hidden flex-1 w-full flex flex-col md:flex-row bg-pozia-dark text-white overflow-hidden">
+    <section id="stage-camera"
+      class="hidden flex-1 w-full flex flex-col md:flex-row bg-pozia-dark text-white overflow-hidden">
       <!-- Left / Center Main Stage: Viewfinder -->
-      <div class="w-full md:w-[58%] h-[55vh] md:h-full flex flex-col relative bg-black/50 justify-between p-4 md:p-6 overflow-hidden">
+      <div
+        class="w-full md:w-[58%] h-[55vh] md:h-full flex flex-col relative bg-black/50 justify-between p-4 md:p-6 overflow-hidden">
         <!-- Viewfinder Top Bar -->
         <div class="flex items-center justify-between z-20">
-          <button onclick="App.navigate('home')" class="px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-xs font-bold hover:bg-white/20 transition-all flex items-center gap-1.5">
+          <button onclick="App.navigate('home')"
+            class="px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-xs font-bold hover:bg-white/20 transition-all flex items-center gap-1.5">
             &larr; <span data-i18n="back_home">Beranda</span>
           </button>
 
-          <div class="px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-xs font-extrabold tracking-wider flex items-center gap-2">
+          <div
+            class="px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-xs font-extrabold tracking-wider flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-pozia-coral animate-ping"></span>
             <span id="pose-counter-text">POSE 1 / 4</span>
           </div>
 
-          <button onclick="CameraStudio.flipCamera()" class="w-9 h-9 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-sm hover:bg-white/20 transition-all text-white" title="Flip Kamera">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <button onclick="CameraStudio.flipCamera()"
+            class="w-9 h-9 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-sm hover:bg-white/20 transition-all"
+            title="Flip Kamera">
+            🔄
           </button>
         </div>
 
         <!-- Live Viewfinder Aspect Container -->
         <div class="flex-1 flex items-center justify-center relative my-2">
-          <div id="camera-aspect-wrapper" class="w-full max-w-xl max-h-[80%] aspect-[4/3] rounded-3xl overflow-hidden relative shadow-2xl bg-black border border-white/15 flex items-center justify-center">
-            <video id="live-video" autoplay playsinline muted class="w-full h-full object-cover transform scale-x-[-1] transition-all duration-300"></video>
+          <div id="camera-aspect-wrapper"
+            class="w-full max-w-xl max-h-[80%] aspect-[4/3] rounded-3xl overflow-hidden relative shadow-2xl bg-black border border-white/15 flex items-center justify-center">
+            <video id="live-video" autoplay playsinline muted
+              class="w-full h-full object-cover transform scale-x-[-1] transition-all duration-300"></video>
 
-            <div id="countdown-overlay" class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-150 z-30">
-              <span id="countdown-number" class="text-9xl md:text-[140px] font-extrabold text-white drop-shadow-[0_4px_30px_rgba(255,90,121,0.9)] scale-150 transition-transform">
+            <div id="countdown-overlay"
+              class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-150 z-30">
+              <span id="countdown-number"
+                class="text-9xl md:text-[140px] font-extrabold text-white drop-shadow-[0_4px_30px_rgba(255,90,121,0.9)] scale-150 transition-transform">
                 3
               </span>
             </div>
@@ -331,12 +390,13 @@
             </div>
 
             <!-- Fallback Upload Button if Camera is unavailable -->
-            <div id="camera-fallback-msg" class="hidden absolute inset-0 bg-pozia-dark/95 flex flex-col items-center justify-center p-6 text-center gap-3 z-40">
-              <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-gray-300">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-              </div>
-              <p class="text-xs text-gray-300 max-w-xs" data-i18n="cam_error">Kamera tidak dapat diakses atau diblokir. Anda tetap bisa upload foto dari galeri!</p>
-              <button onclick="App.triggerGalleryUpload()" class="px-5 py-2.5 rounded-xl bg-pozia-coral text-white text-xs font-bold">
+            <div id="camera-fallback-msg"
+              class="hidden absolute inset-0 bg-pozia-dark/95 flex flex-col items-center justify-center p-6 text-center gap-3 z-40">
+              <span class="text-4xl">📷</span>
+              <p class="text-xs text-gray-300 max-w-xs" data-i18n="cam_error">Kamera tidak dapat diakses atau diblokir.
+                Anda tetap bisa upload foto dari galeri!</p>
+              <button onclick="App.triggerGalleryUpload()"
+                class="px-5 py-2.5 rounded-xl bg-pozia-coral text-white text-xs font-bold">
                 Upload Foto Pose Ini
               </button>
             </div>
@@ -350,40 +410,57 @@
       </div>
 
       <!-- Right Control Panel: Rich Studio Controls -->
-      <div class="w-full md:w-[42%] h-[45vh] md:h-full bg-pozia-dark/90 backdrop-blur-md border-t md:border-t-0 md:border-l border-white/10 p-5 md:p-8 flex flex-col justify-between overflow-y-auto no-scrollbar gap-5">
+      <div
+        class="w-full md:w-[42%] h-[45vh] md:h-full bg-pozia-dark/90 backdrop-blur-md border-t md:border-t-0 md:border-l border-white/10 p-5 md:p-8 flex flex-col justify-between overflow-y-auto no-scrollbar gap-5">
         <div>
           <h2 class="text-base font-extrabold text-white mb-4 flex items-center gap-2">
-            <svg class="w-4 h-4 text-pozia-coral" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg> <span data-i18n="camera_settings">Pengaturan Studio Kamera</span>
+            <span>⚙️</span> <span data-i18n="camera_settings">Pengaturan Studio Kamera</span>
           </h2>
 
           <div class="flex flex-col gap-4 text-xs">
             <div>
               <label class="block text-gray-400 font-semibold mb-1.5" data-i18n="pose_count">Jumlah Pose:</label>
               <div class="grid grid-cols-4 gap-1.5">
-                <button onclick="CameraStudio.setPoseTarget(1)" id="target-pose-1" class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold hover:bg-white/20 transition-all">1 Pose</button>
-                <button onclick="CameraStudio.setPoseTarget(3)" id="target-pose-3" class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold hover:bg-white/20 transition-all">3 Pose</button>
-                <button onclick="CameraStudio.setPoseTarget(4)" id="target-pose-4" class="py-2 rounded-xl bg-pozia-coral text-white font-bold transition-all shadow-md">4 Pose</button>
-                <button onclick="CameraStudio.setPoseTarget(6)" id="target-pose-6" class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold hover:bg-white/20 transition-all">6 Pose</button>
+                <button onclick="CameraStudio.setPoseTarget(1)" id="target-pose-1"
+                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold hover:bg-white/20 transition-all">1
+                  Pose</button>
+                <button onclick="CameraStudio.setPoseTarget(3)" id="target-pose-3"
+                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold hover:bg-white/20 transition-all">3
+                  Pose</button>
+                <button onclick="CameraStudio.setPoseTarget(4)" id="target-pose-4"
+                  class="py-2 rounded-xl bg-pozia-coral text-white font-bold transition-all shadow-md">4 Pose</button>
+                <button onclick="CameraStudio.setPoseTarget(6)" id="target-pose-6"
+                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold hover:bg-white/20 transition-all">6
+                  Pose</button>
               </div>
             </div>
 
             <div>
               <label class="block text-gray-400 font-semibold mb-1.5" data-i18n="timer_label">Timer Countdown:</label>
               <div class="grid grid-cols-4 gap-1.5">
-                <button onclick="CameraStudio.setTimer(0)" id="cam-timer-0" class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Off</button>
-                <button onclick="CameraStudio.setTimer(3)" id="cam-timer-3" class="py-2 rounded-xl bg-pozia-coral text-white font-bold">3 Detik</button>
-                <button onclick="CameraStudio.setTimer(5)" id="cam-timer-5" class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">5 Detik</button>
-                <button onclick="CameraStudio.setTimer(10)" id="cam-timer-10" class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">10 Detik</button>
+                <button onclick="CameraStudio.setTimer(0)" id="cam-timer-0"
+                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Off</button>
+                <button onclick="CameraStudio.setTimer(3)" id="cam-timer-3"
+                  class="py-2 rounded-xl bg-pozia-coral text-white font-bold">3 Detik</button>
+                <button onclick="CameraStudio.setTimer(5)" id="cam-timer-5"
+                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">5 Detik</button>
+                <button onclick="CameraStudio.setTimer(10)" id="cam-timer-10"
+                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">10 Detik</button>
               </div>
             </div>
 
             <div>
-              <label class="block text-gray-400 font-semibold mb-1.5" data-i18n="flash_color">Screen Flash Warna:</label>
+              <label class="block text-gray-400 font-semibold mb-1.5" data-i18n="flash_color">Screen Flash
+                Warna:</label>
               <div class="grid grid-cols-4 gap-1.5">
-                <button onclick="CameraStudio.setFlashColor('off')" id="flash-color-off" class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">OFF</button>
-                <button onclick="CameraStudio.setFlashColor('white')" id="flash-color-white" class="py-2 rounded-xl bg-pozia-coral text-white font-bold">Cool White</button>
-                <button onclick="CameraStudio.setFlashColor('peach')" id="flash-color-peach" class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Warm Peach</button>
-                <button onclick="CameraStudio.setFlashColor('pink')" id="flash-color-pink" class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Soft Pink</button>
+                <button onclick="CameraStudio.setFlashColor('off')" id="flash-color-off"
+                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">OFF</button>
+                <button onclick="CameraStudio.setFlashColor('white')" id="flash-color-white"
+                  class="py-2 rounded-xl bg-pozia-coral text-white font-bold">Cool White</button>
+                <button onclick="CameraStudio.setFlashColor('peach')" id="flash-color-peach"
+                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Warm Peach</button>
+                <button onclick="CameraStudio.setFlashColor('pink')" id="flash-color-pink"
+                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Soft Pink</button>
               </div>
             </div>
 
@@ -393,31 +470,43 @@
                   <span>Zoom Digital:</span>
                   <span id="zoom-val-label" class="font-bold text-white">1.0x</span>
                 </div>
-                <input type="range" id="cam-zoom-slider" min="1.0" max="2.0" step="0.1" value="1.0" oninput="CameraStudio.setZoom(this.value)" class="w-full accent-pozia-coral">
+                <input type="range" id="cam-zoom-slider" min="1.0" max="2.0" step="0.1" value="1.0"
+                  oninput="CameraStudio.setZoom(this.value)" class="w-full accent-pozia-coral">
               </div>
               <div>
                 <div class="flex justify-between text-gray-400 mb-1">
                   <span>Exposure/Kecerahan:</span>
                   <span id="exposure-val-label" class="font-bold text-white">0</span>
                 </div>
-                <input type="range" id="cam-exposure-slider" min="-30" max="30" step="1" value="0" oninput="CameraStudio.setExposure(this.value)" class="w-full accent-pozia-coral">
+                <input type="range" id="cam-exposure-slider" min="-30" max="30" step="1" value="0"
+                  oninput="CameraStudio.setExposure(this.value)" class="w-full accent-pozia-coral">
               </div>
             </div>
           </div>
         </div>
 
         <div class="flex items-center justify-between pt-4 border-t border-white/10">
-          <button onclick="App.triggerGalleryUpload()" class="p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-all flex flex-col items-center gap-1" title="Upload dari galeri">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <button onclick="App.triggerGalleryUpload()"
+            class="p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-all flex flex-col items-center gap-1"
+            title="Upload dari galeri">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
             <span class="text-[10px] text-gray-400">Upload</span>
           </button>
 
-          <button id="shutter-btn" onclick="CameraStudio.startCaptureSequence()" class="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center bg-pozia-coral shutter-glow active:scale-95 transition-transform shadow-2xl">
+          <button id="shutter-btn" onclick="CameraStudio.startCaptureSequence()"
+            class="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center bg-pozia-coral shutter-glow active:scale-95 transition-transform shadow-2xl">
             <div class="w-14 h-14 rounded-full bg-white/25"></div>
           </button>
 
-          <button onclick="App.navigate('editor')" class="p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-all flex flex-col items-center gap-1" title="Lanjut ke Editor">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          <button onclick="App.navigate('editor')"
+            class="p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-all flex flex-col items-center gap-1"
+            title="Lanjut ke Editor">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
             <span class="text-[10px] text-gray-400">Editor</span>
           </button>
         </div>
@@ -429,47 +518,58 @@
     <!-- ====================================================== -->
     <section id="stage-editor" class="hidden flex-1 w-full flex flex-col md:flex-row overflow-hidden bg-pozia-bg">
       <!-- Left / Center Main Stage: Interactive Canvas Workstation -->
-      <div class="w-full md:w-[58%] h-[50vh] md:h-full studio-dot-grid p-4 md:p-8 flex flex-col items-center justify-center relative overflow-hidden">
-        <div id="interactive-preview-container" class="relative transition-all duration-300 shadow-2xl rounded-2xl overflow-hidden bg-white max-h-[88%] flex items-center justify-center">
+      <div
+        class="w-full md:w-[58%] h-[50vh] md:h-full studio-dot-grid p-4 md:p-8 flex flex-col items-center justify-center relative overflow-hidden">
+        <div id="interactive-preview-container"
+          class="relative transition-all duration-300 shadow-2xl rounded-2xl overflow-hidden bg-white max-h-[88%] flex items-center justify-center">
           <canvas id="editor-preview-canvas" class="max-h-[75vh] w-auto h-auto block select-none"></canvas>
           <div id="sticker-interactive-layer" class="absolute inset-0 pointer-events-auto overflow-hidden"></div>
           <canvas id="doodle-canvas" class="absolute inset-0 pointer-events-none"></canvas>
         </div>
 
-        <div class="mt-3 px-4 py-2 rounded-full bg-white/95 backdrop-blur-md shadow-md border border-gray-100 flex items-center gap-2 text-xs">
-          <span class="text-pozia-coral font-bold">Tips:</span>
+        <div
+          class="mt-3 px-4 py-2 rounded-full bg-white/95 backdrop-blur-md shadow-md border border-gray-100 flex items-center gap-2 text-xs">
+          <span class="text-pozia-coral font-bold">💡 Tips:</span>
           <span class="text-gray-500">Klik slot foto di bingkai untuk mengganti / retake foto!</span>
         </div>
       </div>
 
       <!-- Right Control Panel: 5 Tabs Studio Dock -->
-      <div class="w-full md:w-[42%] h-[50vh] md:h-full bg-white border-t md:border-t-0 md:border-l border-gray-100 flex flex-col justify-between overflow-hidden shadow-sm">
-        
+      <div
+        class="w-full md:w-[42%] h-[50vh] md:h-full bg-white border-t md:border-t-0 md:border-l border-gray-100 flex flex-col justify-between overflow-hidden shadow-sm">
+
         <!-- Top Tab Bar & Random Vibe / Finish CTAs -->
         <div class="border-b border-gray-100 px-3 py-2 flex items-center justify-between bg-white z-10">
           <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
-            <button onclick="EditorStudio.switchTab('frame')" id="tab-btn-frame" class="px-3 py-2 text-xs font-bold text-pozia-coral border-b-2 border-pozia-coral transition-colors flex items-center gap-1 whitespace-nowrap">
+            <button onclick="EditorStudio.switchTab('frame')" id="tab-btn-frame"
+              class="px-3 py-2 text-xs font-bold text-pozia-coral border-b-2 border-pozia-coral transition-colors flex items-center gap-1 whitespace-nowrap">
               <span data-i18n="tab_frame">Bingkai</span>
             </button>
-            <button onclick="EditorStudio.switchTab('filter')" id="tab-btn-filter" class="px-3 py-2 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center gap-1 whitespace-nowrap">
+            <button onclick="EditorStudio.switchTab('filter')" id="tab-btn-filter"
+              class="px-3 py-2 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center gap-1 whitespace-nowrap">
               <span data-i18n="tab_filter">Filter</span>
             </button>
-            <button onclick="EditorStudio.switchTab('sticker')" id="tab-btn-sticker" class="px-3 py-2 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center gap-1 whitespace-nowrap">
+            <button onclick="EditorStudio.switchTab('sticker')" id="tab-btn-sticker"
+              class="px-3 py-2 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center gap-1 whitespace-nowrap">
               <span data-i18n="tab_sticker">Stiker</span>
             </button>
-            <button onclick="EditorStudio.switchTab('doodle')" id="tab-btn-doodle" class="px-3 py-2 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center gap-1 whitespace-nowrap">
+            <button onclick="EditorStudio.switchTab('doodle')" id="tab-btn-doodle"
+              class="px-3 py-2 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center gap-1 whitespace-nowrap">
               <span data-i18n="tab_doodle">Coret</span>
             </button>
-            <button onclick="EditorStudio.switchTab('caption')" id="tab-btn-caption" class="px-3 py-2 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center gap-1 whitespace-nowrap">
+            <button onclick="EditorStudio.switchTab('caption')" id="tab-btn-caption"
+              class="px-3 py-2 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center gap-1 whitespace-nowrap">
               <span data-i18n="tab_caption">Teks</span>
             </button>
           </div>
 
           <div class="flex items-center gap-2">
-            <button onclick="EditorStudio.randomVibe()" title="Acak Vibe" class="px-2.5 py-1.5 rounded-xl bg-pozia-lilac/10 text-pozia-lilac text-xs font-bold hover:bg-pozia-lilac hover:text-white transition-all flex items-center gap-1">
+            <button onclick="EditorStudio.randomVibe()" title="Acak Vibe"
+              class="px-2.5 py-1.5 rounded-xl bg-pozia-lilac/10 text-pozia-lilac text-xs font-bold hover:bg-pozia-lilac hover:text-white transition-all flex items-center gap-1">
               <span data-i18n="random_vibe">Acak Vibe</span>
             </button>
-            <button onclick="App.exportFinalImage()" class="px-4 py-1.5 rounded-xl bg-pozia-coral text-white text-xs font-bold shadow-md shadow-pozia-coral/25 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center gap-1">
+            <button onclick="App.exportFinalImage()"
+              class="px-4 py-1.5 rounded-xl bg-pozia-coral text-white text-xs font-bold shadow-md shadow-pozia-coral/25 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center gap-1">
               <span data-i18n="done_btn">Selesai</span> &rarr;
             </button>
           </div>
@@ -477,26 +577,25 @@
 
         <!-- Scrollable Tab Content Area -->
         <div class="flex-1 overflow-y-auto no-scrollbar p-5">
-          
+
           <!-- TAB 1: BINGKAI (15+ SUPER CUTE DESIGNER FRAMES) -->
           <div id="tab-content-frame" class="flex flex-col gap-4">
-            <!-- Format Frame Switcher (1 Foto, 3 Strip, 4 Strip, Grid) -->
-            <div class="flex items-center justify-between pb-2 border-b border-gray-100">
-              <span class="text-xs text-gray-500 font-bold">Format Frame:</span>
-              <div class="flex items-center gap-1.5">
-                <button onclick="App.setLayout('polaroid'); EditorStudio.renderCanvas();" id="frame-layout-polaroid" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-pink-50 text-pozia-coral border border-pozia-coral">1 Foto</button>
-                <button onclick="App.setLayout('1x3'); EditorStudio.renderCanvas();" id="frame-layout-1x3" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600">3 Strip</button>
-                <button onclick="App.setLayout('1x4'); EditorStudio.renderCanvas();" id="frame-layout-1x4" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600">4 Strip</button>
-                <button onclick="App.setLayout('2x2'); EditorStudio.renderCanvas();" id="frame-layout-2x2" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600">Grid 2x2</button>
-              </div>
-            </div>
             <!-- Category Filter Chips -->
             <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
-              <button onclick="EditorStudio.setFrameCategory('all')" id="frame-cat-all" class="px-3 py-1 text-xs font-bold rounded-full bg-pozia-coral text-white whitespace-nowrap shadow-sm">Semua</button>
-              <button onclick="EditorStudio.setFrameCategory('cute')" id="frame-cat-cute" class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pozia-coral whitespace-nowrap">Pastel & Cute</button>
-              <button onclick="EditorStudio.setFrameCategory('kpop')" id="frame-cat-kpop" class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pozia-coral whitespace-nowrap">K-Pop & Y2K</button>
-              <button onclick="EditorStudio.setFrameCategory('retro')" id="frame-cat-retro" class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pozia-coral whitespace-nowrap">Retro & Film</button>
-              <button onclick="EditorStudio.setFrameCategory('solid')" id="frame-cat-solid" class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pozia-coral whitespace-nowrap">Warna Polos</button>
+              <button onclick="EditorStudio.setFrameCategory('all')" id="frame-cat-all"
+                class="px-3 py-1 text-xs font-bold rounded-full bg-pozia-coral text-white whitespace-nowrap shadow-sm">Semua</button>
+              <button onclick="EditorStudio.setFrameCategory('cute')" id="frame-cat-cute"
+                class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pozia-coral whitespace-nowrap">Pastel
+                & Cute</button>
+              <button onclick="EditorStudio.setFrameCategory('kpop')" id="frame-cat-kpop"
+                class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pozia-coral whitespace-nowrap">K-Pop
+                & Y2K</button>
+              <button onclick="EditorStudio.setFrameCategory('retro')" id="frame-cat-retro"
+                class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pozia-coral whitespace-nowrap">Retro
+                & Film</button>
+              <button onclick="EditorStudio.setFrameCategory('solid')" id="frame-cat-solid"
+                class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pozia-coral whitespace-nowrap">Warna
+                Polos</button>
             </div>
 
             <!-- Frames Grid with Visual Preview Thumbnails -->
@@ -505,13 +604,21 @@
             <!-- Custom Solid Color Bar (for Classic Frame) -->
             <div id="classic-color-section" class="pt-2 border-t border-gray-100 flex items-center gap-2">
               <span class="text-xs text-gray-500 font-semibold" data-i18n="color_label">Warna Polos:</span>
-              <button onclick="EditorStudio.setFrameColor('#FFFFFF')" class="w-6 h-6 rounded-full border border-gray-300 bg-white shadow-sm"></button>
-              <button onclick="EditorStudio.setFrameColor('#111113')" class="w-6 h-6 rounded-full bg-[#111113] shadow-sm"></button>
-              <button onclick="EditorStudio.setFrameColor('#FAD2E1')" class="w-6 h-6 rounded-full bg-[#FAD2E1] shadow-sm"></button>
-              <button onclick="EditorStudio.setFrameColor('#C5DFF8')" class="w-6 h-6 rounded-full bg-[#C5DFF8] shadow-sm"></button>
-              <button onclick="EditorStudio.setFrameColor('#D0E1D4')" class="w-6 h-6 rounded-full bg-[#D0E1D4] shadow-sm"></button>
-              <button onclick="EditorStudio.setFrameColor('#E2D4F0')" class="w-6 h-6 rounded-full bg-[#E2D4F0] shadow-sm"></button>
-              <label class="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center cursor-pointer overflow-hidden bg-gradient-to-tr from-yellow-300 via-pink-400 to-indigo-400" title="Warna Custom">
+              <button onclick="EditorStudio.setFrameColor('#FFFFFF')"
+                class="w-6 h-6 rounded-full border border-gray-300 bg-white shadow-sm"></button>
+              <button onclick="EditorStudio.setFrameColor('#111113')"
+                class="w-6 h-6 rounded-full bg-[#111113] shadow-sm"></button>
+              <button onclick="EditorStudio.setFrameColor('#FAD2E1')"
+                class="w-6 h-6 rounded-full bg-[#FAD2E1] shadow-sm"></button>
+              <button onclick="EditorStudio.setFrameColor('#C5DFF8')"
+                class="w-6 h-6 rounded-full bg-[#C5DFF8] shadow-sm"></button>
+              <button onclick="EditorStudio.setFrameColor('#D0E1D4')"
+                class="w-6 h-6 rounded-full bg-[#D0E1D4] shadow-sm"></button>
+              <button onclick="EditorStudio.setFrameColor('#E2D4F0')"
+                class="w-6 h-6 rounded-full bg-[#E2D4F0] shadow-sm"></button>
+              <label
+                class="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center cursor-pointer overflow-hidden bg-gradient-to-tr from-yellow-300 via-pink-400 to-indigo-400"
+                title="Warna Custom">
                 <input type="color" onchange="EditorStudio.setFrameColor(this.value)" class="opacity-0 w-0 h-0">
               </label>
             </div>
@@ -520,11 +627,16 @@
           <!-- TAB 2: FILTER & EFEK -->
           <div id="tab-content-filter" class="hidden flex flex-col gap-4">
             <div class="flex items-center gap-1 bg-gray-100 p-1 rounded-xl">
-              <button onclick="EditorStudio.setFilterCategory('beauty')" id="fcat-beauty" class="flex-1 py-1 text-[11px] font-bold rounded-lg bg-white text-pozia-charcoal shadow-sm">Beauty</button>
-              <button onclick="EditorStudio.setFilterCategory('film')" id="fcat-film" class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">Film</button>
-              <button onclick="EditorStudio.setFilterCategory('vintage')" id="fcat-vintage" class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">B&W</button>
-              <button onclick="EditorStudio.setFilterCategory('aesthetic')" id="fcat-aesthetic" class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">Color</button>
-              <button onclick="EditorStudio.setFilterCategory('artistic')" id="fcat-artistic" class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">Pop</button>
+              <button onclick="EditorStudio.setFilterCategory('beauty')" id="fcat-beauty"
+                class="flex-1 py-1 text-[11px] font-bold rounded-lg bg-white text-pozia-charcoal shadow-sm">Beauty</button>
+              <button onclick="EditorStudio.setFilterCategory('film')" id="fcat-film"
+                class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">Film</button>
+              <button onclick="EditorStudio.setFilterCategory('vintage')" id="fcat-vintage"
+                class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">B&W</button>
+              <button onclick="EditorStudio.setFilterCategory('aesthetic')" id="fcat-aesthetic"
+                class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">Color</button>
+              <button onclick="EditorStudio.setFilterCategory('artistic')" id="fcat-artistic"
+                class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">Pop</button>
             </div>
 
             <div id="filter-presets-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-2"></div>
@@ -532,87 +644,130 @@
             <div class="flex flex-col gap-2.5 pt-2 border-t border-gray-100 text-xs">
               <div class="flex items-center gap-2">
                 <span class="w-20 text-gray-500 font-semibold" data-i18n="intensity">Intensitas:</span>
-                <input type="range" id="filter-intensity-slider" min="0" max="100" value="100" oninput="EditorStudio.setFilterIntensity(this.value)" class="flex-1 accent-pozia-coral">
+                <input type="range" id="filter-intensity-slider" min="0" max="100" value="100"
+                  oninput="EditorStudio.setFilterIntensity(this.value)" class="flex-1 accent-pozia-coral">
                 <span id="intensity-val-text" class="w-10 font-bold text-pozia-coral text-right">100%</span>
               </div>
               <div class="flex items-center gap-2">
                 <span class="w-20 text-gray-500 font-semibold">Kecerahan:</span>
-                <input type="range" id="manual-brightness" min="-30" max="30" value="0" oninput="EditorStudio.setManualAdjust('brightness', this.value)" class="flex-1 accent-pozia-coral">
+                <input type="range" id="manual-brightness" min="-30" max="30" value="0"
+                  oninput="EditorStudio.setManualAdjust('brightness', this.value)" class="flex-1 accent-pozia-coral">
                 <span id="brightness-val-text" class="w-10 font-bold text-gray-700 text-right">0</span>
               </div>
               <div class="flex items-center gap-2">
                 <span class="w-20 text-gray-500 font-semibold">Kontras:</span>
-                <input type="range" id="manual-contrast" min="-30" max="30" value="0" oninput="EditorStudio.setManualAdjust('contrast', this.value)" class="flex-1 accent-pozia-coral">
+                <input type="range" id="manual-contrast" min="-30" max="30" value="0"
+                  oninput="EditorStudio.setManualAdjust('contrast', this.value)" class="flex-1 accent-pozia-coral">
                 <span id="contrast-val-text" class="w-10 font-bold text-gray-700 text-right">0</span>
               </div>
             </div>
 
             <div class="pt-2 border-t border-gray-100 flex items-center gap-2 flex-wrap">
               <span class="text-xs text-gray-400 font-medium" data-i18n="lens_overlays">Efek Lensa:</span>
-              <button onclick="EditorStudio.toggleOverlay('leak')" id="ovl-leak" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100">Light Leak</button>
-              <button onclick="EditorStudio.toggleOverlay('grain')" id="ovl-grain" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100">Film Grain</button>
-              <button onclick="EditorStudio.toggleOverlay('vignette')" id="ovl-vignette" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100">Fisheye</button>
-              <button onclick="EditorStudio.toggleOverlay('sparkle')" id="ovl-sparkle" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100">Sparkle ✦</button>
+              <button onclick="EditorStudio.toggleOverlay('leak')" id="ovl-leak"
+                class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100">Light
+                Leak</button>
+              <button onclick="EditorStudio.toggleOverlay('grain')" id="ovl-grain"
+                class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100">Film
+                Grain</button>
+              <button onclick="EditorStudio.toggleOverlay('vignette')" id="ovl-vignette"
+                class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100">Fisheye</button>
+              <button onclick="EditorStudio.toggleOverlay('sparkle')" id="ovl-sparkle"
+                class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100">Sparkle
+                ✦</button>
             </div>
           </div>
 
           <!-- TAB 3: STIKER (40+ INTERACTIVE STICKERS) -->
           <div id="tab-content-sticker" class="hidden flex flex-col gap-4">
             <div class="flex items-center justify-between">
-              <span class="text-xs text-gray-500 font-medium" data-i18n="sticker_instruction">Klik stiker untuk menambah. Geser untuk memindahkan.</span>
-              <button onclick="EditorStudio.clearStickers()" class="text-xs text-red-500 font-bold hover:underline" data-i18n="clear_stickers">Hapus Semua</button>
+              <span class="text-xs text-gray-500 font-medium" data-i18n="sticker_instruction">Klik stiker untuk
+                menambah. Geser untuk memindahkan.</span>
+              <button onclick="EditorStudio.clearStickers()" class="text-xs text-red-500 font-bold hover:underline"
+                data-i18n="clear_stickers">Hapus Semua</button>
             </div>
 
             <div class="flex flex-col gap-3">
               <div>
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Y2K Chrome & Stars</span>
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Y2K Chrome &
+                  Stars</span>
                 <div class="grid grid-cols-6 sm:grid-cols-8 gap-2">
-                  <button onclick="EditorStudio.addSticker('✦')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✦</button>
-                  <button onclick="EditorStudio.addSticker('✧')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✧</button>
-                  <button onclick="EditorStudio.addSticker('✮')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✮</button>
-                  <button onclick="EditorStudio.addSticker('✰')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✰</button>
-                  <button onclick="EditorStudio.addSticker('💿')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">💿</button>
-                  <button onclick="EditorStudio.addSticker('🪩')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🪩</button>
-                  <button onclick="EditorStudio.addSticker('👽')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">👽</button>
-                  <button onclick="EditorStudio.addSticker('🛸')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🛸</button>
+                  <button onclick="EditorStudio.addSticker('✦')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✦</button>
+                  <button onclick="EditorStudio.addSticker('✧')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✧</button>
+                  <button onclick="EditorStudio.addSticker('✮')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✮</button>
+                  <button onclick="EditorStudio.addSticker('✰')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✰</button>
+                  <button onclick="EditorStudio.addSticker('💿')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">💿</button>
+                  <button onclick="EditorStudio.addSticker('🪩')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🪩</button>
+                  <button onclick="EditorStudio.addSticker('👽')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">👽</button>
+                  <button onclick="EditorStudio.addSticker('🛸')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🛸</button>
                 </div>
               </div>
 
               <div>
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Coquette Bows & Cute</span>
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Coquette Bows &
+                  Cute</span>
                 <div class="grid grid-cols-6 sm:grid-cols-8 gap-2">
-                  <button onclick="EditorStudio.addSticker('🎀')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🎀</button>
-                  <button onclick="EditorStudio.addSticker('🩰')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🩰</button>
-                  <button onclick="EditorStudio.addSticker('🌸')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🌸</button>
-                  <button onclick="EditorStudio.addSticker('🌷')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🌷</button>
-                  <button onclick="EditorStudio.addSticker('🍰')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🍰</button>
-                  <button onclick="EditorStudio.addSticker('🍓')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🍓</button>
-                  <button onclick="EditorStudio.addSticker('🍒')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🍒</button>
-                  <button onclick="EditorStudio.addSticker('💌')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">💌</button>
+                  <button onclick="EditorStudio.addSticker('🎀')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🎀</button>
+                  <button onclick="EditorStudio.addSticker('🩰')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🩰</button>
+                  <button onclick="EditorStudio.addSticker('🌸')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🌸</button>
+                  <button onclick="EditorStudio.addSticker('🌷')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🌷</button>
+                  <button onclick="EditorStudio.addSticker('🍰')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🍰</button>
+                  <button onclick="EditorStudio.addSticker('🍓')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🍓</button>
+                  <button onclick="EditorStudio.addSticker('🍒')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🍒</button>
+                  <button onclick="EditorStudio.addSticker('💌')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">💌</button>
                 </div>
               </div>
 
               <div>
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Cute Pets & Props</span>
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Cute Pets &
+                  Props</span>
                 <div class="grid grid-cols-6 sm:grid-cols-8 gap-2">
-                  <button onclick="EditorStudio.addSticker('🐱')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🐱</button>
-                  <button onclick="EditorStudio.addSticker('🐶')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🐶</button>
-                  <button onclick="EditorStudio.addSticker('🐰')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🐰</button>
-                  <button onclick="EditorStudio.addSticker('🐻')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🐻</button>
-                  <button onclick="EditorStudio.addSticker('🕶️')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🕶️</button>
-                  <button onclick="EditorStudio.addSticker('👑')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">👑</button>
-                  <button onclick="EditorStudio.addSticker('🦋')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🦋</button>
-                  <button onclick="EditorStudio.addSticker('✨')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✨</button>
+                  <button onclick="EditorStudio.addSticker('🐱')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🐱</button>
+                  <button onclick="EditorStudio.addSticker('🐶')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🐶</button>
+                  <button onclick="EditorStudio.addSticker('🐰')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🐰</button>
+                  <button onclick="EditorStudio.addSticker('🐻')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🐻</button>
+                  <button onclick="EditorStudio.addSticker('🕶️')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🕶️</button>
+                  <button onclick="EditorStudio.addSticker('👑')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">👑</button>
+                  <button onclick="EditorStudio.addSticker('🦋')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🦋</button>
+                  <button onclick="EditorStudio.addSticker('✨')"
+                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✨</button>
                 </div>
               </div>
 
               <div>
                 <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Text Badges</span>
                 <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                  <button onclick="EditorStudio.addStickerText('SLAY!')" class="py-2 text-xs font-extrabold rounded-xl bg-pink-100 text-pozia-coral hover:bg-pink-200">SLAY!</button>
-                  <button onclick="EditorStudio.addStickerText('BESTIE')" class="py-2 text-xs font-extrabold rounded-xl bg-purple-100 text-pozia-lilac hover:bg-purple-200">BESTIE</button>
-                  <button onclick="EditorStudio.addStickerText('CUTIE')" class="py-2 text-xs font-extrabold rounded-xl bg-yellow-100 text-yellow-700 hover:bg-yellow-200">CUTIE</button>
-                  <button onclick="EditorStudio.addStickerText('2026')" class="py-2 text-xs font-extrabold rounded-xl bg-blue-100 text-blue-600 hover:bg-blue-200">2026</button>
+                  <button onclick="EditorStudio.addStickerText('SLAY!')"
+                    class="py-2 text-xs font-extrabold rounded-xl bg-pink-100 text-pozia-coral hover:bg-pink-200">SLAY!</button>
+                  <button onclick="EditorStudio.addStickerText('BESTIE')"
+                    class="py-2 text-xs font-extrabold rounded-xl bg-purple-100 text-pozia-lilac hover:bg-purple-200">BESTIE</button>
+                  <button onclick="EditorStudio.addStickerText('CUTIE')"
+                    class="py-2 text-xs font-extrabold rounded-xl bg-yellow-100 text-yellow-700 hover:bg-yellow-200">CUTIE</button>
+                  <button onclick="EditorStudio.addStickerText('2026')"
+                    class="py-2 text-xs font-extrabold rounded-xl bg-blue-100 text-blue-600 hover:bg-blue-200">2026</button>
                 </div>
               </div>
             </div>
@@ -623,27 +778,34 @@
             <div class="flex items-center justify-between">
               <span class="text-xs text-gray-500 font-medium">Gambar langsung di strip foto dengan mouse/touch:</span>
               <div class="flex items-center gap-2">
-                <button onclick="DoodleEngine.undo()" class="px-2.5 py-1 rounded-lg bg-gray-100 text-xs font-bold text-gray-600 hover:bg-gray-200">Undo</button>
-                <button onclick="DoodleEngine.clear()" class="px-2.5 py-1 rounded-lg bg-red-50 text-xs font-bold text-red-500 hover:bg-red-100">Hapus</button>
+                <button onclick="DoodleEngine.undo()"
+                  class="px-2.5 py-1 rounded-lg bg-gray-100 text-xs font-bold text-gray-600 hover:bg-gray-200">Undo</button>
+                <button onclick="DoodleEngine.clear()"
+                  class="px-2.5 py-1 rounded-lg bg-red-50 text-xs font-bold text-red-500 hover:bg-red-100">Hapus</button>
               </div>
             </div>
 
             <div>
-              <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Warna Spidol:</span>
+              <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Warna
+                Spidol:</span>
               <div class="flex items-center gap-2 flex-wrap" id="doodle-colors-bar"></div>
             </div>
 
             <div class="flex items-center justify-between pt-2 border-t border-gray-100">
               <div class="flex items-center gap-2">
                 <span class="text-xs text-gray-500 font-semibold">Ukuran:</span>
-                <button onclick="DoodleEngine.setSize(3)" id="brush-size-3" class="px-3 py-1 rounded-lg text-xs font-bold bg-pink-50 text-pozia-coral border border-pozia-coral">Tipis</button>
-                <button onclick="DoodleEngine.setSize(6)" id="brush-size-6" class="px-3 py-1 rounded-lg text-xs font-bold bg-gray-100 text-gray-700">Sedang</button>
-                <button onclick="DoodleEngine.setSize(12)" id="brush-size-12" class="px-3 py-1 rounded-lg text-xs font-bold bg-gray-100 text-gray-700">Tebal</button>
+                <button onclick="DoodleEngine.setSize(3)" id="brush-size-3"
+                  class="px-3 py-1 rounded-lg text-xs font-bold bg-pink-50 text-pozia-coral border border-pozia-coral">Tipis</button>
+                <button onclick="DoodleEngine.setSize(6)" id="brush-size-6"
+                  class="px-3 py-1 rounded-lg text-xs font-bold bg-gray-100 text-gray-700">Sedang</button>
+                <button onclick="DoodleEngine.setSize(12)" id="brush-size-12"
+                  class="px-3 py-1 rounded-lg text-xs font-bold bg-gray-100 text-gray-700">Tebal</button>
               </div>
 
               <label class="flex items-center gap-1.5 cursor-pointer">
-                <input type="checkbox" id="neon-glow-toggle" onchange="DoodleEngine.setNeonGlow(this.checked)" class="accent-pozia-coral w-4 h-4">
-                <span class="text-xs text-pozia-charcoal font-bold">Neon Glow</span>
+                <input type="checkbox" id="neon-glow-toggle" onchange="DoodleEngine.setNeonGlow(this.checked)"
+                  class="accent-pozia-coral w-4 h-4">
+                <span class="text-xs text-pozia-charcoal font-bold">Neon Glow ✨</span>
               </label>
             </div>
           </div>
@@ -651,35 +813,40 @@
           <!-- TAB 5: TEKS & CAP -->
           <div id="tab-content-caption" class="hidden flex flex-col gap-4">
             <div>
-              <label class="block text-xs font-bold text-gray-600 mb-1" data-i18n="caption_label">Teks Caption Bawah</label>
-              <input type="text" id="caption-input" value="Pozia Studio" oninput="EditorStudio.setCaption(this.value)" placeholder="Ketik caption strip..." class="w-full px-3 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:border-pozia-coral">
+              <label class="block text-xs font-bold text-gray-600 mb-1" data-i18n="caption_label">Teks Caption
+                Bawah</label>
+              <input type="text" id="caption-input" value="Pozia Studio" oninput="EditorStudio.setCaption(this.value)"
+                placeholder="Ketik caption strip..."
+                class="w-full px-3 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:border-pozia-coral">
             </div>
 
             <div>
               <span class="text-xs text-gray-400 font-medium block mb-1.5" data-i18n="font_style">Pilihan Font:</span>
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                <button onclick="EditorStudio.setFont('sans')" id="font-sans" class="py-2 rounded-xl text-xs font-bold bg-pink-50 text-pozia-coral border border-pozia-coral">Modern Sans</button>
-                <button onclick="EditorStudio.setFont('mono')" id="font-mono" class="py-2 rounded-xl text-xs font-mono bg-gray-100 text-gray-700">Typewriter</button>
-                <button onclick="EditorStudio.setFont('handwriting')" id="font-handwriting" class="py-2 rounded-xl text-xs font-handwriting text-base font-bold bg-gray-100 text-gray-700">Handwriting</button>
-                <button onclick="EditorStudio.setFont('serif')" id="font-serif" class="py-2 rounded-xl text-xs font-serif font-bold bg-gray-100 text-gray-700">Editorial Serif</button>
+                <button onclick="EditorStudio.setFont('sans')" id="font-sans"
+                  class="py-2 rounded-xl text-xs font-bold bg-pink-50 text-pozia-coral border border-pozia-coral">Modern
+                  Sans</button>
+                <button onclick="EditorStudio.setFont('mono')" id="font-mono"
+                  class="py-2 rounded-xl text-xs font-mono bg-gray-100 text-gray-700">Typewriter</button>
+                <button onclick="EditorStudio.setFont('handwriting')" id="font-handwriting"
+                  class="py-2 rounded-xl text-xs font-handwriting text-base font-bold bg-gray-100 text-gray-700">Handwriting</button>
+                <button onclick="EditorStudio.setFont('serif')" id="font-serif"
+                  class="py-2 rounded-xl text-xs font-serif font-bold bg-gray-100 text-gray-700">Editorial
+                  Serif</button>
               </div>
             </div>
 
             <div class="pt-3 border-t border-gray-100 flex flex-col gap-2.5">
               <div class="flex items-center justify-between">
                 <span class="text-xs text-gray-600 font-semibold">Format Tanggal:</span>
-                <select id="date-format-select" onchange="EditorStudio.setDateFormat(this.value)" class="text-xs border border-gray-200 rounded-lg p-1.5">
+                <select id="date-format-select" onchange="EditorStudio.setDateFormat(this.value)"
+                  class="text-xs border border-gray-200 rounded-lg p-1.5">
                   <option value="format1">'26.11.17 (Analog)</option>
                   <option value="format2">17 NOV 2026 (Classic)</option>
                   <option value="format3">2026/11/17 (Y2K Digital)</option>
                   <option value="none">Tanpa Tanggal</option>
                 </select>
               </div>
-
-              <label class="flex items-center gap-2 cursor-pointer pt-1">
-                <input type="checkbox" id="barcode-toggle" checked onchange="EditorStudio.toggleBarcode(this.checked)" class="accent-pozia-coral w-4 h-4">
-                <span class="text-xs text-gray-700 font-medium">Sertakan Barcode / Stamp POZIA STUDIO</span>
-              </label>
             </div>
           </div>
 
@@ -690,22 +857,23 @@
     <!-- ====================================================== -->
     <!-- STAGE 4: HIGH-RES EXPORT & CRYSTAL-CLEAR HD BTS VIDEO  -->
     <!-- ====================================================== -->
-    <section id="stage-export" class="hidden flex-1 w-full flex flex-col md:flex-row overflow-y-auto no-scrollbar bg-pozia-bg">
+    <section id="stage-export"
+      class="hidden flex-1 w-full flex flex-col md:flex-row overflow-y-auto no-scrollbar bg-pozia-bg">
       <div class="w-full md:w-[58%] studio-dot-grid p-6 md:p-10 flex flex-col items-center justify-center relative">
         <div class="bg-white p-3 rounded-2xl shadow-2xl border border-gray-100 max-h-[80vh] flex flex-col items-center">
-          <img id="final-export-img" alt="Pozia Strip Ultra HD" class="max-h-[70vh] w-auto h-auto rounded-lg shadow-sm block select-none">
+          <img id="final-export-img" alt="Pozia Strip Ultra HD"
+            class="max-h-[70vh] w-auto h-auto rounded-lg shadow-sm block select-none">
           <p class="text-[11px] text-gray-400 mt-2 text-center" data-i18n="hold_save_hint">
-            Tips: Jika download otomatis terhambat di HP/WebView, tekan dan tahan gambar di atas untuk "Simpan ke Galeri".
+            💡 Jika download otomatis terhambat di HP/WebView, tekan dan tahan gambar di atas untuk "Simpan ke Galeri".
           </p>
         </div>
       </div>
 
-      <div class="w-full md:w-[42%] p-6 md:p-10 bg-white border-t md:border-t-0 md:border-l border-gray-100 flex flex-col justify-center gap-6">
+      <div
+        class="w-full md:w-[42%] p-6 md:p-10 bg-white border-t md:border-t-0 md:border-l border-gray-100 flex flex-col justify-center gap-6">
         <div>
           <div class="flex items-center gap-2 mb-2">
-            <div class="w-8 h-8 rounded-full bg-pozia-coral/15 flex items-center justify-center text-pozia-coral">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            </div>
+            <span class="text-3xl">🎉</span>
             <h2 class="text-2xl font-extrabold text-pozia-charcoal" data-i18n="export_title">Foto Selesai Dirender!</h2>
           </div>
           <p class="text-xs text-gray-500" data-i18n="export_desc">
@@ -713,14 +881,14 @@
           </p>
         </div>
 
-        <div id="bts-export-box" class="p-4 rounded-3xl bg-gradient-to-br from-purple-50 via-pink-50 to-white border border-purple-100 shadow-sm flex flex-col gap-3">
+        <div id="bts-export-box"
+          class="p-4 rounded-3xl bg-gradient-to-br from-purple-50 via-pink-50 to-white border border-purple-100 shadow-sm flex flex-col gap-3">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <div class="w-6 h-6 rounded-lg bg-pozia-lilac/20 flex items-center justify-center text-pozia-lilac">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-              </div>
+              <span class="text-xl">🎬</span>
               <div>
-                <h4 class="font-extrabold text-xs text-pozia-charcoal" data-i18n="bts_title">Behind-The-Scenes HD Video</h4>
+                <h4 class="font-extrabold text-xs text-pozia-charcoal" data-i18n="bts_title">Behind-The-Scenes HD Video
+                </h4>
                 <p class="text-[10px] text-gray-500">Loop jernih momen hitungan mundur (HD 720p)</p>
               </div>
             </div>
@@ -734,24 +902,34 @@
             </div>
           </div>
 
-          <button onclick="App.exportBTSVideoHD()" class="w-full py-2.5 rounded-xl bg-pozia-lilac text-white text-xs font-bold shadow-md shadow-pozia-lilac/25 hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          <button onclick="App.exportBTSVideoHD()"
+            class="w-full py-2.5 rounded-xl bg-pozia-lilac text-white text-xs font-bold shadow-md shadow-pozia-lilac/25 hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
             <span>Simpan Video BTS HD (WebM / Video)</span>
           </button>
         </div>
 
         <div class="flex flex-col gap-3">
-          <button onclick="App.downloadFinalImage()" class="w-full py-4 px-6 rounded-2xl bg-pozia-coral text-white font-bold text-base shadow-xl shadow-pozia-coral/30 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center justify-center gap-3">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          <button onclick="App.downloadFinalImage()"
+            class="w-full py-4 px-6 rounded-2xl bg-pozia-coral text-white font-bold text-base shadow-xl shadow-pozia-coral/30 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center justify-center gap-3">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
             <span data-i18n="download_hd">Simpan Foto Ultra HD (PNG)</span>
           </button>
 
           <div class="grid grid-cols-2 gap-3">
-            <button onclick="App.navigate('editor')" class="py-3 px-4 rounded-xl bg-gray-50 border border-gray-200 text-pozia-charcoal font-bold text-xs hover:bg-gray-100 flex items-center justify-center gap-1.5">
-              <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg> <span data-i18n="edit_again">Edit Ulang</span>
+            <button onclick="App.navigate('editor')"
+              class="py-3 px-4 rounded-xl bg-gray-50 border border-gray-200 text-pozia-charcoal font-bold text-xs hover:bg-gray-100 flex items-center justify-center gap-1.5">
+              ✏️ <span data-i18n="edit_again">Edit Ulang</span>
             </button>
-            <button onclick="App.resetAndNew()" class="py-3 px-4 rounded-xl bg-gray-50 border border-gray-200 text-pozia-charcoal font-bold text-xs hover:bg-gray-100 flex items-center justify-center gap-1.5">
-              <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg> <span data-i18n="new_session">Buat Foto Baru</span>
+            <button onclick="App.resetAndNew()"
+              class="py-3 px-4 rounded-xl bg-gray-50 border border-gray-200 text-pozia-charcoal font-bold text-xs hover:bg-gray-100 flex items-center justify-center gap-1.5">
+              🔄 <span data-i18n="new_session">Buat Foto Baru</span>
             </button>
           </div>
         </div>
@@ -763,18 +941,17 @@
   <!-- ======================================================== -->
   <!-- MODAL: TECHNICAL SYSTEM DIAGNOSTICS & TELEMETRY          -->
   <!-- ======================================================== -->
-  <div id="diagnostics-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+  <div id="diagnostics-modal"
+    class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl flex flex-col gap-4 text-xs">
       <div class="flex items-center justify-between border-b pb-3 border-gray-100">
         <div class="flex items-center gap-2">
-          <svg class="w-4 h-4 text-pozia-coral" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-          <h3 class="font-extrabold text-sm text-pozia-charcoal" data-i18n="diag_title">Diagnostik Sistem & Arsitektur</h3>
+          <span class="text-base">🛠️</span>
+          <h3 class="font-extrabold text-sm text-pozia-charcoal" data-i18n="diag_title">Diagnostik Sistem & Arsitektur
+          </h3>
         </div>
-        <button onclick="App.closeDiagnosticsModal()" class="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200">&times;</button>
-      </div>
-          <h3 class="font-extrabold text-sm text-pozia-charcoal" data-i18n="diag_title">Diagnostik Sistem & Arsitektur</h3>
-        </div>
-        <button onclick="App.closeDiagnosticsModal()" class="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200">&times;</button>
+        <button onclick="App.closeDiagnosticsModal()"
+          class="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200">&times;</button>
       </div>
 
       <div class="flex flex-col gap-2.5 text-gray-600">
@@ -813,7 +990,8 @@
 
       <div class="p-3 rounded-2xl bg-pink-50/70 border border-pink-100 text-[11px] text-gray-600 leading-relaxed">
         <strong class="text-pozia-coral font-bold block mb-1">Zero-Server Client-Side Processing</strong>
-        Semua pemrosesan kamera, manipulasi piksel filter, dan render HD berjalan 100% lokal di RAM perangkat Anda. Foto Anda tidak pernah dikirim ke server manapun demi privasi mutlak.
+        Semua pemrosesan kamera, manipulasi piksel filter, dan render HD berjalan 100% lokal di RAM perangkat Anda. Foto
+        Anda tidak pernah dikirim ke server manapun demi privasi mutlak.
       </div>
     </div>
   </div>
@@ -821,21 +999,25 @@
   <!-- ======================================================== -->
   <!-- MODAL: LOCAL SAVED HISTORY GALLERY                       -->
   <!-- ======================================================== -->
-  <div id="history-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+  <div id="history-modal"
+    class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl flex flex-col gap-4 max-h-[80vh]">
       <div class="flex items-center justify-between border-b pb-3 border-gray-100">
         <div class="flex items-center gap-2">
-          <svg class="w-4 h-4 text-pozia-coral" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span class="text-base">📸</span>
           <h3 class="font-bold text-sm text-pozia-charcoal" data-i18n="history_title">Galeri Hasil Tersimpan</h3>
         </div>
-        <button onclick="App.closeHistoryModal()" class="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200">&times;</button>
+        <button onclick="App.closeHistoryModal()"
+          class="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200">&times;</button>
       </div>
 
       <div id="history-list" class="flex-1 overflow-y-auto no-scrollbar flex flex-col gap-3 min-h-[140px]"></div>
 
       <div class="flex justify-between items-center pt-2 border-t border-gray-100 text-xs">
-        <button onclick="HistoryManager.clearAll()" class="text-red-500 hover:underline font-semibold" data-i18n="clear_history">Hapus Riwayat</button>
-        <button onclick="App.closeHistoryModal()" class="px-4 py-2 rounded-xl bg-gray-100 font-bold text-gray-700">Tutup</button>
+        <button onclick="HistoryManager.clearAll()" class="text-red-500 hover:underline font-semibold"
+          data-i18n="clear_history">Hapus Riwayat</button>
+        <button onclick="App.closeHistoryModal()"
+          class="px-4 py-2 rounded-xl bg-gray-100 font-bold text-gray-700">Tutup</button>
       </div>
     </div>
   </div>
@@ -872,7 +1054,7 @@
           gain.connect(this.ctx.destination);
           osc.start();
           osc.stop(this.ctx.currentTime + duration);
-        } catch (e) {}
+        } catch (e) { }
       },
       playShutter() {
         try {
@@ -894,7 +1076,7 @@
           filter.connect(gain);
           gain.connect(this.ctx.destination);
           noise.start();
-        } catch (e) {}
+        } catch (e) { }
       }
     };
 
@@ -930,7 +1112,7 @@
           font_style: 'Pilihan Font:',
           export_title: 'Foto Selesai Dirender!',
           export_desc: 'Komposisi strip Anda telah dirender tajam dalam resolusi ultra tinggi (> 1400px).',
-          hold_save_hint: 'Tips: Jika download otomatis terhambat di HP/WebView, tekan dan tahan gambar di atas untuk "Simpan ke Galeri".',
+          hold_save_hint: '💡 Jika download otomatis terhambat di HP/WebView, tekan dan tahan gambar di atas untuk "Simpan ke Galeri".',
           bts_title: 'Behind-The-Scenes HD Video',
           download_hd: 'Simpan Foto Ultra HD (PNG)',
           edit_again: 'Edit Ulang',
@@ -965,7 +1147,7 @@
           font_style: 'Font Style:',
           export_title: 'Photo Successfully Rendered!',
           export_desc: 'Your photo strip is rendered in sharp ultra-high resolution (> 1400px).',
-          hold_save_hint: 'Tips: If automatic download is blocked in mobile WebView, press and hold the image above to save to gallery.',
+          hold_save_hint: '💡 If automatic download is blocked in mobile WebView, press and hold the image above to save to gallery.',
           bts_title: 'Behind-The-Scenes HD Video',
           download_hd: 'Save Ultra HD Photo (PNG)',
           edit_again: 'Edit Again',
@@ -1078,7 +1260,6 @@
       caption: 'Pozia Studio',
       fontStyle: 'handwriting',
       dateFormat: 'format1',
-      showBarcode: true,
       activeSlotToReplace: null,
       lastRenderTime: 0
     };
@@ -1267,7 +1448,7 @@
           video.srcObject = this.stream;
           video.play();
           document.getElementById('camera-fallback-msg').classList.add('hidden');
-          
+
           if (this.facingMode === 'user') {
             video.classList.add('scale-x-[-1]');
           } else {
@@ -1369,11 +1550,10 @@
         ];
         allPresets.forEach(preset => {
           const btn = document.createElement('button');
-          btn.className = `px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
-            State.currentFilter.id === preset.id
-              ? 'bg-pozia-coral text-white shadow-lg'
-              : 'bg-white/10 text-gray-300 hover:bg-white/20'
-          }`;
+          btn.className = `px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${State.currentFilter.id === preset.id
+            ? 'bg-pozia-coral text-white shadow-lg'
+            : 'bg-white/10 text-gray-300 hover:bg-white/20'
+            }`;
           btn.textContent = preset.name;
           btn.onclick = () => {
             State.currentFilter = preset;
@@ -1501,7 +1681,7 @@
           if ('decode' in img) {
             await img.decode();
           }
-        } catch (e) {}
+        } catch (e) { }
 
         if (State.activeSlotToReplace !== null) {
           State.photos[State.activeSlotToReplace] = img;
@@ -1580,9 +1760,8 @@
         list.forEach(th => {
           const card = document.createElement('div');
           const isSelected = State.frameTheme === th.id;
-          card.className = `p-2.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col gap-1.5 ${
-            isSelected ? 'border-pozia-coral bg-pink-50/60 shadow-md ring-2 ring-pozia-coral/30' : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
-          }`;
+          card.className = `p-2.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col gap-1.5 ${isSelected ? 'border-pozia-coral bg-pink-50/60 shadow-md ring-2 ring-pozia-coral/30' : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
+            }`;
           card.innerHTML = `
             <div class="w-full h-14 rounded-xl border border-gray-200/60 shadow-inner flex items-center justify-center p-1.5" style="background: ${th.thumb};">
               <div class="w-7 h-10 rounded-sm bg-white/95 shadow-sm border border-black/5 flex flex-col justify-between p-1">
@@ -1642,13 +1821,10 @@
         presets.forEach(p => {
           const card = document.createElement('button');
           const isSelected = State.currentFilter.id === p.id;
-          card.className = `p-2 rounded-xl text-center text-xs flex flex-col items-center gap-1.5 border transition-all ${
-            isSelected ? 'border-pozia-coral bg-pink-50 font-bold text-pozia-coral shadow-sm' : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
-          }`;
+          card.className = `p-2 rounded-xl text-center text-xs flex flex-col items-center gap-1.5 border transition-all ${isSelected ? 'border-pozia-coral bg-pink-50 font-bold text-pozia-coral shadow-sm' : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
+            }`;
           card.innerHTML = `
-            <div class="w-8 h-8 rounded-lg bg-gray-200 overflow-hidden shadow-inner flex items-center justify-center text-xs" style="filter: ${p.css}">
-              <svg class="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
-            </div>
+            <div class="w-8 h-8 rounded-lg bg-gray-300 overflow-hidden shadow-inner flex items-center justify-center text-xs" style="filter: ${p.css}">🌸</div>
             <span class="truncate w-full text-[10px] font-semibold">${p.name}</span>
           `;
           card.onclick = () => {
@@ -1689,7 +1865,7 @@
         State.currentFilter = allFilters[Math.floor(Math.random() * allFilters.length)];
         const cuteThemes = FrameThemes.filter(t => t.id !== 'custom-png');
         State.frameTheme = cuteThemes[Math.floor(Math.random() * cuteThemes.length)].id;
-        
+
         this.renderDesignerFramesGrid();
         this.renderCategoryPresets();
         this.renderCanvas();
@@ -1801,11 +1977,6 @@
         this.renderCanvas();
       },
 
-      toggleBarcode(checked) {
-        State.showBarcode = checked;
-        this.renderCanvas();
-      },
-
       setupSlotInteraction() {
         const canvas = document.getElementById('editor-preview-canvas');
         canvas.onclick = (e) => {
@@ -1876,7 +2047,7 @@
         // 3. Draw Photos with Filter into Slots (Object-Fit: Cover)
         slotRects.forEach((rect, idx) => {
           ctx.save();
-          
+
           // Cute rounded inner photo corners
           ctx.beginPath();
           ctx.roundRect(rect.x, rect.y, rect.w, rect.h, width * 0.02);
@@ -1959,7 +2130,7 @@
           ctx.fillText(State.caption, width / 2, capY);
         }
 
-        // 7. Date Stamp & Barcode
+        // 7. Date Stamp
         const dateY = height - bottomMargin * 0.16;
         if (State.dateFormat !== 'none') {
           ctx.fillStyle = '#FF7A00';
@@ -1969,18 +2140,11 @@
           ctx.fillText(dtText, marginX, dateY);
         }
 
-        if (State.showBarcode) {
-          ctx.fillStyle = (State.frameTheme === 'film-roll' || State.frameColor === '#111113') ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.35)';
-          ctx.font = `bold ${width * 0.024}px "Plus Jakarta Sans", sans-serif`;
-          ctx.textAlign = 'right';
-          ctx.fillText('POZIA STUDIO ||||| |||', width - marginX, dateY);
-        }
-
         // 8. Render Stickers & Purikura Doodle onto High-Res Export Canvas
         if (isHighRes) {
           const previewCanvas = document.getElementById('editor-preview-canvas');
           const scale = width / previewCanvas.width;
-          
+
           State.stickers.forEach(s => {
             ctx.save();
             ctx.translate(s.x * scale, s.y * scale);
@@ -2005,7 +2169,7 @@
         }
       },
 
-            /* Draw rich, super cute patterns programmatically without phone emojis */
+      /* Draw rich, super cute patterns programmatically */
       drawCuteFramePattern(ctx, width, height, isHighRes) {
         const th = State.frameTheme;
 
@@ -2026,19 +2190,14 @@
             ctx.fill();
           }
 
-          // Delicate dashed stitching line
-          ctx.save();
-          ctx.strokeStyle = 'rgba(255, 90, 121, 0.4)';
-          ctx.lineWidth = isHighRes ? 3 : 1.5;
-          ctx.setLineDash([8, 6]);
-          ctx.strokeRect(width * 0.035, width * 0.035, width * 0.93, height - width * 0.07);
-          ctx.restore();
-
-          // Dainty typography script
-          ctx.fillStyle = '#FF5A79';
-          ctx.font = `600 ${width * 0.034}px "Caveat", cursive`;
-          ctx.textAlign = 'center';
-          ctx.fillText("sweet memory  ✦  coquette studio", width / 2, width * 0.055);
+          // Scattered cute strawberries and bows
+          ctx.font = `${width * 0.045}px sans-serif`;
+          ctx.fillText('🎀', width * 0.03, width * 0.065);
+          ctx.fillText('🎀', width * 0.88, width * 0.065);
+          ctx.fillText('🍓', width * 0.03, height * 0.45);
+          ctx.fillText('🍓', width * 0.88, height * 0.45);
+          ctx.fillText('💖', width * 0.03, height * 0.8);
+          ctx.fillText('💖', width * 0.88, height * 0.8);
         }
         // 2. Kotak Susu Korea (Strawberry Milk)
         else if (th === 'korean-milk') {
@@ -2054,13 +2213,13 @@
           ctx.lineTo(0, height);
           ctx.fill();
 
-          // Cute Milk Header (No cartoon emojis)
+          // Cute Milk Header
           ctx.fillStyle = '#FF5A79';
-          ctx.font = `bold ${width * 0.036}px "Plus Jakarta Sans", sans-serif`;
+          ctx.font = `bold ${width * 0.038}px "Plus Jakarta Sans", sans-serif`;
           ctx.textAlign = 'center';
-          ctx.fillText('DDALGI MILK  •  딸기우유', width / 2, width * 0.08);
+          ctx.fillText('🍓 딸기우유 • STRAWBERRY MILK 🍓', width / 2, width * 0.08);
 
-          ctx.font = `600 ${width * 0.022}px "Plus Jakarta Sans", sans-serif`;
+          ctx.font = `600 ${width * 0.024}px sans-serif`;
           ctx.fillStyle = '#7E66DE';
           ctx.fillText('100% FRESH & SWEET MEMORIES', width / 2, width * 0.12);
         }
@@ -2075,7 +2234,7 @@
 
           // Wavy holographic ribbon stickers along border
           ctx.strokeStyle = 'rgba(255, 90, 121, 0.45)';
-          ctx.lineWidth = width * 0.012;
+          ctx.lineWidth = width * 0.015;
           ctx.beginPath();
           for (let y = 0; y < height; y += 40) {
             ctx.lineTo(width * 0.03 + Math.sin(y * 0.05) * 8, y);
@@ -2089,75 +2248,49 @@
           }
           ctx.stroke();
 
-          // Clean typographic stars & deco badges
-          ctx.fillStyle = '#9B87F5';
-          ctx.font = `bold ${width * 0.026}px "Share Tech Mono", monospace`;
-          ctx.fillText('✦ MY BIAS ✦', width * 0.08, width * 0.05);
-          ctx.textAlign = 'right';
-          ctx.fillText('★ SPECIAL ★', width * 0.92, width * 0.05);
-          ctx.textAlign = 'left';
+          // Deco stickers
+          ctx.font = `${width * 0.042}px sans-serif`;
+          ctx.fillText('✦', width * 0.02, width * 0.06);
+          ctx.fillText('✨', width * 0.88, width * 0.06);
+          ctx.fillText('💖', width * 0.88, height * 0.4);
+          ctx.fillText('🐰', width * 0.02, height * 0.4);
         }
-        // 4. Kelinci & Daisy (Clean vector daisies)
+        // 4. Kelinci & Daisy
         else if (th === 'kawaii-bunny') {
           ctx.fillStyle = '#F0F3FA';
           ctx.fillRect(0, 0, width, height);
 
-          // Draw vector daisies
-          const drawDaisy = (cx, cy, r) => {
-            ctx.fillStyle = '#FFFFFF';
-            for (let i = 0; i < 6; i++) {
-              const ang = (i * Math.PI) / 3;
-              ctx.beginPath();
-              ctx.arc(cx + Math.cos(ang) * r * 0.7, cy + Math.sin(ang) * r * 0.7, r * 0.45, 0, Math.PI * 2);
-              ctx.fill();
-            }
-            ctx.fillStyle = '#FFD166';
-            ctx.beginPath();
-            ctx.arc(cx, cy, r * 0.4, 0, Math.PI * 2);
-            ctx.fill();
-          };
-
-          drawDaisy(width * 0.05, width * 0.05, width * 0.025);
-          drawDaisy(width * 0.95, width * 0.05, width * 0.025);
-          drawDaisy(width * 0.05, height * 0.45, width * 0.025);
-          drawDaisy(width * 0.95, height * 0.45, width * 0.025);
+          ctx.font = `${width * 0.046}px sans-serif`;
+          ctx.fillText('🐰', width * 0.03, width * 0.07);
+          ctx.fillText('🐰', width * 0.88, width * 0.07);
+          ctx.fillText('🌼', width * 0.03, height * 0.35);
+          ctx.fillText('🌼', width * 0.88, height * 0.35);
+          ctx.fillText('🥕', width * 0.03, height * 0.7);
+          ctx.fillText('🥕', width * 0.88, height * 0.7);
         }
-        // 5. Kucing & Pink Paw (Clean vector paw prints)
+        // 5. Kucing & Pink Paw
         else if (th === 'meow-cat') {
           ctx.fillStyle = '#FFF9E6';
           ctx.fillRect(0, 0, width, height);
 
-          const drawPaw = (cx, cy, size) => {
-            ctx.fillStyle = '#FFAAA6';
-            // main pad
-            ctx.beginPath();
-            ctx.arc(cx, cy, size * 0.5, 0, Math.PI * 2);
-            ctx.fill();
-            // toes
-            ctx.beginPath();
-            ctx.arc(cx - size * 0.45, cy - size * 0.5, size * 0.22, 0, Math.PI * 2);
-            ctx.arc(cx - size * 0.16, cy - size * 0.7, size * 0.22, 0, Math.PI * 2);
-            ctx.arc(cx + size * 0.16, cy - size * 0.7, size * 0.22, 0, Math.PI * 2);
-            ctx.arc(cx + size * 0.45, cy - size * 0.5, size * 0.22, 0, Math.PI * 2);
-            ctx.fill();
-          };
-
-          drawPaw(width * 0.05, width * 0.05, width * 0.025);
-          drawPaw(width * 0.95, width * 0.05, width * 0.025);
-          drawPaw(width * 0.05, height * 0.35, width * 0.022);
-          drawPaw(width * 0.95, height * 0.35, width * 0.022);
-          drawPaw(width * 0.05, height * 0.65, width * 0.022);
-          drawPaw(width * 0.95, height * 0.65, width * 0.022);
+          ctx.font = `${width * 0.046}px sans-serif`;
+          ctx.fillText('🐱', width * 0.03, width * 0.07);
+          ctx.fillText('🐱', width * 0.88, width * 0.07);
+          ctx.fillText('🐾', width * 0.03, height * 0.3);
+          ctx.fillText('🐾', width * 0.88, height * 0.3);
+          ctx.fillText('🐾', width * 0.03, height * 0.6);
+          ctx.fillText('🐾', width * 0.88, height * 0.6);
         }
         // 6. Teddy Bear Bakery
         else if (th === 'teddy-bakery') {
           ctx.fillStyle = '#F7EFE5';
           ctx.fillRect(0, 0, width, height);
 
-          ctx.fillStyle = '#8D6E63';
-          ctx.font = `bold ${width * 0.028}px "Plus Jakarta Sans", sans-serif`;
-          ctx.textAlign = 'center';
-          ctx.fillText("•  POZIA BAKERY & CAFE  •", width / 2, width * 0.055);
+          ctx.font = `${width * 0.046}px sans-serif`;
+          ctx.fillText('🧸', width * 0.03, width * 0.07);
+          ctx.fillText('🥐', width * 0.88, width * 0.07);
+          ctx.fillText('☕', width * 0.03, height * 0.5);
+          ctx.fillText('🧸', width * 0.88, height * 0.5);
         }
         // 7. Cherry Pop Polka
         else if (th === 'cherry-pop') {
@@ -2174,6 +2307,10 @@
               ctx.fill();
             }
           }
+
+          ctx.font = `${width * 0.046}px sans-serif`;
+          ctx.fillText('🍒', width * 0.03, width * 0.07);
+          ctx.fillText('🍒', width * 0.88, width * 0.07);
         }
         // 8. Awan & Sayap Malaikat
         else if (th === 'dreamy-clouds') {
@@ -2183,26 +2320,24 @@
           ctx.fillStyle = grad;
           ctx.fillRect(0, 0, width, height);
 
-          // Translucent cloud puffs
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-          const drawCloud = (cx, cy) => {
-            ctx.beginPath();
-            ctx.arc(cx, cy, 14, 0, Math.PI * 2);
-            ctx.arc(cx + 10, cy - 6, 16, 0, Math.PI * 2);
-            ctx.arc(cx + 24, cy, 14, 0, Math.PI * 2);
-            ctx.fill();
-          };
-          drawCloud(width * 0.05, width * 0.04);
-          drawCloud(width * 0.85, width * 0.04);
+          ctx.font = `${width * 0.046}px sans-serif`;
+          ctx.fillText('☁️', width * 0.03, width * 0.07);
+          ctx.fillText('✨', width * 0.88, width * 0.07);
+          ctx.fillText('☁️', width * 0.88, height * 0.5);
+          ctx.fillText('✨', width * 0.03, height * 0.5);
         }
         // 9. Y2K Cyber Chrome
         else if (th === 'y2k-cyber') {
           ctx.fillStyle = '#E2E8F0';
           ctx.fillRect(0, 0, width, height);
           ctx.fillStyle = '#0284C7';
-          ctx.font = `bold ${width * 0.028}px "Share Tech Mono", monospace`;
+          ctx.font = `bold ${width * 0.03}px "Share Tech Mono", monospace`;
           ctx.textAlign = 'center';
           ctx.fillText('★ 2000s CYBER ARCHIVE ★', width / 2, width * 0.05);
+
+          ctx.font = `${width * 0.04}px sans-serif`;
+          ctx.fillText('✦', width * 0.03, height * 0.4);
+          ctx.fillText('🦋', width * 0.88, height * 0.4);
         }
         // 10. Checker Pink & Lavender
         else if (th === 'checker-pink' || th === 'checker-lavender') {
@@ -2288,7 +2423,11 @@
           ctx.fillText(`0${idx + 1}A  ▸`, rect.x + 8, rect.y + rect.h - 8);
         }
         // Toploader ribbon bow at top of first slot
-
+        else if (th === 'toploader-deco' && idx === 0) {
+          ctx.font = `${width * 0.05}px sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.fillText('🎀', rect.x + rect.w / 2, rect.y + 6);
+        }
       },
 
       renderCanvas() {
@@ -2367,7 +2506,7 @@
           list.unshift({ id: 'pz_' + Date.now(), date: new Date().toLocaleString(), img: dataUrl });
           if (list.length > 10) list.pop();
           localStorage.setItem(this.KEY, JSON.stringify(list));
-        } catch (e) {}
+        } catch (e) { }
       },
       getAll() {
         try {
@@ -2391,7 +2530,7 @@
         if ('serviceWorker' in navigator) {
           navigator.serviceWorker.register('sw.js').then((reg) => {
             reg.update();
-          }).catch(() => {});
+          }).catch(() => { });
         }
 
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -2424,12 +2563,6 @@
                 State.activeSlotToReplace = null;
               } else {
                 State.photos.push(img);
-              }
-
-              // If only 1 photo was uploaded, set layout to 1-photo frame!
-              if (State.photos.length === 1 && State.stage !== 'editor') {
-                State.layout = 'polaroid';
-                State.targetPoseCount = 1;
               }
 
               if (State.stage === 'editor') {
@@ -2497,12 +2630,6 @@
               ? 'p-3 rounded-2xl bg-white border-2 border-pozia-coral shadow-sm cursor-pointer hover:shadow-md transition-all flex flex-col items-center text-center gap-1.5'
               : 'p-3 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col items-center text-center gap-1.5';
           }
-          const fBtn = document.getElementById(`frame-layout-${l}`);
-          if (fBtn) {
-            fBtn.className = l === layout
-              ? 'px-2.5 py-1 text-xs font-bold rounded-lg bg-pink-50 text-pozia-coral border border-pozia-coral'
-              : 'px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600';
-          }
         });
       },
 
@@ -2526,9 +2653,6 @@
         }
 
         if (stage === 'editor') {
-          if (State.photos.length === 1) {
-            this.setLayout('polaroid');
-          }
           EditorStudio.init();
           requestAnimationFrame(() => EditorStudio.renderCanvas());
           setTimeout(() => EditorStudio.renderCanvas(), 60);
@@ -2548,14 +2672,8 @@
         State.btsBurstGroups = [];
         State.currentPoseIndex = 0;
         State.activeSlotToReplace = null;
-        if (mode === 'camera') {
-          this.navigate('camera');
-        } else {
-          // Upload from gallery: default to 1 photo frame layout!
-          State.layout = 'polaroid';
-          State.targetPoseCount = 1;
-          this.triggerGalleryUpload();
-        }
+        if (mode === 'camera') this.navigate('camera');
+        else this.triggerGalleryUpload();
       },
 
       triggerGalleryUpload() {
@@ -2680,7 +2798,7 @@
         document.getElementById('diag-https-status').textContent = window.isSecureContext ? 'HTTPS Secure Active (TLS)' : 'Insecure / Localhost';
         document.getElementById('diag-render-time').textContent = `${State.lastRenderTime || 34} ms`;
         let storageKB = 0;
-        try { storageKB = Math.round(new Blob([JSON.stringify(localStorage)]).size / 1024); } catch (e) {}
+        try { storageKB = Math.round(new Blob([JSON.stringify(localStorage)]).size / 1024); } catch (e) { }
         document.getElementById('diag-storage-size').textContent = `${storageKB} KB`;
         CameraStudio.updateTelemetry();
         document.getElementById('diagnostics-modal').classList.remove('hidden');
@@ -2727,4 +2845,5 @@
     });
   </script>
 </body>
+
 </html>
