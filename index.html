@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Pozia — Korean Studio Photobooth & Photo Strip</title>
+  <title>Pozia Studio — Korean & Y2K Photobooth Workstation</title>
   
   <!-- PWA & Mobile Web Meta -->
   <meta name="theme-color" content="#FF5A79">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Pozia">
-  <meta name="description" content="Mobile-first Photobooth & Photo Strip Generator with Modern Korean Studio aesthetic">
+  <meta name="description" content="Production-ready Korean & Y2K style Photobooth & Photo Strip Studio for Workstations and Mobile">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='128' fill='%23FF5A79'/%3E%3Ccircle cx='256' cy='256' r='90' fill='%23FFFFFF'/%3E%3Ccircle cx='256' cy='256' r='60' fill='%23FF5A79'/%3E%3Ccircle cx='380' cy='140' r='35' fill='%239B87F5'/%3E%3C/svg%3E">
 
@@ -28,11 +28,14 @@
           colors: {
             pozia: {
               bg: '#FAF9F6',
+              dotgrid: '#F6F4F0',
+              dotcolor: '#E5E0D8',
               card: '#FFFFFF',
               charcoal: '#1E1E24',
               coral: '#FF5A79',
               'coral-hover': '#E04866',
               lilac: '#9B87F5',
+              'lilac-dark': '#7E66DE',
               dark: '#121215',
               softgray: '#F0EFEA'
             }
@@ -50,32 +53,20 @@
   </script>
 
   <style>
-    /* Custom Utilities & Polish */
-    body {
-      background-color: #FAF9F6;
-      color: #1E1E24;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
-
-    /* Hide scrollbars but keep smooth scrolling */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+    /* Architectural Dot-Grid Background for Desktop Studio Stage */
+    .studio-dot-grid {
+      background-color: #F6F4F0;
+      background-image: radial-gradient(#E5E0D8 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
     }
 
     /* Screen Flash Overlay */
     #screen-flash {
       position: fixed;
       inset: 0;
-      background-color: #FFFDF9;
       opacity: 0;
       pointer-events: none;
-      z-index: 9999;
+      z-index: 99999;
       transition: opacity 80ms ease-out;
     }
     #screen-flash.flash-active {
@@ -83,569 +74,727 @@
       transition: opacity 30ms ease-in;
     }
 
-    /* Pulse animation for active shutter / recording */
+    /* Washi Tape Effect */
+    .washi-tape-pink {
+      background: rgba(255, 90, 121, 0.55);
+      backdrop-filter: blur(2px);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .washi-tape-yellow {
+      background: rgba(255, 214, 10, 0.65);
+      backdrop-filter: blur(2px);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* Shutter Button Glow Pulse */
     @keyframes studio-pulse {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 90, 121, 0.4); }
-      50% { transform: scale(1.05); box-shadow: 0 0 0 14px rgba(255, 90, 121, 0); }
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 90, 121, 0.45); }
+      50% { transform: scale(1.05); box-shadow: 0 0 0 16px rgba(255, 90, 121, 0); }
     }
     .shutter-glow {
       animation: studio-pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
     }
 
-    /* Sticker Handles */
+    /* Hide scrollbars */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Interactive Sticker Selected Border */
     .sticker-selected {
       outline: 2px dashed #FF5A79;
       outline-offset: 4px;
     }
   </style>
 </head>
-<body class="min-h-screen bg-pozia-bg text-pozia-charcoal flex justify-center selection:bg-pozia-coral selection:text-white">
+<body class="bg-pozia-bg text-pozia-charcoal font-sans selection:bg-pozia-coral selection:text-white min-h-screen flex flex-col overflow-x-hidden">
 
   <!-- Fullscreen Flash Overlay -->
   <div id="screen-flash"></div>
 
-  <!-- Hidden Photo Upload Fallback Input -->
+  <!-- Confetti Canvas for Celebratory Finish -->
+  <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+  <!-- Hidden Photo & PNG Frame Inputs -->
   <input type="file" id="gallery-file-input" accept="image/*" class="hidden">
   <input type="file" id="custom-frame-input" accept="image/png" class="hidden">
 
-  <!-- Main Mobile Container (Centered 480px) -->
-  <div id="app-container" class="w-full max-w-[480px] min-h-screen flex flex-col bg-pozia-bg relative shadow-2xl overflow-x-hidden pb-10">
-
-    <!-- GLOBAL TOP NAVBAR -->
-    <header id="main-header" class="sticky top-0 z-40 bg-pozia-bg/90 backdrop-blur-md px-5 py-3.5 flex items-center justify-between border-b border-pozia-charcoal/5 transition-colors duration-300">
-      <!-- Pozia Logo -->
-      <div class="flex items-center gap-2 cursor-pointer" onclick="App.navigate('home')">
-        <div class="w-8 h-8 rounded-xl bg-pozia-coral flex items-center justify-center text-white font-extrabold text-base shadow-sm">
-          P
-        </div>
-        <div>
+  <!-- ======================================================== -->
+  <!-- GLOBAL HEADER (FULL-WIDTH WORKSTATION NAVBAR)           -->
+  <!-- ======================================================== -->
+  <header id="main-header" class="w-full z-40 bg-white/95 backdrop-blur-md px-4 md:px-8 py-3 flex items-center justify-between border-b border-pozia-charcoal/5 shadow-sm sticky top-0 transition-colors">
+    <!-- Brand Logo -->
+    <div class="flex items-center gap-3 cursor-pointer" onclick="App.navigate('home')">
+      <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-pozia-coral to-pozia-lilac flex items-center justify-center text-white font-extrabold text-lg shadow-md shadow-pozia-coral/20">
+        P
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
           <span class="font-extrabold text-xl tracking-tight text-pozia-charcoal">Pozia</span>
-          <span class="text-[9px] uppercase tracking-widest text-pozia-lilac font-bold block -mt-1">Studio</span>
+          <span class="px-2 py-0.5 rounded-full bg-pozia-coral/10 text-pozia-coral text-[10px] font-extrabold tracking-wider uppercase">Studio v2</span>
         </div>
+        <span class="text-[10px] uppercase tracking-widest text-gray-400 font-semibold block -mt-0.5">Korean & Y2K Photobooth</span>
       </div>
+    </div>
 
-      <!-- Action Pill & Language Switcher -->
-      <div class="flex items-center gap-2">
-        <!-- Bilingual Switcher Pill -->
-        <button id="lang-btn" onclick="App.toggleLanguage()" class="px-2.5 py-1 text-xs font-bold rounded-full bg-pozia-softgray text-pozia-charcoal hover:bg-pozia-coral hover:text-white transition-all duration-200">
-          ID | EN
-        </button>
+    <!-- Navigation Status & Actions -->
+    <div class="flex items-center gap-2 md:gap-3">
+      <!-- Bilingual Switcher Pill -->
+      <button id="lang-btn" onclick="App.toggleLanguage()" class="px-3 py-1.5 text-xs font-bold rounded-full bg-pozia-softgray text-pozia-charcoal hover:bg-pozia-coral hover:text-white transition-all shadow-sm">
+        ID | EN
+      </button>
 
-        <!-- System Diagnostics Modal Button -->
-        <button onclick="App.openDiagnosticsModal()" title="Diagnostik Sistem" class="w-8 h-8 rounded-full bg-pozia-softgray flex items-center justify-center text-pozia-charcoal hover:bg-pozia-lilac hover:text-white transition-colors">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-        </button>
+      <!-- System Diagnostics Modal Button -->
+      <button onclick="App.openDiagnosticsModal()" title="Diagnostik Sistem & Telemetry" class="w-9 h-9 rounded-full bg-pozia-softgray flex items-center justify-center text-pozia-charcoal hover:bg-pozia-lilac hover:text-white transition-colors shadow-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+      </button>
 
-        <!-- Saved History Gallery Button -->
-        <button onclick="App.openHistoryModal()" title="Galeri Hasil" class="w-8 h-8 rounded-full bg-pozia-softgray flex items-center justify-center text-pozia-charcoal hover:bg-pozia-coral hover:text-white transition-colors">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-        </button>
-      </div>
-    </header>
+      <!-- Saved History Gallery Button -->
+      <button onclick="App.openHistoryModal()" title="Galeri Hasil Tersimpan" class="w-9 h-9 rounded-full bg-pozia-softgray flex items-center justify-center text-pozia-charcoal hover:bg-pozia-coral hover:text-white transition-colors shadow-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      </button>
+    </div>
+  </header>
 
-    <!-- ========================================== -->
-    <!-- STAGE 1: HOME SCREEN (BERANDA)              -->
-    <!-- ========================================== -->
-    <section id="stage-home" class="p-5 flex flex-col gap-6 flex-1">
-      <!-- Hero Aesthetic Card -->
-      <div class="relative bg-gradient-to-br from-pink-50 via-white to-purple-50 rounded-3xl p-6 border border-pink-100 shadow-sm overflow-hidden flex flex-col items-center text-center">
-        <!-- Floating Stickers in Hero Background -->
-        <span class="absolute top-3 left-4 text-2xl select-none animate-bounce" style="animation-duration: 3s;">🎀</span>
-        <span class="absolute bottom-4 right-5 text-2xl select-none animate-pulse">✨</span>
+  <!-- ======================================================== -->
+  <!-- MAIN WORKSTATION WRAPPER (RESPONSIVE FULL-SCREEN)        -->
+  <!-- ======================================================== -->
+  <main id="app-container" class="flex-1 w-full flex flex-col md:h-[calc(100vh-61px)] overflow-hidden">
 
-        <span class="px-3 py-1 rounded-full bg-pozia-coral/10 text-pozia-coral text-xs font-bold tracking-wide uppercase mb-3" data-i18n="hero_badge">
-          Korean Studio Experience
-        </span>
-        <h1 class="text-2xl font-extrabold tracking-tight text-pozia-charcoal leading-tight mb-2" data-i18n="hero_title">
-          Bikin Strip Foto Estetik Ala Korea Sekarang
+    <!-- ====================================================== -->
+    <!-- STAGE 1: HOME WORKSTATION (BERANDA)                   -->
+    <!-- ====================================================== -->
+    <section id="stage-home" class="flex-1 w-full flex flex-col md:flex-row overflow-y-auto no-scrollbar">
+      <!-- Left Hero Column (50% on desktop) -->
+      <div class="w-full md:w-1/2 p-6 md:p-12 flex flex-col justify-center gap-6">
+        <div class="flex items-center gap-2">
+          <span class="px-3 py-1 rounded-full bg-pozia-coral/10 text-pozia-coral text-xs font-extrabold tracking-wide uppercase">
+            Korean & Y2K Photobooth
+          </span>
+          <span class="px-3 py-1 rounded-full bg-pozia-lilac/10 text-pozia-lilac text-xs font-bold">
+            Studio Workstation
+          </span>
+        </div>
+
+        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-pozia-charcoal leading-tight">
+          Bikin Photo Strip Estetik & Purikura Ala Korea.
         </h1>
-        <p class="text-xs text-gray-500 leading-relaxed max-w-[320px] mb-5" data-i18n="hero_desc">
-          Photobooth otomatis langsung dari HP Anda. 16 filter studio, bingkai estetik, stiker lucu & export kualitas HD.
+
+        <p class="text-sm md:text-base text-gray-500 leading-relaxed max-w-lg">
+          Studio foto interaktif dengan 12+ tema bingkai desainer (Checker, Y2K Chrome, Coquette, Washi Tape), 24 filter warna, stiker lucu, purikura doodle pen, serta export foto Ultra HD & video BTS jernih tanpa blur!
         </p>
 
-        <!-- Mini Strip Animated Preview -->
-        <div class="w-32 bg-white p-2 rounded-2xl shadow-lg border border-gray-100 flex flex-col gap-1.5 transform rotate-2 hover:rotate-0 transition-transform duration-300">
-          <div class="h-16 rounded-lg bg-pink-100 flex items-center justify-center text-pink-400 font-bold text-xs overflow-hidden">
-            <span class="text-lg">💖</span>
-          </div>
-          <div class="h-16 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-400 font-bold text-xs overflow-hidden">
-            <span class="text-lg">✌️</span>
-          </div>
-          <div class="h-16 rounded-lg bg-yellow-50 flex items-center justify-center text-yellow-500 font-bold text-xs overflow-hidden">
-            <span class="text-lg">✨</span>
-          </div>
-          <div class="pt-1 text-center font-handwriting text-xs text-gray-400">pozia studio</div>
+        <!-- CTA Action Buttons -->
+        <div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+          <button onclick="App.startStudio('camera')" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-pozia-coral text-white font-bold text-base shadow-xl shadow-pozia-coral/30 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center justify-center gap-3">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <span data-i18n="cta_camera">Mulai Foto Sekarang</span>
+          </button>
+
+          <button onclick="App.startStudio('upload')" class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-white border border-gray-200 text-pozia-charcoal font-bold text-sm hover:bg-gray-50 active:scale-95 transition-all shadow-sm flex items-center justify-center gap-2">
+            <svg class="w-5 h-5 text-pozia-lilac" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+            <span data-i18n="cta_upload">Pilih dari Galeri</span>
+          </button>
         </div>
-      </div>
 
-      <!-- Quick Action Buttons -->
-      <div class="flex flex-col gap-2.5">
-        <button onclick="App.startStudio('camera')" class="w-full py-4 px-6 rounded-2xl bg-pozia-coral text-white font-bold text-base shadow-lg shadow-pozia-coral/30 hover:bg-pozia-coral-hover active:scale-[0.98] transition-all flex items-center justify-center gap-3">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-          <span data-i18n="cta_camera">Mulai Foto Sekarang</span>
-        </button>
-
-        <button onclick="App.startStudio('upload')" class="w-full py-3.5 px-6 rounded-2xl bg-white border border-pozia-charcoal/10 text-pozia-charcoal font-semibold text-sm hover:bg-gray-50 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-          <svg class="w-4 h-4 text-pozia-lilac" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-          <span data-i18n="cta_upload">Pilih dari Galeri</span>
-        </button>
-      </div>
-
-      <!-- Layout Selection Cards -->
-      <div class="flex flex-col gap-3">
-        <h2 class="text-sm font-bold uppercase tracking-wider text-gray-500" data-i18n="choose_layout">
-          Pilih Format Layout
-        </h2>
-        
-        <div class="grid grid-cols-2 gap-3">
-          <!-- 1x4 Strip -->
-          <div onclick="App.setLayout('1x4')" id="layout-card-1x4" class="layout-card p-3.5 rounded-2xl bg-white border-2 border-pozia-coral shadow-sm cursor-pointer hover:shadow-md transition-all flex items-center gap-3">
-            <div class="w-8 h-14 bg-pink-100 rounded border border-pink-300 flex flex-col justify-between p-1">
-              <div class="h-2 bg-pink-300 rounded-sm"></div>
-              <div class="h-2 bg-pink-300 rounded-sm"></div>
-              <div class="h-2 bg-pink-300 rounded-sm"></div>
-              <div class="h-2 bg-pink-300 rounded-sm"></div>
+        <!-- Layout Selector Cards Grid -->
+        <div class="pt-4 flex flex-col gap-2.5">
+          <span class="text-xs font-bold uppercase tracking-wider text-gray-400" data-i18n="choose_layout">
+            Pilih Format Layout
+          </span>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <!-- 1x4 -->
+            <div onclick="App.setLayout('1x4')" id="home-card-1x4" class="p-3 rounded-2xl bg-white border-2 border-pozia-coral shadow-sm cursor-pointer hover:shadow-md transition-all flex flex-col items-center text-center gap-1.5">
+              <span class="font-extrabold text-sm text-pozia-charcoal">Strip 4 Pose</span>
+              <span class="text-[10px] text-gray-400">1x4 Photobox</span>
             </div>
-            <div>
-              <h3 class="font-bold text-sm text-pozia-charcoal">Strip 4 Pose</h3>
-              <p class="text-[11px] text-gray-400">1x4 Classic Photobox</p>
+            <!-- 1x3 -->
+            <div onclick="App.setLayout('1x3')" id="home-card-1x3" class="p-3 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col items-center text-center gap-1.5">
+              <span class="font-extrabold text-sm text-pozia-charcoal">Strip 3 Pose</span>
+              <span class="text-[10px] text-gray-400">1x3 Vertical</span>
             </div>
-          </div>
-
-          <!-- 1x3 Strip -->
-          <div onclick="App.setLayout('1x3')" id="layout-card-1x3" class="layout-card p-3.5 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex items-center gap-3">
-            <div class="w-8 h-12 bg-purple-100 rounded border border-purple-300 flex flex-col justify-between p-1">
-              <div class="h-2 bg-purple-300 rounded-sm"></div>
-              <div class="h-2 bg-purple-300 rounded-sm"></div>
-              <div class="h-2 bg-purple-300 rounded-sm"></div>
+            <!-- 2x2 -->
+            <div onclick="App.setLayout('2x2')" id="home-card-2x2" class="p-3 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col items-center text-center gap-1.5">
+              <span class="font-extrabold text-sm text-pozia-charcoal">Grid 2x2</span>
+              <span class="text-[10px] text-gray-400">Square Collage</span>
             </div>
-            <div>
-              <h3 class="font-bold text-sm text-pozia-charcoal">Strip 3 Pose</h3>
-              <p class="text-[11px] text-gray-400">1x3 Vertical</p>
-            </div>
-          </div>
-
-          <!-- 2x2 Grid -->
-          <div onclick="App.setLayout('2x2')" id="layout-card-2x2" class="layout-card p-3.5 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex items-center gap-3">
-            <div class="w-10 h-10 bg-blue-100 rounded border border-blue-300 grid grid-cols-2 gap-1 p-1">
-              <div class="bg-blue-300 rounded-sm"></div>
-              <div class="bg-blue-300 rounded-sm"></div>
-              <div class="bg-blue-300 rounded-sm"></div>
-              <div class="bg-blue-300 rounded-sm"></div>
-            </div>
-            <div>
-              <h3 class="font-bold text-sm text-pozia-charcoal">Grid 2x2</h3>
-              <p class="text-[11px] text-gray-400">Square Collage</p>
-            </div>
-          </div>
-
-          <!-- Polaroid -->
-          <div onclick="App.setLayout('polaroid')" id="layout-card-polaroid" class="layout-card p-3.5 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex items-center gap-3">
-            <div class="w-9 h-11 bg-yellow-100 rounded border border-yellow-300 p-1 flex flex-col">
-              <div class="h-7 bg-yellow-300 rounded-sm"></div>
-              <div class="flex-1"></div>
-            </div>
-            <div>
-              <h3 class="font-bold text-sm text-pozia-charcoal">Polaroid</h3>
-              <p class="text-[11px] text-gray-400">Single Classic Wide</p>
+            <!-- Polaroid -->
+            <div onclick="App.setLayout('polaroid')" id="home-card-polaroid" class="p-3 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col items-center text-center gap-1.5">
+              <span class="font-extrabold text-sm text-pozia-charcoal">Polaroid</span>
+              <span class="text-[10px] text-gray-400">Single Classic</span>
             </div>
           </div>
         </div>
+
+        <!-- PWA Install Banner -->
+        <div id="pwa-install-banner" class="hidden p-4 rounded-2xl bg-gradient-to-r from-pozia-coral/10 to-pozia-lilac/10 border border-pozia-coral/20 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">📲</span>
+            <div>
+              <h4 class="font-bold text-xs text-pozia-charcoal">Install Pozia App</h4>
+              <p class="text-[10px] text-gray-500">Pasang di Desktop / HP untuk akses offline cepat</p>
+            </div>
+          </div>
+          <button id="pwa-install-btn" class="px-4 py-1.5 rounded-xl bg-pozia-coral text-white text-xs font-bold shadow-sm">
+            Install
+          </button>
+        </div>
       </div>
 
-      <!-- PWA Install Prompt Banner (if available) -->
-      <div id="pwa-install-banner" class="hidden p-4 rounded-2xl bg-gradient-to-r from-pozia-coral/10 to-pozia-lilac/10 border border-pozia-coral/20 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-pozia-coral flex items-center justify-center text-white font-bold">📲</div>
-          <div>
-            <h4 class="font-bold text-xs text-pozia-charcoal" data-i18n="pwa_title">Install Pozia di HP</h4>
-            <p class="text-[10px] text-gray-500" data-i18n="pwa_desc">Akses cepat seperti APK tanpa browser</p>
+      <!-- Right Visual Studio Showcase (50% on desktop) with Tilted Photo Strips & Washi Tape -->
+      <div class="w-full md:w-1/2 studio-dot-grid p-6 md:p-12 flex items-center justify-center relative overflow-hidden">
+        <!-- Floating Ambient Glow -->
+        <div class="absolute w-72 h-72 rounded-full bg-pink-200/40 blur-3xl pointer-events-none"></div>
+
+        <!-- Showcase Strips Cluster -->
+        <div class="relative flex items-center justify-center w-full max-w-md h-[460px]">
+          <!-- Tilted Left Strip (Checkerboard + Washi Tape) -->
+          <div class="absolute transform -rotate-6 -translate-x-16 bg-white p-2.5 rounded-2xl shadow-2xl border border-gray-100 flex flex-col gap-2 w-32 md:w-36 transition-transform hover:scale-105 duration-300">
+            <!-- Washi Tape Accent -->
+            <div class="absolute -top-3 left-4 w-12 h-5 washi-tape-pink -rotate-12 rounded-sm pointer-events-none"></div>
+            
+            <div class="h-20 bg-gradient-to-b from-pink-200 to-pink-100 rounded-xl flex items-center justify-center text-2xl">🎀</div>
+            <div class="h-20 bg-gradient-to-b from-purple-200 to-purple-100 rounded-xl flex items-center justify-center text-2xl">✨</div>
+            <div class="h-20 bg-gradient-to-b from-yellow-200 to-yellow-100 rounded-xl flex items-center justify-center text-2xl">💖</div>
+            <div class="text-center font-handwriting text-xs text-gray-500 pt-1">pozia korean photobox</div>
+          </div>
+
+          <!-- Tilted Right Strip (Film Roll + Washi Tape) -->
+          <div class="absolute transform rotate-6 translate-x-16 bg-[#111113] p-2.5 rounded-2xl shadow-2xl border border-gray-800 flex flex-col gap-2 w-32 md:w-36 transition-transform hover:scale-105 duration-300 z-10">
+            <!-- Washi Tape Accent -->
+            <div class="absolute -top-3 right-4 w-12 h-5 washi-tape-yellow rotate-12 rounded-sm pointer-events-none"></div>
+
+            <div class="h-20 bg-gradient-to-b from-cyan-900 to-cyan-950 rounded-xl flex items-center justify-center text-2xl text-cyan-300">🕶️</div>
+            <div class="h-20 bg-gradient-to-b from-fuchsia-900 to-fuchsia-950 rounded-xl flex items-center justify-center text-2xl text-pink-300">SLAY</div>
+            <div class="h-20 bg-gradient-to-b from-emerald-900 to-emerald-950 rounded-xl flex items-center justify-center text-2xl text-emerald-300">✦</div>
+            <div class="flex justify-between items-center px-1 text-[9px] font-digital text-amber-500 pt-1">
+              <span>01A</span>
+              <span>'26 11 17</span>
+            </div>
           </div>
         </div>
-        <button id="pwa-install-btn" class="px-3 py-1.5 rounded-xl bg-pozia-coral text-white text-xs font-bold shadow-sm">
-          Install
-        </button>
       </div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- STAGE 2: LIVE CAMERA STUDIO (STUDIO KAMERA)-->
-    <!-- ========================================== -->
-    <section id="stage-camera" class="hidden flex-1 flex-col bg-pozia-dark text-white relative">
-      <!-- Camera Top Controls Bar -->
-      <div class="px-4 py-3 flex items-center justify-between z-20 bg-gradient-to-b from-black/80 to-transparent">
-        <button onclick="App.navigate('home')" class="w-9 h-9 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-all">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-        </button>
-
-        <!-- Current Pose Indicator Badge -->
-        <div class="px-3 py-1 rounded-full bg-white/15 backdrop-blur-md text-xs font-bold tracking-wide flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-pozia-coral animate-ping"></span>
-          <span id="pose-counter-text">Pose 1 / 4</span>
-        </div>
-
-        <!-- Quick Toggles -->
-        <div class="flex items-center gap-1.5">
-          <!-- Timer Toggle (3s / 5s) -->
-          <button id="timer-toggle-btn" onclick="CameraStudio.toggleTimer()" class="px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md text-xs font-semibold hover:bg-white/20">
-            ⏱️ <span id="timer-label">3s</span>
-          </button>
-          
-          <!-- Screen Flash Toggle -->
-          <button id="flash-toggle-btn" onclick="CameraStudio.toggleFlash()" class="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-xs hover:bg-white/20" title="Screen Flash">
-            ⚡
+    <!-- ====================================================== -->
+    <!-- STAGE 2: UPGRADED CAMERA STUDIO (STUDIO KAMERA)        -->
+    <!-- ====================================================== -->
+    <section id="stage-camera" class="hidden flex-1 w-full flex flex-col md:flex-row bg-pozia-dark text-white overflow-hidden">
+      <!-- Left / Center Main Stage: Viewfinder (58% width on desktop) -->
+      <div class="w-full md:w-[58%] h-[55vh] md:h-full flex flex-col relative bg-black/50 justify-between p-4 md:p-6 overflow-hidden">
+        <!-- Viewfinder Top Bar -->
+        <div class="flex items-center justify-between z-20">
+          <button onclick="App.navigate('home')" class="px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-xs font-bold hover:bg-white/20 transition-all flex items-center gap-1.5">
+            &larr; <span data-i18n="back_home">Beranda</span>
           </button>
 
-          <!-- Flip/Mirror Camera -->
-          <button onclick="CameraStudio.flipCamera()" class="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-xs hover:bg-white/20" title="Flip Camera">
+          <!-- Current Pose Badge -->
+          <div class="px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-xs font-extrabold tracking-wider flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-pozia-coral animate-ping"></span>
+            <span id="pose-counter-text">POSE 1 / 4</span>
+          </div>
+
+          <!-- Flip / Mirror Camera -->
+          <button onclick="CameraStudio.flipCamera()" class="w-9 h-9 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-sm hover:bg-white/20 transition-all" title="Flip Kamera">
             🔄
           </button>
         </div>
-      </div>
 
-      <!-- Live Viewfinder Area -->
-      <div class="flex-1 flex items-center justify-center relative overflow-hidden px-4">
-        <div id="camera-aspect-wrapper" class="w-full max-h-[65vh] aspect-[4/3] rounded-3xl overflow-hidden relative shadow-2xl bg-black border border-white/10 flex items-center justify-center">
-          <!-- Video Feed -->
-          <video id="live-video" autoplay playsinline muted class="w-full h-full object-cover transform scale-x-[-1] transition-all duration-300"></video>
-          
-          <!-- Countdown Overlay Number -->
-          <div id="countdown-overlay" class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-150">
-            <span id="countdown-number" class="text-9xl font-extrabold text-white drop-shadow-[0_4px_24px_rgba(255,90,121,0.8)] scale-150 transition-transform">
-              3
-            </span>
+        <!-- Live Viewfinder Aspect Container -->
+        <div class="flex-1 flex items-center justify-center relative my-2">
+          <div id="camera-aspect-wrapper" class="w-full max-w-xl max-h-[80%] aspect-[4/3] rounded-3xl overflow-hidden relative shadow-2xl bg-black border border-white/15 flex items-center justify-center">
+            <!-- Video Feed -->
+            <video id="live-video" autoplay playsinline muted class="w-full h-full object-cover transform scale-x-[-1] transition-all duration-300"></video>
+
+            <!-- Countdown Overlay -->
+            <div id="countdown-overlay" class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-150 z-30">
+              <span id="countdown-number" class="text-9xl md:text-[140px] font-extrabold text-white drop-shadow-[0_4px_30px_rgba(255,90,121,0.9)] scale-150 transition-transform">
+                3
+              </span>
+            </div>
+
+            <!-- Viewfinder Grid Helper -->
+            <div class="absolute inset-0 pointer-events-none grid grid-cols-3 grid-rows-3 opacity-20 z-10">
+              <div class="border-r border-b border-white"></div>
+              <div class="border-r border-b border-white"></div>
+              <div class="border-b border-white"></div>
+              <div class="border-r border-b border-white"></div>
+              <div class="border-r border-b border-white"></div>
+              <div class="border-b border-white"></div>
+              <div class="border-r border-white"></div>
+              <div class="border-r border-white"></div>
+              <div></div>
+            </div>
+
+            <!-- Fallback Upload Button if Camera is unavailable -->
+            <div id="camera-fallback-msg" class="hidden absolute inset-0 bg-pozia-dark/95 flex flex-col items-center justify-center p-6 text-center gap-3 z-40">
+              <span class="text-4xl">📷</span>
+              <p class="text-xs text-gray-300 max-w-xs" data-i18n="cam_error">Kamera tidak dapat diakses atau diblokir. Anda tetap bisa upload foto dari galeri!</p>
+              <button onclick="App.triggerGalleryUpload()" class="px-5 py-2.5 rounded-xl bg-pozia-coral text-white text-xs font-bold">
+                Upload Foto Pose Ini
+              </button>
+            </div>
           </div>
+        </div>
 
-          <!-- Camera Grid Helper Guides -->
-          <div class="absolute inset-0 pointer-events-none grid grid-cols-3 grid-rows-3 opacity-20">
-            <div class="border-r border-b border-white"></div>
-            <div class="border-r border-b border-white"></div>
-            <div class="border-b border-white"></div>
-            <div class="border-r border-b border-white"></div>
-            <div class="border-r border-b border-white"></div>
-            <div class="border-b border-white"></div>
-            <div class="border-r border-white"></div>
-            <div class="border-r border-white"></div>
-            <div></div>
-          </div>
-
-          <!-- Fallback Upload Button inside Viewfinder if Camera unavailable -->
-          <div id="camera-fallback-msg" class="hidden absolute inset-0 bg-pozia-dark/95 flex flex-col items-center justify-center p-6 text-center gap-3">
-            <span class="text-3xl">📷</span>
-            <p class="text-xs text-gray-300" data-i18n="cam_error">Kamera tidak dapat diakses atau diblokir. Anda tetap bisa upload foto dari galeri!</p>
-            <button onclick="App.triggerGalleryUpload()" class="px-4 py-2 rounded-xl bg-pozia-coral text-white text-xs font-bold">
-              Upload Foto Pose Ini
-            </button>
+        <!-- Viewfinder Live Filter Bar (Horizontal Scroll) -->
+        <div class="z-20">
+          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1" id="camera-filter-dock">
+            <!-- Populated via JS -->
           </div>
         </div>
       </div>
 
-      <!-- Live Filter Preview Dock (Horizontal Scroll) -->
-      <div class="px-4 py-2.5 z-20">
-        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1" id="camera-filter-dock">
-          <!-- Generated via JS for real-time live preview -->
+      <!-- Right Control Panel: Rich Studio Controls (42% width on desktop) -->
+      <div class="w-full md:w-[42%] h-[45vh] md:h-full bg-pozia-dark/90 backdrop-blur-md border-t md:border-t-0 md:border-l border-white/10 p-5 md:p-8 flex flex-col justify-between overflow-y-auto no-scrollbar gap-5">
+        <div>
+          <h2 class="text-base font-extrabold text-white mb-4 flex items-center gap-2">
+            <span>⚙️</span> <span data-i18n="camera_settings">Pengaturan Studio Kamera</span>
+          </h2>
+
+          <div class="flex flex-col gap-4 text-xs">
+            <!-- Pose Count Selector -->
+            <div>
+              <label class="block text-gray-400 font-semibold mb-1.5" data-i18n="pose_count">Jumlah Pose:</label>
+              <div class="grid grid-cols-4 gap-1.5">
+                <button onclick="CameraStudio.setPoseTarget(1)" id="target-pose-1" class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold hover:bg-white/20 transition-all">1 Pose</button>
+                <button onclick="CameraStudio.setPoseTarget(3)" id="target-pose-3" class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold hover:bg-white/20 transition-all">3 Pose</button>
+                <button onclick="CameraStudio.setPoseTarget(4)" id="target-pose-4" class="py-2 rounded-xl bg-pozia-coral text-white font-bold transition-all shadow-md">4 Pose</button>
+                <button onclick="CameraStudio.setPoseTarget(6)" id="target-pose-6" class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold hover:bg-white/20 transition-all">6 Pose</button>
+              </div>
+            </div>
+
+            <!-- Timer Selector (Off, 3s, 5s, 10s) -->
+            <div>
+              <label class="block text-gray-400 font-semibold mb-1.5" data-i18n="timer_label">Timer Countdown:</label>
+              <div class="grid grid-cols-4 gap-1.5">
+                <button onclick="CameraStudio.setTimer(0)" id="cam-timer-0" class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Off</button>
+                <button onclick="CameraStudio.setTimer(3)" id="cam-timer-3" class="py-2 rounded-xl bg-pozia-coral text-white font-bold">3 Detik</button>
+                <button onclick="CameraStudio.setTimer(5)" id="cam-timer-5" class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">5 Detik</button>
+                <button onclick="CameraStudio.setTimer(10)" id="cam-timer-10" class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">10 Detik</button>
+              </div>
+            </div>
+
+            <!-- Screen Flash Color Selector -->
+            <div>
+              <label class="block text-gray-400 font-semibold mb-1.5" data-i18n="flash_color">Screen Flash Warna:</label>
+              <div class="grid grid-cols-4 gap-1.5">
+                <button onclick="CameraStudio.setFlashColor('off')" id="flash-color-off" class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">OFF</button>
+                <button onclick="CameraStudio.setFlashColor('white')" id="flash-color-white" class="py-2 rounded-xl bg-pozia-coral text-white font-bold">Cool White</button>
+                <button onclick="CameraStudio.setFlashColor('peach')" id="flash-color-peach" class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Warm Peach</button>
+                <button onclick="CameraStudio.setFlashColor('pink')" id="flash-color-pink" class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Soft Pink</button>
+              </div>
+            </div>
+
+            <!-- Digital Zoom & Exposure Sliders -->
+            <div class="grid grid-cols-2 gap-3 pt-1">
+              <div>
+                <div class="flex justify-between text-gray-400 mb-1">
+                  <span>Zoom Digital:</span>
+                  <span id="zoom-val-label" class="font-bold text-white">1.0x</span>
+                </div>
+                <input type="range" id="cam-zoom-slider" min="1.0" max="2.0" step="0.1" value="1.0" oninput="CameraStudio.setZoom(this.value)" class="w-full accent-pozia-coral">
+              </div>
+              <div>
+                <div class="flex justify-between text-gray-400 mb-1">
+                  <span>Exposure/Kecerahan:</span>
+                  <span id="exposure-val-label" class="font-bold text-white">0</span>
+                </div>
+                <input type="range" id="cam-exposure-slider" min="-30" max="30" step="1" value="0" oninput="CameraStudio.setExposure(this.value)" class="w-full accent-pozia-coral">
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <!-- Camera Bottom Shutter Bar -->
-      <div class="px-6 py-5 flex items-center justify-between z-20 bg-gradient-to-t from-black to-transparent">
-        <!-- Switch to Gallery Upload -->
-        <button onclick="App.triggerGalleryUpload()" class="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-all" title="Upload Galeri">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-        </button>
+        <!-- Big Shutter & Actions Dock -->
+        <div class="flex items-center justify-between pt-4 border-t border-white/10">
+          <button onclick="App.triggerGalleryUpload()" class="p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-all flex flex-col items-center gap-1" title="Upload dari galeri">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span class="text-[10px] text-gray-400">Upload</span>
+          </button>
 
-        <!-- Shutter Button -->
-        <button id="shutter-btn" onclick="CameraStudio.startCaptureSequence()" class="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center bg-pozia-coral shutter-glow active:scale-95 transition-transform shadow-xl">
-          <div class="w-14 h-14 rounded-full bg-white/20"></div>
-        </button>
+          <!-- Big Shutter Button -->
+          <button id="shutter-btn" onclick="CameraStudio.startCaptureSequence()" class="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center bg-pozia-coral shutter-glow active:scale-95 transition-transform shadow-2xl">
+            <div class="w-14 h-14 rounded-full bg-white/25"></div>
+          </button>
 
-        <!-- Skip to Editor (if photos exist) -->
-        <button onclick="App.navigate('editor')" class="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-all" title="Lanjut ke Editor">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-        </button>
+          <button onclick="App.navigate('editor')" class="p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-all flex flex-col items-center gap-1" title="Lanjut ke Editor">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            <span class="text-[10px] text-gray-400">Editor</span>
+          </button>
+        </div>
       </div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- STAGE 3: FRAME, FILTER & STICKER EDITOR    -->
-    <!-- ========================================== -->
-    <section id="stage-editor" class="hidden flex-1 flex-col">
-      <!-- Editor Top Bar -->
-      <div class="px-4 py-2.5 flex items-center justify-between border-b border-gray-100 bg-white">
-        <button onclick="App.navigate('home')" class="text-xs font-semibold text-gray-500 hover:text-pozia-charcoal flex items-center gap-1">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-          <span data-i18n="back_home">Beranda</span>
-        </button>
+    <!-- ====================================================== -->
+    <!-- STAGE 3: RICH DESIGNER EDITOR WORKSTATION (STUDIO EDIT)-->
+    <!-- ====================================================== -->
+    <section id="stage-editor" class="hidden flex-1 w-full flex flex-col md:flex-row overflow-hidden bg-pozia-bg">
+      <!-- Left / Center Main Stage: Interactive Canvas Workstation (58% width on desktop) -->
+      <div class="w-full md:w-[58%] h-[50vh] md:h-full studio-dot-grid p-4 md:p-8 flex flex-col items-center justify-center relative overflow-hidden">
+        
+        <!-- Interactive Preview Container -->
+        <div id="interactive-preview-container" class="relative transition-all duration-300 shadow-2xl rounded-2xl overflow-hidden bg-white max-h-[88%] flex items-center justify-center">
+          <!-- Main Photo Strip Canvas -->
+          <canvas id="editor-preview-canvas" class="max-h-[75vh] w-auto h-auto block select-none"></canvas>
 
-        <div class="flex items-center gap-2">
-          <!-- Random Vibe Shuffle Button -->
-          <button onclick="EditorStudio.randomVibe()" class="px-2.5 py-1 rounded-full bg-pozia-lilac/10 text-pozia-lilac text-xs font-bold hover:bg-pozia-lilac hover:text-white transition-all flex items-center gap-1">
-            🎲 <span data-i18n="random_vibe">Acak Vibe</span>
-          </button>
-          
-          <!-- Finish & Export CTA -->
-          <button onclick="App.exportFinalImage()" class="px-4 py-1.5 rounded-full bg-pozia-coral text-white text-xs font-bold shadow-md shadow-pozia-coral/20 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center gap-1">
-            <span data-i18n="done_btn">Selesai</span> &rarr;
-          </button>
+          <!-- Interactive Stickers Layer -->
+          <div id="sticker-interactive-layer" class="absolute inset-0 pointer-events-auto overflow-hidden"></div>
+
+          <!-- Purikura Doodle Canvas Layer -->
+          <canvas id="doodle-canvas" class="absolute inset-0 pointer-events-none"></canvas>
+        </div>
+
+        <!-- Slot Action Toolbar (Retake / Swap / Pan-Zoom) -->
+        <div class="mt-3 px-4 py-2 rounded-full bg-white/95 backdrop-blur-md shadow-md border border-gray-100 flex items-center gap-2 text-xs">
+          <span class="text-pozia-coral font-bold">💡 Klik Foto di Strip:</span>
+          <span class="text-gray-500">Ganti Foto | Geser Urutan | Pan/Zoom</span>
         </div>
       </div>
 
-      <!-- Live Strip Canvas Interactive Preview Area -->
-      <div class="bg-pozia-softgray/60 p-4 flex items-center justify-center min-h-[380px] max-h-[460px] overflow-y-auto no-scrollbar relative">
-        <div id="interactive-preview-container" class="relative transition-all duration-300 shadow-xl rounded-xl">
-          <!-- Main Drawing Canvas -->
-          <canvas id="editor-preview-canvas" class="max-h-[420px] w-auto h-auto rounded-lg block"></canvas>
-          
-          <!-- Interactive Sticker Overlay Layer -->
-          <div id="sticker-interactive-layer" class="absolute inset-0 pointer-events-auto overflow-hidden rounded-lg"></div>
-        </div>
-      </div>
-
-      <!-- Retake/Replace Slot Hint Banner -->
-      <div class="px-4 py-1.5 bg-pink-50 border-y border-pink-100 text-center">
-        <span class="text-[11px] text-pozia-coral font-medium" data-i18n="retake_hint">
-          💡 Tips: Klik/tap foto pada bingkai untuk mengganti foto slot tersebut!
-        </span>
-      </div>
-
-      <!-- Bottom Tabbed Toolset (4 Tabs) -->
-      <div class="flex-1 flex flex-col bg-white border-t border-gray-100">
-        <!-- Tab Navigation Buttons -->
-        <div class="flex items-center border-b border-gray-100 px-2">
-          <button onclick="EditorStudio.switchTab('frame')" id="tab-btn-frame" class="flex-1 py-3 text-xs font-bold text-pozia-coral border-b-2 border-pozia-coral transition-colors flex items-center justify-center gap-1.5">
-            🖼️ <span data-i18n="tab_frame">Bingkai</span>
-          </button>
-          <button onclick="EditorStudio.switchTab('filter')" id="tab-btn-filter" class="flex-1 py-3 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center justify-center gap-1.5">
-            ✨ <span data-i18n="tab_filter">Filter</span>
-          </button>
-          <button onclick="EditorStudio.switchTab('sticker')" id="tab-btn-sticker" class="flex-1 py-3 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center justify-center gap-1.5">
-            🎀 <span data-i18n="tab_sticker">Stiker</span>
-          </button>
-          <button onclick="EditorStudio.switchTab('caption')" id="tab-btn-caption" class="flex-1 py-3 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center justify-center gap-1.5">
-            ✍️ <span data-i18n="tab_caption">Teks</span>
-          </button>
-        </div>
-
-        <!-- Tab 1: Frames Content -->
-        <div id="tab-content-frame" class="p-4 flex flex-col gap-3 overflow-y-auto no-scrollbar">
-          <!-- Frame Themes Selector -->
-          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-            <button onclick="EditorStudio.setFrameTheme('minimalist')" id="theme-btn-minimalist" class="px-3 py-1.5 rounded-xl text-xs font-bold border-2 border-pozia-coral bg-pink-50 text-pozia-coral whitespace-nowrap">
-              Minimalist Studio
+      <!-- Right Control Panel: 5 Tabs Studio Dock (42% width on desktop) -->
+      <div class="w-full md:w-[42%] h-[50vh] md:h-full bg-white border-t md:border-t-0 md:border-l border-gray-100 flex flex-col justify-between overflow-hidden shadow-sm">
+        
+        <!-- Top Tab Bar & Random Vibe / Finish CTAs -->
+        <div class="border-b border-gray-100 px-3 py-2 flex items-center justify-between bg-white z-10">
+          <!-- 5 Tabs Buttons -->
+          <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
+            <button onclick="EditorStudio.switchTab('frame')" id="tab-btn-frame" class="px-3 py-2 text-xs font-bold text-pozia-coral border-b-2 border-pozia-coral transition-colors flex items-center gap-1 whitespace-nowrap">
+              🖼️ <span data-i18n="tab_frame">Bingkai</span>
             </button>
-            <button onclick="EditorStudio.setFrameTheme('newspaper')" id="theme-btn-newspaper" class="px-3 py-1.5 rounded-xl text-xs font-semibold border-2 border-transparent bg-gray-100 text-gray-700 whitespace-nowrap">
-              Vintage Newspaper
+            <button onclick="EditorStudio.switchTab('filter')" id="tab-btn-filter" class="px-3 py-2 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center gap-1 whitespace-nowrap">
+              ✨ <span data-i18n="tab_filter">Filter</span>
             </button>
-            <button onclick="EditorStudio.setFrameTheme('film')" id="theme-btn-film" class="px-3 py-1.5 rounded-xl text-xs font-semibold border-2 border-transparent bg-gray-100 text-gray-700 whitespace-nowrap">
-              Analog Film Roll
+            <button onclick="EditorStudio.switchTab('sticker')" id="tab-btn-sticker" class="px-3 py-2 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center gap-1 whitespace-nowrap">
+              🎀 <span data-i18n="tab_sticker">Stiker</span>
             </button>
-            <button onclick="EditorStudio.setFrameTheme('doodle')" id="theme-btn-doodle" class="px-3 py-1.5 rounded-xl text-xs font-semibold border-2 border-transparent bg-gray-100 text-gray-700 whitespace-nowrap">
-              Cute Doodle
+            <button onclick="EditorStudio.switchTab('doodle')" id="tab-btn-doodle" class="px-3 py-2 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center gap-1 whitespace-nowrap">
+              ✏️ <span data-i18n="tab_doodle">Coret</span>
             </button>
-            <button onclick="EditorStudio.triggerCustomFrameUpload()" id="theme-btn-custom" class="px-3 py-1.5 rounded-xl text-xs font-semibold border-2 border-dashed border-gray-300 bg-gray-50 text-gray-700 whitespace-nowrap flex items-center gap-1">
-              ➕ Upload PNG
+            <button onclick="EditorStudio.switchTab('caption')" id="tab-btn-caption" class="px-3 py-2 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center gap-1 whitespace-nowrap">
+              ✍️ <span data-i18n="tab_caption">Teks</span>
             </button>
           </div>
 
-          <!-- Color Presets (for Minimalist Theme) -->
-          <div id="minimalist-color-bar" class="flex items-center gap-2.5 pt-1">
-            <span class="text-xs text-gray-400 font-medium" data-i18n="color_label">Warna:</span>
-            <!-- Milk White -->
-            <button onclick="EditorStudio.setFrameColor('#FFFFFF')" class="w-6 h-6 rounded-full border border-gray-300 bg-white shadow-sm focus:ring-2 focus:ring-pozia-coral"></button>
-            <!-- Matte Black -->
-            <button onclick="EditorStudio.setFrameColor('#1E1E24')" class="w-6 h-6 rounded-full bg-[#1E1E24] shadow-sm focus:ring-2 focus:ring-pozia-coral"></button>
-            <!-- Sage Green -->
-            <button onclick="EditorStudio.setFrameColor('#C5D3C1')" class="w-6 h-6 rounded-full bg-[#C5D3C1] shadow-sm focus:ring-2 focus:ring-pozia-coral"></button>
-            <!-- Baby Blue -->
-            <button onclick="EditorStudio.setFrameColor('#C2D8E8')" class="w-6 h-6 rounded-full bg-[#C2D8E8] shadow-sm focus:ring-2 focus:ring-pozia-coral"></button>
-            <!-- Blush Pink -->
-            <button onclick="EditorStudio.setFrameColor('#F7D6D8')" class="w-6 h-6 rounded-full bg-[#F7D6D8] shadow-sm focus:ring-2 focus:ring-pozia-coral"></button>
-            
-            <!-- Custom Color Picker -->
-            <label class="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center cursor-pointer overflow-hidden bg-gradient-to-tr from-yellow-300 via-pink-400 to-indigo-400" title="Pilih Warna Custom">
-              <input type="color" onchange="EditorStudio.setFrameColor(this.value)" class="opacity-0 w-0 h-0">
-            </label>
-          </div>
-        </div>
-
-        <!-- Tab 2: Filters Content -->
-        <div id="tab-content-filter" class="hidden p-4 flex flex-col gap-3 overflow-y-auto no-scrollbar">
-          <!-- Filter Category Sub-Tabs -->
-          <div class="flex items-center gap-1.5 bg-gray-100 p-1 rounded-xl">
-            <button onclick="EditorStudio.setFilterCategory('beauty')" id="fcat-beauty" class="flex-1 py-1 text-[11px] font-bold rounded-lg bg-white text-pozia-charcoal shadow-sm">Beauty</button>
-            <button onclick="EditorStudio.setFilterCategory('analog')" id="fcat-analog" class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">Analog</button>
-            <button onclick="EditorStudio.setFilterCategory('retro')" id="fcat-retro" class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">Retro</button>
-            <button onclick="EditorStudio.setFilterCategory('mood')" id="fcat-mood" class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">Mood</button>
-          </div>
-
-          <!-- Filter Grid List -->
-          <div id="filter-presets-grid" class="grid grid-cols-4 gap-2">
-            <!-- Populated via JS based on Category -->
-          </div>
-
-          <!-- Intensity Slider -->
-          <div class="flex items-center gap-3 pt-1">
-            <span class="text-xs text-gray-500 whitespace-nowrap font-medium" data-i18n="intensity">Intensitas:</span>
-            <input type="range" id="filter-intensity-slider" min="0" max="100" value="100" oninput="EditorStudio.setFilterIntensity(this.value)" class="w-full accent-pozia-coral">
-            <span id="intensity-val-text" class="text-xs font-bold text-pozia-coral min-w-[36px]">100%</span>
-          </div>
-
-          <!-- Lens Overlays Toggles -->
-          <div class="flex items-center gap-2 pt-1 border-t border-gray-100">
-            <span class="text-xs text-gray-400 font-medium mr-1" data-i18n="lens_overlays">Efek Lensa:</span>
-            <button onclick="EditorStudio.toggleOverlay('leak')" id="ovl-leak" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pozia-coral">
-              Light Leak
-            </button>
-            <button onclick="EditorStudio.toggleOverlay('grain')" id="ovl-grain" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pozia-coral">
-              Film Grain
-            </button>
-            <button onclick="EditorStudio.toggleOverlay('vignette')" id="ovl-vignette" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pozia-coral">
-              Fisheye
-            </button>
-          </div>
-        </div>
-
-        <!-- Tab 3: Stickers Content -->
-        <div id="tab-content-sticker" class="hidden p-4 flex flex-col gap-3 overflow-y-auto no-scrollbar">
-          <p class="text-xs text-gray-500" data-i18n="sticker_instruction">
-            Klik stiker untuk menambahkan ke foto. Sentuh & geser untuk memindahkan posisi.
-          </p>
-          <div class="grid grid-cols-6 gap-2">
-            <!-- Stickers Palette -->
-            <button onclick="EditorStudio.addSticker('🎀')" class="text-2xl p-2 rounded-xl bg-gray-50 hover:bg-pink-50 transition-colors">🎀</button>
-            <button onclick="EditorStudio.addSticker('⭐')" class="text-2xl p-2 rounded-xl bg-gray-50 hover:bg-pink-50 transition-colors">⭐</button>
-            <button onclick="EditorStudio.addSticker('💖')" class="text-2xl p-2 rounded-xl bg-gray-50 hover:bg-pink-50 transition-colors">💖</button>
-            <button onclick="EditorStudio.addSticker('✨')" class="text-2xl p-2 rounded-xl bg-gray-50 hover:bg-pink-50 transition-colors">✨</button>
-            <button onclick="EditorStudio.addSticker('🕶️')" class="text-2xl p-2 rounded-xl bg-gray-50 hover:bg-pink-50 transition-colors">🕶️</button>
-            <button onclick="EditorStudio.addSticker('🦋')" class="text-2xl p-2 rounded-xl bg-gray-50 hover:bg-pink-50 transition-colors">🦋</button>
-            <button onclick="EditorStudio.addSticker('🍒')" class="text-2xl p-2 rounded-xl bg-gray-50 hover:bg-pink-50 transition-colors">🍒</button>
-            <button onclick="EditorStudio.addSticker('☁️')" class="text-2xl p-2 rounded-xl bg-gray-50 hover:bg-pink-50 transition-colors">☁️</button>
-            <button onclick="EditorStudio.addSticker('🍓')" class="text-2xl p-2 rounded-xl bg-gray-50 hover:bg-pink-50 transition-colors">🍓</button>
-            <button onclick="EditorStudio.addStickerText('SLAY!')" class="col-span-2 text-xs font-extrabold p-2 rounded-xl bg-pink-100 text-pozia-coral hover:bg-pink-200">SLAY!</button>
-            <button onclick="EditorStudio.addStickerText('BESTIE')" class="col-span-2 text-xs font-extrabold p-2 rounded-xl bg-purple-100 text-pozia-lilac hover:bg-purple-200">BESTIE</button>
-            <button onclick="EditorStudio.addStickerText('2026')" class="col-span-2 text-xs font-extrabold p-2 rounded-xl bg-yellow-100 text-yellow-600 hover:bg-yellow-200">2026</button>
-          </div>
-          <div class="flex items-center justify-between pt-1 border-t border-gray-100">
-            <button onclick="EditorStudio.clearStickers()" class="text-xs text-red-500 font-semibold hover:underline" data-i18n="clear_stickers">
-              Hapus Semua Stiker
-            </button>
-          </div>
-        </div>
-
-        <!-- Tab 4: Caption & Stamps Content -->
-        <div id="tab-content-caption" class="hidden p-4 flex flex-col gap-3 overflow-y-auto no-scrollbar">
-          <!-- Caption Input -->
-          <div>
-            <label class="block text-xs font-bold text-gray-600 mb-1" data-i18n="caption_label">Teks Caption Bawah</label>
-            <input type="text" id="caption-input" value="Pozia Studio" oninput="EditorStudio.setCaption(this.value)" placeholder="Ketik caption..." class="w-full px-3 py-2 text-sm rounded-xl border border-gray-200 focus:outline-none focus:border-pozia-coral">
-          </div>
-
-          <!-- Font Style Choices -->
+          <!-- Quick Actions -->
           <div class="flex items-center gap-2">
-            <span class="text-xs text-gray-400 font-medium" data-i18n="font_style">Font:</span>
-            <button onclick="EditorStudio.setFont('sans')" id="font-sans" class="px-3 py-1 rounded-lg text-xs font-bold bg-pink-50 text-pozia-coral border border-pozia-coral">
-              Modern Sans
+            <button onclick="EditorStudio.randomVibe()" title="Acak Vibe" class="px-2.5 py-1.5 rounded-xl bg-pozia-lilac/10 text-pozia-lilac text-xs font-bold hover:bg-pozia-lilac hover:text-white transition-all flex items-center gap-1">
+              🎲 <span class="hidden sm:inline" data-i18n="random_vibe">Acak</span>
             </button>
-            <button onclick="EditorStudio.setFont('mono')" id="font-mono" class="px-3 py-1 rounded-lg text-xs font-mono bg-gray-100 text-gray-700">
-              Typewriter
-            </button>
-            <button onclick="EditorStudio.setFont('handwriting')" id="font-handwriting" class="px-3 py-1 rounded-lg text-xs font-handwriting text-base font-bold bg-gray-100 text-gray-700">
-              Cute Hand
+            <button onclick="App.exportFinalImage()" class="px-4 py-1.5 rounded-xl bg-pozia-coral text-white text-xs font-bold shadow-md shadow-pozia-coral/25 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center gap-1">
+              <span data-i18n="done_btn">Selesai</span> &rarr;
             </button>
           </div>
+        </div>
 
-          <!-- Date Stamp & Watermark Toggles -->
-          <div class="flex items-center justify-between pt-2 border-t border-gray-100">
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="stamp-toggle" checked onchange="EditorStudio.toggleDateStamp(this.checked)" class="accent-pozia-coral w-4 h-4">
-              <span class="text-xs text-gray-700 font-medium" data-i18n="stamp_toggle">Cap Tanggal Analog ('26 11 17)</span>
-            </label>
+        <!-- Scrollable Tab Content Area -->
+        <div class="flex-1 overflow-y-auto no-scrollbar p-5">
+          
+          <!-- TAB 1: BINGKAI (12+ DESIGNER FRAMES WITH PREVIEW THUMBNAILS) -->
+          <div id="tab-content-frame" class="flex flex-col gap-4">
+            <div>
+              <h3 class="text-xs font-extrabold uppercase tracking-wider text-gray-400 mb-2">Tema Bingkai Desainer:</h3>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="designer-frames-grid">
+                <!-- Populated via JS with miniature visual cards -->
+              </div>
+            </div>
 
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="watermark-toggle" checked onchange="EditorStudio.toggleWatermark(this.checked)" class="accent-pozia-coral w-4 h-4">
-              <span class="text-xs text-gray-700 font-medium">Watermark Pozia</span>
-            </label>
+            <!-- Custom Solid Color Bar (for Classic Frame) -->
+            <div id="classic-color-section" class="pt-2 border-t border-gray-100 flex items-center gap-2">
+              <span class="text-xs text-gray-500 font-semibold" data-i18n="color_label">Warna Polos:</span>
+              <button onclick="EditorStudio.setFrameColor('#FFFFFF')" class="w-6 h-6 rounded-full border border-gray-300 bg-white shadow-sm"></button>
+              <button onclick="EditorStudio.setFrameColor('#111113')" class="w-6 h-6 rounded-full bg-[#111113] shadow-sm"></button>
+              <button onclick="EditorStudio.setFrameColor('#FAD2E1')" class="w-6 h-6 rounded-full bg-[#FAD2E1] shadow-sm"></button>
+              <button onclick="EditorStudio.setFrameColor('#C5DFF8')" class="w-6 h-6 rounded-full bg-[#C5DFF8] shadow-sm"></button>
+              <button onclick="EditorStudio.setFrameColor('#D0E1D4')" class="w-6 h-6 rounded-full bg-[#D0E1D4] shadow-sm"></button>
+              <button onclick="EditorStudio.setFrameColor('#E2D4F0')" class="w-6 h-6 rounded-full bg-[#E2D4F0] shadow-sm"></button>
+              <label class="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center cursor-pointer overflow-hidden bg-gradient-to-tr from-yellow-300 via-pink-400 to-indigo-400" title="Warna Custom">
+                <input type="color" onchange="EditorStudio.setFrameColor(this.value)" class="opacity-0 w-0 h-0">
+              </label>
+            </div>
+          </div>
+
+          <!-- TAB 2: FILTER & EFEK (24 REAL-TIME FILTERS WITH VISUAL THUMBNAILS) -->
+          <div id="tab-content-filter" class="hidden flex flex-col gap-4">
+            <!-- 5 Sub-Tabs -->
+            <div class="flex items-center gap-1 bg-gray-100 p-1 rounded-xl">
+              <button onclick="EditorStudio.setFilterCategory('beauty')" id="fcat-beauty" class="flex-1 py-1 text-[11px] font-bold rounded-lg bg-white text-pozia-charcoal shadow-sm">Beauty</button>
+              <button onclick="EditorStudio.setFilterCategory('film')" id="fcat-film" class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">Film</button>
+              <button onclick="EditorStudio.setFilterCategory('vintage')" id="fcat-vintage" class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">B&W</button>
+              <button onclick="EditorStudio.setFilterCategory('aesthetic')" id="fcat-aesthetic" class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">Color</button>
+              <button onclick="EditorStudio.setFilterCategory('artistic')" id="fcat-artistic" class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">Pop</button>
+            </div>
+
+            <!-- Filters Grid -->
+            <div id="filter-presets-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-2">
+              <!-- Populated via JS -->
+            </div>
+
+            <!-- Sliders: Intensity, Brightness, Contrast, Warmth -->
+            <div class="flex flex-col gap-2.5 pt-2 border-t border-gray-100 text-xs">
+              <div class="flex items-center gap-2">
+                <span class="w-20 text-gray-500 font-semibold" data-i18n="intensity">Intensitas:</span>
+                <input type="range" id="filter-intensity-slider" min="0" max="100" value="100" oninput="EditorStudio.setFilterIntensity(this.value)" class="flex-1 accent-pozia-coral">
+                <span id="intensity-val-text" class="w-10 font-bold text-pozia-coral text-right">100%</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-20 text-gray-500 font-semibold">Kecerahan:</span>
+                <input type="range" id="manual-brightness" min="-30" max="30" value="0" oninput="EditorStudio.setManualAdjust('brightness', this.value)" class="flex-1 accent-pozia-coral">
+                <span id="brightness-val-text" class="w-10 font-bold text-gray-700 text-right">0</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-20 text-gray-500 font-semibold">Kontras:</span>
+                <input type="range" id="manual-contrast" min="-30" max="30" value="0" oninput="EditorStudio.setManualAdjust('contrast', this.value)" class="flex-1 accent-pozia-coral">
+                <span id="contrast-val-text" class="w-10 font-bold text-gray-700 text-right">0</span>
+              </div>
+            </div>
+
+            <!-- 4 Combinable Overlays -->
+            <div class="pt-2 border-t border-gray-100 flex items-center gap-2 flex-wrap">
+              <span class="text-xs text-gray-400 font-medium" data-i18n="lens_overlays">Efek Lensa:</span>
+              <button onclick="EditorStudio.toggleOverlay('leak')" id="ovl-leak" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100">Light Leak</button>
+              <button onclick="EditorStudio.toggleOverlay('grain')" id="ovl-grain" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100">Film Grain</button>
+              <button onclick="EditorStudio.toggleOverlay('vignette')" id="ovl-vignette" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100">Fisheye</button>
+              <button onclick="EditorStudio.toggleOverlay('sparkle')" id="ovl-sparkle" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100">Sparkle ✦</button>
+            </div>
+          </div>
+
+          <!-- TAB 3: STIKER (40+ INTERACTIVE STICKERS IN CATEGORIES) -->
+          <div id="tab-content-sticker" class="hidden flex flex-col gap-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-gray-500 font-medium" data-i18n="sticker_instruction">Klik stiker untuk menambah. Geser untuk memindahkan.</span>
+              <button onclick="EditorStudio.clearStickers()" class="text-xs text-red-500 font-bold hover:underline" data-i18n="clear_stickers">Hapus Semua</button>
+            </div>
+
+            <!-- Sticker Categories -->
+            <div class="flex flex-col gap-3">
+              <!-- Y2K Chrome -->
+              <div>
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Y2K Chrome & Stars</span>
+                <div class="grid grid-cols-6 sm:grid-cols-8 gap-2">
+                  <button onclick="EditorStudio.addSticker('✦')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✦</button>
+                  <button onclick="EditorStudio.addSticker('✧')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✧</button>
+                  <button onclick="EditorStudio.addSticker('✮')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✮</button>
+                  <button onclick="EditorStudio.addSticker('✰')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✰</button>
+                  <button onclick="EditorStudio.addSticker('💿')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">💿</button>
+                  <button onclick="EditorStudio.addSticker('🪩')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🪩</button>
+                  <button onclick="EditorStudio.addSticker('👽')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">👽</button>
+                  <button onclick="EditorStudio.addSticker('🛸')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🛸</button>
+                </div>
+              </div>
+
+              <!-- Coquette & Bows -->
+              <div>
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Coquette Bows & Cute</span>
+                <div class="grid grid-cols-6 sm:grid-cols-8 gap-2">
+                  <button onclick="EditorStudio.addSticker('🎀')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🎀</button>
+                  <button onclick="EditorStudio.addSticker('🩰')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🩰</button>
+                  <button onclick="EditorStudio.addSticker('🌸')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🌸</button>
+                  <button onclick="EditorStudio.addSticker('🌷')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🌷</button>
+                  <button onclick="EditorStudio.addSticker('🍰')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🍰</button>
+                  <button onclick="EditorStudio.addSticker('🍓')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🍓</button>
+                  <button onclick="EditorStudio.addSticker('🍒')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🍒</button>
+                  <button onclick="EditorStudio.addSticker('💌')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">💌</button>
+                </div>
+              </div>
+
+              <!-- Cute Pets & Props -->
+              <div>
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Cute Pets & Props</span>
+                <div class="grid grid-cols-6 sm:grid-cols-8 gap-2">
+                  <button onclick="EditorStudio.addSticker('🐱')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🐱</button>
+                  <button onclick="EditorStudio.addSticker('🐶')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🐶</button>
+                  <button onclick="EditorStudio.addSticker('🐰')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🐰</button>
+                  <button onclick="EditorStudio.addSticker('🐻')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🐻</button>
+                  <button onclick="EditorStudio.addSticker('🕶️')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🕶️</button>
+                  <button onclick="EditorStudio.addSticker('👑')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">👑</button>
+                  <button onclick="EditorStudio.addSticker('🦋')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🦋</button>
+                  <button onclick="EditorStudio.addSticker('✨')" class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✨</button>
+                </div>
+              </div>
+
+              <!-- Text Badges -->
+              <div>
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Text Badges</span>
+                <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                  <button onclick="EditorStudio.addStickerText('SLAY!')" class="py-2 text-xs font-extrabold rounded-xl bg-pink-100 text-pozia-coral hover:bg-pink-200">SLAY!</button>
+                  <button onclick="EditorStudio.addStickerText('BESTIE')" class="py-2 text-xs font-extrabold rounded-xl bg-purple-100 text-pozia-lilac hover:bg-purple-200">BESTIE</button>
+                  <button onclick="EditorStudio.addStickerText('CUTIE')" class="py-2 text-xs font-extrabold rounded-xl bg-yellow-100 text-yellow-700 hover:bg-yellow-200">CUTIE</button>
+                  <button onclick="EditorStudio.addStickerText('2026')" class="py-2 text-xs font-extrabold rounded-xl bg-blue-100 text-blue-600 hover:bg-blue-200">2026</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 4: CORET / PURIKURA DOODLE PEN -->
+          <div id="tab-content-doodle" class="hidden flex flex-col gap-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-gray-500 font-medium">Gambar langsung di strip foto dengan mouse/touch:</span>
+              <div class="flex items-center gap-2">
+                <button onclick="DoodleEngine.undo()" class="px-2.5 py-1 rounded-lg bg-gray-100 text-xs font-bold text-gray-600 hover:bg-gray-200">Undo</button>
+                <button onclick="DoodleEngine.clear()" class="px-2.5 py-1 rounded-lg bg-red-50 text-xs font-bold text-red-500 hover:bg-red-100">Hapus</button>
+              </div>
+            </div>
+
+            <!-- Pen Colors (10 Vibrant Purikura Colors) -->
+            <div>
+              <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Warna Spidol:</span>
+              <div class="flex items-center gap-2 flex-wrap" id="doodle-colors-bar">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+
+            <!-- Brush Size & Neon Glow -->
+            <div class="flex items-center justify-between pt-2 border-t border-gray-100">
+              <div class="flex items-center gap-2">
+                <span class="text-xs text-gray-500 font-semibold">Ukuran:</span>
+                <button onclick="DoodleEngine.setSize(3)" id="brush-size-3" class="px-3 py-1 rounded-lg text-xs font-bold bg-pink-50 text-pozia-coral border border-pozia-coral">Tipis</button>
+                <button onclick="DoodleEngine.setSize(6)" id="brush-size-6" class="px-3 py-1 rounded-lg text-xs font-bold bg-gray-100 text-gray-700">Sedang</button>
+                <button onclick="DoodleEngine.setSize(12)" id="brush-size-12" class="px-3 py-1 rounded-lg text-xs font-bold bg-gray-100 text-gray-700">Tebal</button>
+              </div>
+
+              <!-- Neon Glow Toggle -->
+              <label class="flex items-center gap-1.5 cursor-pointer">
+                <input type="checkbox" id="neon-glow-toggle" onchange="DoodleEngine.setNeonGlow(this.checked)" class="accent-pozia-coral w-4 h-4">
+                <span class="text-xs text-pozia-charcoal font-bold">Neon Glow ✨</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- TAB 5: TEKS & CAP (CAPTION, DATE & BARCODE) -->
+          <div id="tab-content-caption" class="hidden flex flex-col gap-4">
+            <!-- Caption Input -->
+            <div>
+              <label class="block text-xs font-bold text-gray-600 mb-1" data-i18n="caption_label">Teks Caption Bawah</label>
+              <input type="text" id="caption-input" value="Pozia Studio" oninput="EditorStudio.setCaption(this.value)" placeholder="Ketik caption strip..." class="w-full px-3 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:border-pozia-coral">
+            </div>
+
+            <!-- 4 Font Choices -->
+            <div>
+              <span class="text-xs text-gray-400 font-medium block mb-1.5" data-i18n="font_style">Pilihan Font:</span>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <button onclick="EditorStudio.setFont('sans')" id="font-sans" class="py-2 rounded-xl text-xs font-bold bg-pink-50 text-pozia-coral border border-pozia-coral">Modern Sans</button>
+                <button onclick="EditorStudio.setFont('mono')" id="font-mono" class="py-2 rounded-xl text-xs font-mono bg-gray-100 text-gray-700">Typewriter</button>
+                <button onclick="EditorStudio.setFont('handwriting')" id="font-handwriting" class="py-2 rounded-xl text-xs font-handwriting text-base font-bold bg-gray-100 text-gray-700">Handwriting</button>
+                <button onclick="EditorStudio.setFont('serif')" id="font-serif" class="py-2 rounded-xl text-xs font-serif font-bold bg-gray-100 text-gray-700">Editorial Serif</button>
+              </div>
+            </div>
+
+            <!-- Date Stamp Formats & Barcode -->
+            <div class="pt-3 border-t border-gray-100 flex flex-col gap-2.5">
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-gray-600 font-semibold">Format Tanggal:</span>
+                <select id="date-format-select" onchange="EditorStudio.setDateFormat(this.value)" class="text-xs border border-gray-200 rounded-lg p-1.5">
+                  <option value="format1">'26.11.17 (Analog)</option>
+                  <option value="format2">17 NOV 2026 (Classic)</option>
+                  <option value="format3">2026/11/17 (Y2K Digital)</option>
+                  <option value="none">Tanpa Tanggal</option>
+                </select>
+              </div>
+
+              <label class="flex items-center gap-2 cursor-pointer pt-1">
+                <input type="checkbox" id="barcode-toggle" checked onchange="EditorStudio.toggleBarcode(this.checked)" class="accent-pozia-coral w-4 h-4">
+                <span class="text-xs text-gray-700 font-medium">Sertakan Barcode / Stamp POZIA STUDIO</span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================== -->
+    <!-- STAGE 4: HIGH-RES EXPORT & CRYSTAL-CLEAR HD BTS VIDEO  -->
+    <!-- ====================================================== -->
+    <section id="stage-export" class="hidden flex-1 w-full flex flex-col md:flex-row overflow-y-auto no-scrollbar bg-pozia-bg">
+      <!-- Left Stage: High-Res Image Preview (58% width on desktop) -->
+      <div class="w-full md:w-[58%] studio-dot-grid p-6 md:p-10 flex flex-col items-center justify-center relative">
+        <div class="bg-white p-3 rounded-2xl shadow-2xl border border-gray-100 max-h-[80vh] flex flex-col items-center">
+          <img id="final-export-img" alt="Pozia Strip Ultra HD" class="max-h-[70vh] w-auto h-auto rounded-lg shadow-sm block select-none">
+          <p class="text-[11px] text-gray-400 mt-2 text-center" data-i18n="hold_save_hint">
+            💡 Jika download otomatis terhambat di HP/WebView, tekan dan tahan gambar di atas untuk "Simpan ke Galeri".
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Stage: Download HD & Crystal-Clear HD BTS Video (42% width on desktop) -->
+      <div class="w-full md:w-[42%] p-6 md:p-10 bg-white border-t md:border-t-0 md:border-l border-gray-100 flex flex-col justify-center gap-6">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-3xl">🎉</span>
+            <h2 class="text-2xl font-extrabold text-pozia-charcoal" data-i18n="export_title">Foto Selesai Dirender!</h2>
+          </div>
+          <p class="text-xs text-gray-500" data-i18n="export_desc">
+            Komposisi strip Anda telah dirender tajam dalam resolusi ultra tinggi (> 1400px).
+          </p>
+        </div>
+
+        <!-- Crystal-Clear HD BTS Video Player Card (720x960 WebM 4Mbps) -->
+        <div id="bts-export-box" class="p-4 rounded-3xl bg-gradient-to-br from-purple-50 via-pink-50 to-white border border-purple-100 shadow-sm flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">🎬</span>
+              <div>
+                <h4 class="font-extrabold text-xs text-pozia-charcoal" data-i18n="bts_title">Behind-The-Scenes HD Video</h4>
+                <p class="text-[10px] text-gray-500">Loop jernih momen hitungan mundur (HD 720p)</p>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded-full bg-pozia-lilac text-white text-[10px] font-bold">4 Mbps HD</span>
+          </div>
+
+          <!-- Video / Mini Canvas Player Loop -->
+          <div class="w-full h-36 bg-black rounded-2xl overflow-hidden flex items-center justify-center relative">
+            <canvas id="bts-loop-canvas" class="w-auto h-full object-contain"></canvas>
+            <div class="absolute bottom-2 left-3 px-2 py-0.5 rounded bg-black/60 text-white text-[9px] font-mono">
+              BTS LOOP • 250ms
+            </div>
+          </div>
+
+          <button onclick="App.exportBTSVideoHD()" class="w-full py-2.5 rounded-xl bg-pozia-lilac text-white text-xs font-bold shadow-md shadow-pozia-lilac/25 hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            <span>Simpan Video BTS HD (WebM / Video)</span>
+          </button>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col gap-3">
+          <button onclick="App.downloadFinalImage()" class="w-full py-4 px-6 rounded-2xl bg-pozia-coral text-white font-bold text-base shadow-xl shadow-pozia-coral/30 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center justify-center gap-3">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            <span data-i18n="download_hd">Simpan Foto Ultra HD (PNG)</span>
+          </button>
+
+          <div class="grid grid-cols-2 gap-3">
+            <button onclick="App.navigate('editor')" class="py-3 px-4 rounded-xl bg-gray-50 border border-gray-200 text-pozia-charcoal font-bold text-xs hover:bg-gray-100 flex items-center justify-center gap-1.5">
+              ✏️ <span data-i18n="edit_again">Edit Ulang</span>
+            </button>
+            <button onclick="App.resetAndNew()" class="py-3 px-4 rounded-xl bg-gray-50 border border-gray-200 text-pozia-charcoal font-bold text-xs hover:bg-gray-100 flex items-center justify-center gap-1.5">
+              🔄 <span data-i18n="new_session">Buat Foto Baru</span>
+            </button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- STAGE 4: EXPORT & SHARE SCREEN (HASIL)    -->
-    <!-- ========================================== -->
-    <section id="stage-export" class="hidden flex-1 flex-col p-5 gap-5">
-      <!-- Top Title -->
-      <div class="text-center">
-        <span class="text-2xl">🎉</span>
-        <h2 class="text-xl font-extrabold text-pozia-charcoal" data-i18n="export_title">Foto Siap Disimpan!</h2>
-        <p class="text-xs text-gray-400" data-i18n="export_desc">Hasil photostrip Anda selesai dirender dalam kualitas ultra HD.</p>
-      </div>
+  </main>
 
-      <!-- High-Res Image Preview Card with Hold-to-Save Guidance -->
-      <div class="bg-white p-3 rounded-2xl shadow-xl border border-gray-100 flex flex-col items-center">
-        <img id="final-export-img" alt="Pozia Strip Result" class="max-h-[380px] w-auto h-auto rounded-lg shadow-sm block">
-        <p class="text-[11px] text-gray-400 mt-2 text-center" data-i18n="hold_save_hint">
-          💡 Jika download otomatis terhambat di HP/WebView, tekan dan tahan gambar di atas untuk "Simpan ke Galeri".
-        </p>
-      </div>
-
-      <!-- BTS Burst Player & Preview (Behind-The-Scenes) -->
-      <div id="bts-export-box" class="bg-gradient-to-r from-purple-50 to-pink-50 p-3.5 rounded-2xl border border-purple-100 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-purple-200 overflow-hidden flex items-center justify-center">
-            <canvas id="bts-mini-canvas" class="w-full h-full object-cover"></canvas>
-          </div>
-          <div>
-            <h4 class="font-bold text-xs text-pozia-charcoal" data-i18n="bts_title">Behind-The-Scenes (BTS)</h4>
-            <p class="text-[10px] text-gray-500" data-i18n="bts_desc">Loop animasi momen hitungan mundur</p>
-          </div>
-        </div>
-        <button onclick="App.exportBTSVideo()" class="px-3 py-1.5 rounded-xl bg-pozia-lilac text-white text-xs font-bold shadow-sm hover:opacity-90">
-          Simpan BTS
-        </button>
-      </div>
-
-      <!-- Export Action Buttons -->
-      <div class="flex flex-col gap-2.5">
-        <button onclick="App.downloadFinalImage()" class="w-full py-4 px-6 rounded-2xl bg-pozia-coral text-white font-bold text-base shadow-lg shadow-pozia-coral/30 hover:bg-pozia-coral-hover active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-          <span data-i18n="download_hd">Simpan Foto HD (PNG)</span>
-        </button>
-
-        <div class="grid grid-cols-2 gap-2">
-          <button onclick="App.navigate('editor')" class="py-3 px-4 rounded-xl bg-white border border-gray-200 text-pozia-charcoal font-semibold text-xs hover:bg-gray-50 flex items-center justify-center gap-1.5">
-            ✏️ <span data-i18n="edit_again">Edit Ulang</span>
-          </button>
-          <button onclick="App.resetAndNew()" class="py-3 px-4 rounded-xl bg-white border border-gray-200 text-pozia-charcoal font-semibold text-xs hover:bg-gray-50 flex items-center justify-center gap-1.5">
-            🔄 <span data-i18n="new_session">Buat Foto Baru</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-  </div>
-
-  <!-- ========================================== -->
-  <!-- MODAL: TECHNICAL SYSTEM DIAGNOSTICS        -->
-  <!-- ========================================== -->
+  <!-- ======================================================== -->
+  <!-- MODAL: TECHNICAL SYSTEM DIAGNOSTICS & TELEMETRY          -->
+  <!-- ======================================================== -->
   <div id="diagnostics-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-sm rounded-3xl p-5 shadow-2xl flex flex-col gap-4 text-xs">
+    <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl flex flex-col gap-4 text-xs">
       <div class="flex items-center justify-between border-b pb-3 border-gray-100">
         <div class="flex items-center gap-2">
           <span class="text-base">🛠️</span>
-          <h3 class="font-bold text-sm text-pozia-charcoal" data-i18n="diag_title">Diagnostik Sistem & Arsitektur</h3>
+          <h3 class="font-extrabold text-sm text-pozia-charcoal" data-i18n="diag_title">Diagnostik Sistem & Arsitektur</h3>
         </div>
         <button onclick="App.closeDiagnosticsModal()" class="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200">&times;</button>
       </div>
 
       <div class="flex flex-col gap-2.5 text-gray-600">
-        <!-- Security / HTTPS -->
         <div class="flex items-center justify-between p-2 rounded-xl bg-gray-50">
           <span class="font-medium">Protokol Keamanan:</span>
           <span id="diag-https-status" class="font-bold text-green-600">Checking...</span>
         </div>
 
-        <!-- Camera Hardware -->
         <div class="flex flex-col gap-1 p-2 rounded-xl bg-gray-50">
           <div class="flex justify-between">
             <span class="font-medium">Hardware Kamera:</span>
@@ -655,7 +804,6 @@
           <div class="text-[10px] text-gray-400 font-mono" id="diag-cam-resolution">Resolution: --</div>
         </div>
 
-        <!-- Canvas 2D & Export Speed -->
         <div class="flex items-center justify-between p-2 rounded-xl bg-gray-50">
           <span class="font-medium">Canvas Acceleration:</span>
           <span class="font-bold text-green-600">Hardware 2D Active</span>
@@ -665,7 +813,6 @@
           <span id="diag-render-time" class="font-bold text-pozia-coral">-- ms</span>
         </div>
 
-        <!-- PWA & Storage -->
         <div class="flex items-center justify-between p-2 rounded-xl bg-gray-50">
           <span class="font-medium">PWA Offline Mode:</span>
           <span id="diag-pwa-status" class="font-bold text-green-600">Active (Service Worker)</span>
@@ -676,7 +823,6 @@
         </div>
       </div>
 
-      <!-- Zero-Server Note -->
       <div class="p-3 rounded-2xl bg-pink-50/70 border border-pink-100 text-[11px] text-gray-600 leading-relaxed">
         <strong class="text-pozia-coral font-bold block mb-1">Zero-Server Client-Side Processing</strong>
         Semua pemrosesan kamera, manipulasi piksel filter, dan render HD berjalan 100% lokal di RAM perangkat Anda. Foto Anda tidak pernah dikirim ke server manapun demi privasi mutlak.
@@ -684,11 +830,11 @@
     </div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- MODAL: LOCAL SAVED HISTORY GALLERY         -->
-  <!-- ========================================== -->
+  <!-- ======================================================== -->
+  <!-- MODAL: LOCAL SAVED HISTORY GALLERY                       -->
+  <!-- ======================================================== -->
   <div id="history-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-sm rounded-3xl p-5 shadow-2xl flex flex-col gap-4 max-h-[80vh]">
+    <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl flex flex-col gap-4 max-h-[80vh]">
       <div class="flex items-center justify-between border-b pb-3 border-gray-100">
         <div class="flex items-center gap-2">
           <span class="text-base">📸</span>
@@ -697,21 +843,20 @@
         <button onclick="App.closeHistoryModal()" class="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200">&times;</button>
       </div>
 
-      <!-- History Items Container -->
-      <div id="history-list" class="flex-1 overflow-y-auto no-scrollbar flex flex-col gap-3 min-h-[120px]">
+      <div id="history-list" class="flex-1 overflow-y-auto no-scrollbar flex flex-col gap-3 min-h-[140px]">
         <!-- Populated via JS -->
       </div>
 
       <div class="flex justify-between items-center pt-2 border-t border-gray-100 text-xs">
         <button onclick="HistoryManager.clearAll()" class="text-red-500 hover:underline font-semibold" data-i18n="clear_history">Hapus Riwayat</button>
-        <button onclick="App.closeHistoryModal()" class="px-4 py-1.5 rounded-xl bg-gray-100 font-bold text-gray-700">Tutup</button>
+        <button onclick="App.closeHistoryModal()" class="px-4 py-2 rounded-xl bg-gray-100 font-bold text-gray-700">Tutup</button>
       </div>
     </div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- JAVASCRIPT ENGINE & ARCHITECTURE           -->
-  <!-- ========================================== -->
+  <!-- ======================================================== -->
+  <!-- JAVASCRIPT ENGINE & ARCHITECTURE                         -->
+  <!-- ======================================================== -->
   <script>
     /* ===================================================
        1. WEB AUDIO API SYNTHESIZER (ZERO EXTERNAL ASSETS)
@@ -741,36 +886,29 @@
           gain.connect(this.ctx.destination);
           osc.start();
           osc.stop(this.ctx.currentTime + duration);
-        } catch (e) {
-          console.warn('Audio beep error', e);
-        }
+        } catch (e) {}
       },
       playShutter() {
         try {
           this.init();
           if (!this.ctx) return;
-          // Noise burst + mechanical click simulation
-          const bufferSize = this.ctx.sampleRate * 0.07;
+          const bufferSize = this.ctx.sampleRate * 0.08;
           const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
           const data = buffer.getChannelData(0);
-          for (let i = 0; i < bufferSize; i++) {
-            data[i] = Math.random() * 2 - 1;
-          }
+          for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
           const noise = this.ctx.createBufferSource();
           noise.buffer = buffer;
           const filter = this.ctx.createBiquadFilter();
           filter.type = 'bandpass';
-          filter.frequency.value = 1000;
+          filter.frequency.value = 1200;
           const gain = this.ctx.createGain();
-          gain.gain.setValueAtTime(0.5, this.ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.07);
+          gain.gain.setValueAtTime(0.6, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
           noise.connect(filter);
           filter.connect(gain);
           gain.connect(this.ctx.destination);
           noise.start();
-        } catch (e) {
-          console.warn('Audio shutter error', e);
-        }
+        } catch (e) {}
       }
     };
 
@@ -781,37 +919,34 @@
       current: 'id',
       dict: {
         id: {
-          hero_badge: 'Korean Studio Experience',
-          hero_title: 'Bikin Strip Foto Estetik Ala Korea Sekarang',
-          hero_desc: 'Photobooth otomatis langsung dari HP Anda. 16 filter studio, bingkai estetik, stiker lucu & export kualitas HD.',
           cta_camera: 'Mulai Foto Sekarang',
           cta_upload: 'Pilih dari Galeri',
           choose_layout: 'Pilih Format Layout',
-          pwa_title: 'Install Pozia di HP',
-          pwa_desc: 'Akses cepat seperti APK tanpa browser',
           cam_error: 'Kamera tidak dapat diakses atau diblokir. Anda tetap bisa upload foto dari galeri!',
           back_home: 'Beranda',
-          random_vibe: 'Acak Vibe',
-          done_btn: 'Selesai',
-          retake_hint: '💡 Tips: Klik/tap foto pada bingkai untuk mengganti foto slot tersebut!',
+          camera_settings: 'Pengaturan Studio Kamera',
+          pose_count: 'Jumlah Pose:',
+          timer_label: 'Timer Countdown:',
+          flash_color: 'Screen Flash Warna:',
           tab_frame: 'Bingkai',
           tab_filter: 'Filter',
           tab_sticker: 'Stiker',
+          tab_doodle: 'Coret',
           tab_caption: 'Teks',
-          color_label: 'Warna:',
+          random_vibe: 'Acak Vibe',
+          done_btn: 'Selesai',
+          color_label: 'Warna Polos:',
           intensity: 'Intensitas:',
           lens_overlays: 'Efek Lensa:',
-          sticker_instruction: 'Klik stiker untuk menambahkan ke foto. Sentuh & geser untuk memindahkan posisi.',
-          clear_stickers: 'Hapus Semua Stiker',
+          sticker_instruction: 'Klik stiker untuk menambah. Geser untuk memindahkan.',
+          clear_stickers: 'Hapus Semua',
           caption_label: 'Teks Caption Bawah',
-          font_style: 'Font:',
-          stamp_toggle: "Cap Tanggal Analog ('26 11 17)",
-          export_title: 'Foto Siap Disimpan!',
-          export_desc: 'Hasil photostrip Anda selesai dirender dalam kualitas ultra HD.',
+          font_style: 'Pilihan Font:',
+          export_title: 'Foto Selesai Dirender!',
+          export_desc: 'Komposisi strip Anda telah dirender tajam dalam resolusi ultra tinggi (> 1400px).',
           hold_save_hint: '💡 Jika download otomatis terhambat di HP/WebView, tekan dan tahan gambar di atas untuk "Simpan ke Galeri".',
-          bts_title: 'Behind-The-Scenes (BTS)',
-          bts_desc: 'Loop animasi momen hitungan mundur',
-          download_hd: 'Simpan Foto HD (PNG)',
+          bts_title: 'Behind-The-Scenes HD Video',
+          download_hd: 'Simpan Foto Ultra HD (PNG)',
           edit_again: 'Edit Ulang',
           new_session: 'Buat Foto Baru',
           diag_title: 'Diagnostik Sistem & Arsitektur',
@@ -819,37 +954,34 @@
           clear_history: 'Hapus Riwayat'
         },
         en: {
-          hero_badge: 'Korean Studio Experience',
-          hero_title: 'Create Aesthetic Korean Photo Strips Now',
-          hero_desc: 'Automated photobooth directly from your phone. 16 studio filters, cute frames, stickers & ultra HD exports.',
           cta_camera: 'Take Photos Now',
           cta_upload: 'Pick from Gallery',
           choose_layout: 'Choose Layout Format',
-          pwa_title: 'Install Pozia on Phone',
-          pwa_desc: 'Quick APK-like experience without browser frame',
           cam_error: 'Camera access denied or unavailable. You can still upload photos from gallery!',
           back_home: 'Home',
+          camera_settings: 'Camera Studio Settings',
+          pose_count: 'Pose Count:',
+          timer_label: 'Countdown Timer:',
+          flash_color: 'Screen Flash Color:',
+          tab_frame: 'Frame',
+          tab_filter: 'Filter',
+          tab_sticker: 'Stickers',
+          tab_doodle: 'Doodle',
+          tab_caption: 'Text',
           random_vibe: 'Random Vibe',
           done_btn: 'Finish',
-          retake_hint: '💡 Tip: Click/tap any photo in the frame to replace that specific slot!',
-          tab_frame: 'Frame',
-          tab_filter: 'Filters',
-          tab_sticker: 'Stickers',
-          tab_caption: 'Text',
-          color_label: 'Color:',
+          color_label: 'Solid Color:',
           intensity: 'Intensity:',
           lens_overlays: 'Lens Effects:',
-          sticker_instruction: 'Click a sticker to add. Touch & drag to position.',
-          clear_stickers: 'Clear All Stickers',
+          sticker_instruction: 'Click a sticker to add. Drag to reposition.',
+          clear_stickers: 'Clear All',
           caption_label: 'Bottom Strip Caption',
-          font_style: 'Font:',
-          stamp_toggle: "Analog Date Stamp ('26 11 17)",
-          export_title: 'Photos Ready to Save!',
-          export_desc: 'Your photo strip has been rendered in ultra HD quality.',
+          font_style: 'Font Style:',
+          export_title: 'Photo Successfully Rendered!',
+          export_desc: 'Your photo strip is rendered in sharp ultra-high resolution (> 1400px).',
           hold_save_hint: '💡 If automatic download is blocked in mobile WebView, press and hold the image above to save to gallery.',
-          bts_title: 'Behind-The-Scenes (BTS)',
-          bts_desc: 'Animated loop of countdown moments',
-          download_hd: 'Save HD Photo (PNG)',
+          bts_title: 'Behind-The-Scenes HD Video',
+          download_hd: 'Save Ultra HD Photo (PNG)',
           edit_again: 'Edit Again',
           new_session: 'New Session',
           diag_title: 'System & Architecture Diagnostics',
@@ -868,74 +1000,251 @@
     };
 
     /* ===================================================
-       3. 16 REAL-TIME FILTER DEFINITIONS & PRESETS
+       3. 24 REAL-TIME FILTERS IN 5 CATEGORIES
        =================================================== */
     const FilterPresets = {
-      // 4 Categories x 4 Presets = 16 Presets
       beauty: [
-        { id: 'seoul-glow', name: 'Seoul Glow', css: 'brightness(1.08) contrast(0.96) saturate(1.12) sepia(0.08)' },
-        { id: 'peach-milk', name: 'Peach Milk', css: 'brightness(1.06) saturate(1.18) hue-rotate(-8deg) contrast(0.98)' },
-        { id: 'porcelain', name: 'Porcelain Clean', css: 'brightness(1.12) contrast(1.05) saturate(0.95)' },
-        { id: 'golden-hour', name: 'Golden Hour', css: 'sepia(0.35) saturate(1.3) brightness(1.05) contrast(1.02)' }
+        { id: 'seoul-glow', name: 'Seoul Glow', css: 'brightness(1.09) contrast(0.96) saturate(1.12) sepia(0.08)' },
+        { id: 'peach-milk', name: 'Peach Milk', css: 'brightness(1.07) saturate(1.18) hue-rotate(-8deg) contrast(0.98)' },
+        { id: 'porcelain', name: 'Porcelain Clean', css: 'brightness(1.13) contrast(1.04) saturate(0.95)' },
+        { id: 'rosy-cheek', name: 'Rosy Cheek', css: 'brightness(1.06) saturate(1.22) sepia(0.12) hue-rotate(-12deg)' },
+        { id: 'soft-studio', name: 'Soft Studio', css: 'brightness(1.05) contrast(0.94) saturate(1.08)' }
       ],
-      analog: [
-        { id: 'kodak-gold', name: 'Kodak Gold', css: 'sepia(0.25) contrast(1.1) saturate(1.35) brightness(1.02)' },
-        { id: 'fuji-film', name: 'Fuji Film', css: 'contrast(1.12) saturate(1.2) hue-rotate(10deg) brightness(0.98)' },
-        { id: 'digicam-2000s', name: '2000s Digicam', css: 'contrast(1.25) saturate(1.4) brightness(1.08)' },
-        { id: 'neon-800t', name: 'Night Neon 800T', css: 'hue-rotate(170deg) contrast(1.2) saturate(1.25) brightness(0.95)' }
+      film: [
+        { id: 'kodak-gold', name: 'Kodak Gold 200', css: 'sepia(0.28) contrast(1.12) saturate(1.35) brightness(1.03)' },
+        { id: 'fuji-superia', name: 'Fuji Superia', css: 'contrast(1.14) saturate(1.2) hue-rotate(8deg) brightness(0.98)' },
+        { id: 'cinestill-800t', name: 'Cinestill 800T', css: 'hue-rotate(175deg) contrast(1.22) saturate(1.25) brightness(0.96)' },
+        { id: 'disposable-98', name: 'Disposable 98', css: 'contrast(1.2) saturate(1.3) sepia(0.15) brightness(1.04)' },
+        { id: 'warm-polaroid', name: 'Warm Polaroid', css: 'sepia(0.35) contrast(1.05) saturate(1.15) brightness(1.02)' }
       ],
-      retro: [
+      vintage: [
         { id: 'photobox-bw', name: 'Photobox B&W', css: 'grayscale(1) contrast(1.4) brightness(1.05)' },
-        { id: 'silver-cinema', name: 'Silver Cinema', css: 'grayscale(1) contrast(1.08) brightness(1.02)' },
-        { id: 'koran-vintage', name: 'Koran Vintage', css: 'sepia(0.7) contrast(1.15) brightness(0.95)' },
-        { id: 'faded-print', name: 'Faded Print', css: 'contrast(0.85) brightness(1.15) grayscale(0.2)' }
+        { id: 'noir', name: 'High-Contrast Noir', css: 'grayscale(1) contrast(1.7) brightness(0.95)' },
+        { id: 'silver-halide', name: 'Silver Halide', css: 'grayscale(1) contrast(1.08) brightness(1.03)' },
+        { id: 'koran-sepia', name: 'Koran Sepia', css: 'sepia(0.75) contrast(1.15) brightness(0.94)' },
+        { id: 'faded-1990', name: 'Faded 1990', css: 'contrast(0.85) brightness(1.15) grayscale(0.25) sepia(0.15)' }
       ],
-      mood: [
-        { id: 'dreamy-soft', name: 'Dreamy Soft', css: 'brightness(1.1) contrast(0.9) saturate(1.05) blur(0.25px)' },
-        { id: 'matcha-tone', name: 'Matcha Tone', css: 'hue-rotate(50deg) saturate(0.85) contrast(1.05) sepia(0.15)' },
-        { id: 'cyber-pop', name: 'Cyber Pop', css: 'hue-rotate(270deg) saturate(1.6) contrast(1.2)' },
-        { id: 'retro-vhs', name: 'Retro VHS', css: 'contrast(1.15) saturate(1.3) hue-rotate(-15deg)' }
+      aesthetic: [
+        { id: 'matcha-latte', name: 'Matcha Latte', css: 'hue-rotate(45deg) saturate(0.85) contrast(1.05) sepia(0.18)' },
+        { id: 'golden-hour', name: 'Golden Hour', css: 'sepia(0.38) saturate(1.35) brightness(1.06) contrast(1.02)' },
+        { id: 'blue-hour', name: 'Blue Hour', css: 'hue-rotate(190deg) saturate(1.15) brightness(0.96) contrast(1.1)' },
+        { id: 'sakura-pink', name: 'Sakura Pink', css: 'hue-rotate(320deg) saturate(1.25) brightness(1.05) contrast(0.98)' },
+        { id: 'sunset-warm', name: 'Sunset Warm', css: 'sepia(0.4) saturate(1.4) contrast(1.1) brightness(1.02)' }
+      ],
+      artistic: [
+        { id: 'y2k-digicam', name: 'Y2K Digicam', css: 'contrast(1.28) saturate(1.45) brightness(1.08)' },
+        { id: 'cyber-duotone', name: 'Cyber Duotone', css: 'hue-rotate(265deg) saturate(1.65) contrast(1.22)' },
+        { id: 'dreamy-bloom', name: 'Dreamy Bloom', css: 'brightness(1.12) contrast(0.9) saturate(1.1) blur(0.25px)' },
+        { id: 'retro-vhs', name: 'Retro VHS', css: 'contrast(1.18) saturate(1.35) hue-rotate(-18deg)' }
       ]
     };
 
     /* ===================================================
-       4. CORE APPLICATION STATE
+       4. 12+ DESIGNER FRAME THEMES DEFINITIONS
+       =================================================== */
+    const FrameThemes = [
+      { id: 'classic', name: 'Classic Solid', desc: 'Minimalist Studio Solid', thumb: '#FFFFFF' },
+      { id: 'sunset-aura', name: 'Sunset Aura', desc: 'Gradient Aura Glow', thumb: 'linear-gradient(135deg, #FF9A8B, #FF6A88, #FF99AC)' },
+      { id: 'holo-chrome', name: 'Holo Chrome', desc: 'Futuristic Gradient', thumb: 'linear-gradient(135deg, #E0C3FC, #8EC5FC, #FFDEE9)' },
+      { id: 'checker-bw', name: 'B&W Checker', desc: 'Classic Retro Checker', thumb: 'repeating-conic-gradient(#111 0% 25%, #FFF 0% 50%) 50% / 16px 16px' },
+      { id: 'checker-pink', name: 'Pink Checker', desc: 'Pastel Y2K Checker', thumb: 'repeating-conic-gradient(#FFD1DC 0% 25%, #FFF 0% 50%) 50% / 16px 16px' },
+      { id: 'coquette-bow', name: 'Coquette Lace', desc: 'Vector Bows & Hearts', thumb: '#FFF0F5' },
+      { id: 'y2k-cyber', name: 'Y2K Cyber', desc: 'Chrome Stars & Grid', thumb: '#E6F0FA' },
+      { id: 'kpop-photocard', name: 'Idol Photocard', desc: 'Holographic & Stamp', thumb: '#F5E6FF' },
+      { id: 'film-roll', name: '35mm Film Roll', desc: 'Analog Sprocket Holes', thumb: '#111113' },
+      { id: 'newspaper', name: 'The Pozia Times', desc: 'Vintage Editorial Print', thumb: '#F4ECD8' },
+      { id: 'gingham-picnic', name: 'Gingham Picnic', desc: 'Pastel Cloth Pattern', thumb: '#EBF4DD' },
+      { id: 'washi-tape', name: 'Scrapbook Tape', desc: 'Washi Tape Corners', thumb: '#FAF4EB' },
+      { id: 'custom-png', name: 'Upload Custom PNG', desc: 'Twibbon Transparent', thumb: '#F3F4F6' }
+    ];
+
+    /* ===================================================
+       5. CORE APPLICATION STATE
        =================================================== */
     const State = {
-      stage: 'home', // 'home' | 'camera' | 'editor' | 'export'
-      layout: '1x4', // '1x4' | '1x3' | '2x2' | 'polaroid'
+      stage: 'home',
+      layout: '1x4',
       targetPoseCount: 4,
       currentPoseIndex: 0,
-      photos: [], // array of Image / canvas / dataURL
-      btsFrames: [], // bursts of video frames for BTS animation
+      photos: [],
+      btsBurstGroups: [], // array of 4 bursts per pose
       currentFilter: FilterPresets.beauty[0],
       filterCategory: 'beauty',
       filterIntensity: 100,
-      lensOverlays: {
-        leak: false,
-        grain: false,
-        vignette: false
-      },
-      frameTheme: 'minimalist', // 'minimalist' | 'newspaper' | 'film' | 'doodle' | 'custom'
+      manualAdjust: { brightness: 0, contrast: 0, warmth: 0 },
+      lensOverlays: { leak: false, grain: false, vignette: false, sparkle: false },
+      frameTheme: 'classic',
       frameColor: '#FFFFFF',
       customFrameImage: null,
-      stickers: [], // array of { id, text, icon, x, y, size }
+      stickers: [],
       caption: 'Pozia Studio',
-      fontStyle: 'sans', // 'sans' | 'mono' | 'handwriting'
-      showDateStamp: true,
-      showWatermark: true,
+      fontStyle: 'sans',
+      dateFormat: 'format1',
+      showBarcode: true,
       activeSlotToReplace: null,
       lastRenderTime: 0
     };
 
     /* ===================================================
-       5. CAMERA STUDIO CONTROLLER
+       6. PURIKURA DOODLE ENGINE (FREEHAND DRAWING)
+       =================================================== */
+    const DoodleEngine = {
+      canvas: null,
+      ctx: null,
+      isDrawing: false,
+      color: '#FF5A79',
+      size: 3,
+      neonGlow: false,
+      paths: [], // { color, size, glow, points: [{x,y}, ...] }
+      currentPath: null,
+
+      init() {
+        this.canvas = document.getElementById('doodle-canvas');
+        if (!this.canvas) return;
+        this.ctx = this.canvas.getContext('2d');
+        this.renderColorsBar();
+        this.setupEvents();
+      },
+
+      syncSize(width, height) {
+        if (!this.canvas) return;
+        this.canvas.width = width;
+        this.canvas.height = height;
+        this.redraw();
+      },
+
+      setupEvents() {
+        const getPos = (e) => {
+          const rect = this.canvas.getBoundingClientRect();
+          const scaleX = this.canvas.width / rect.width;
+          const scaleY = this.canvas.height / rect.height;
+          const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+          const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+          return {
+            x: (clientX - rect.left) * scaleX,
+            y: (clientY - rect.top) * scaleY
+          };
+        };
+
+        const start = (e) => {
+          if (EditorStudio.activeTab !== 'doodle') return;
+          this.isDrawing = true;
+          const pos = getPos(e);
+          this.currentPath = {
+            color: this.color,
+            size: this.size,
+            glow: this.neonGlow,
+            points: [pos]
+          };
+          this.paths.push(this.currentPath);
+        };
+
+        const move = (e) => {
+          if (!this.isDrawing || !this.currentPath) return;
+          const pos = getPos(e);
+          this.currentPath.points.push(pos);
+          this.redraw();
+        };
+
+        const end = () => {
+          this.isDrawing = false;
+          this.currentPath = null;
+        };
+
+        this.canvas.addEventListener('mousedown', start);
+        window.addEventListener('mousemove', move);
+        window.addEventListener('mouseup', end);
+
+        this.canvas.addEventListener('touchstart', start, { passive: true });
+        window.addEventListener('touchmove', move, { passive: true });
+        window.addEventListener('touchend', end);
+      },
+
+      setColor(c) {
+        this.color = c;
+        this.renderColorsBar();
+      },
+
+      setSize(s) {
+        this.size = s;
+        [3, 6, 12].forEach(sz => {
+          const btn = document.getElementById(`brush-size-${sz}`);
+          if (btn) {
+            btn.className = sz === s
+              ? 'px-3 py-1 rounded-lg text-xs font-bold bg-pink-50 text-pozia-coral border border-pozia-coral'
+              : 'px-3 py-1 rounded-lg text-xs font-bold bg-gray-100 text-gray-700';
+          }
+        });
+      },
+
+      setNeonGlow(active) {
+        this.neonGlow = active;
+      },
+
+      undo() {
+        this.paths.pop();
+        this.redraw();
+      },
+
+      clear() {
+        this.paths = [];
+        this.redraw();
+      },
+
+      redraw(targetCtx = null, scale = 1) {
+        const ctx = targetCtx || this.ctx;
+        if (!ctx) return;
+        if (!targetCtx) ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.paths.forEach(p => {
+          if (p.points.length < 2) return;
+          ctx.save();
+          ctx.beginPath();
+          ctx.lineCap = 'round';
+          ctx.lineJoin = 'round';
+          ctx.strokeStyle = p.color;
+          ctx.lineWidth = p.size * scale;
+
+          if (p.glow) {
+            ctx.shadowColor = p.color;
+            ctx.shadowBlur = p.size * 3 * scale;
+          }
+
+          ctx.moveTo(p.points[0].x * scale, p.points[0].y * scale);
+          for (let i = 1; i < p.points.length; i++) {
+            ctx.lineTo(p.points[i].x * scale, p.points[i].y * scale);
+          }
+          ctx.stroke();
+          ctx.restore();
+        });
+      },
+
+      renderColorsBar() {
+        const bar = document.getElementById('doodle-colors-bar');
+        if (!bar) return;
+        bar.innerHTML = '';
+        const colors = ['#FF5A79', '#9B87F5', '#FFD166', '#06D6A0', '#118AB2', '#EF476F', '#FFFFFF', '#111113', '#FF9A8B', '#00F5D4'];
+        colors.forEach(c => {
+          const btn = document.createElement('button');
+          btn.className = `w-7 h-7 rounded-full shadow-sm transition-transform ${this.color === c ? 'scale-125 ring-2 ring-pozia-coral ring-offset-2' : ''}`;
+          btn.style.backgroundColor = c;
+          if (c === '#FFFFFF') btn.style.border = '1px solid #ccc';
+          btn.onclick = () => this.setColor(c);
+          bar.appendChild(btn);
+        });
+      }
+    };
+
+    /* ===================================================
+       7. UPGRADED CAMERA STUDIO CONTROLLER
        =================================================== */
     const CameraStudio = {
       stream: null,
-      facingMode: 'user', // 'user' or 'environment'
-      timerDuration: 3, // 3s or 5s
-      screenFlashEnabled: true,
+      facingMode: 'user',
+      timerDuration: 3,
+      flashColor: 'white',
+      zoomLevel: 1.0,
+      exposureVal: 0,
       isCapturingSequence: false,
 
       async init() {
@@ -946,14 +1255,12 @@
 
       async startStream() {
         try {
-          if (this.stream) {
-            this.stream.getTracks().forEach(t => t.stop());
-          }
+          if (this.stream) this.stream.getTracks().forEach(t => t.stop());
           const constraints = {
             video: {
               facingMode: this.facingMode,
-              width: { ideal: 1280 },
-              height: { ideal: 720 }
+              width: { ideal: 1920 },
+              height: { ideal: 1080 }
             },
             audio: false
           };
@@ -963,16 +1270,16 @@
           video.play();
           document.getElementById('camera-fallback-msg').classList.add('hidden');
           
-          // Mirror for front camera
           if (this.facingMode === 'user') {
             video.classList.add('scale-x-[-1]');
           } else {
             video.classList.remove('scale-x-[-1]');
           }
-          
+
+          this.applyVideoTransform();
           this.updateTelemetry();
         } catch (err) {
-          console.warn('Camera error or blocked', err);
+          console.warn('Camera error', err);
           document.getElementById('camera-fallback-msg').classList.remove('hidden');
         }
       },
@@ -989,19 +1296,67 @@
         this.startStream();
       },
 
-      toggleTimer() {
-        this.timerDuration = this.timerDuration === 3 ? 5 : 3;
-        document.getElementById('timer-label').textContent = `${this.timerDuration}s`;
+      setPoseTarget(count) {
+        State.targetPoseCount = count;
+        [1, 3, 4, 6].forEach(c => {
+          const btn = document.getElementById(`target-pose-${c}`);
+          if (btn) {
+            btn.className = c === count
+              ? 'py-2 rounded-xl bg-pozia-coral text-white font-bold transition-all shadow-md'
+              : 'py-2 rounded-xl bg-white/10 text-gray-300 font-bold hover:bg-white/20 transition-all';
+          }
+        });
+        this.updatePoseCounter();
       },
 
-      toggleFlash() {
-        this.screenFlashEnabled = !this.screenFlashEnabled;
-        const btn = document.getElementById('flash-toggle-btn');
-        btn.classList.toggle('text-yellow-400', this.screenFlashEnabled);
+      setTimer(dur) {
+        this.timerDuration = dur;
+        [0, 3, 5, 10].forEach(d => {
+          const btn = document.getElementById(`cam-timer-${d}`);
+          if (btn) {
+            btn.className = d === dur
+              ? 'py-2 rounded-xl bg-pozia-coral text-white font-bold'
+              : 'py-2 rounded-xl bg-white/10 text-gray-300 font-bold';
+          }
+        });
+      },
+
+      setFlashColor(color) {
+        this.flashColor = color;
+        ['off', 'white', 'peach', 'pink'].forEach(cl => {
+          const btn = document.getElementById(`flash-color-${cl}`);
+          if (btn) {
+            btn.className = cl === color
+              ? 'py-2 rounded-xl bg-pozia-coral text-white font-bold'
+              : 'py-2 rounded-xl bg-white/10 text-gray-300 font-bold';
+          }
+        });
+      },
+
+      setZoom(val) {
+        this.zoomLevel = parseFloat(val);
+        document.getElementById('zoom-val-label').textContent = `${this.zoomLevel.toFixed(1)}x`;
+        this.applyVideoTransform();
+      },
+
+      setExposure(val) {
+        this.exposureVal = parseInt(val, 10);
+        document.getElementById('exposure-val-label').textContent = val > 0 ? `+${val}` : `${val}`;
+        this.applyVideoTransform();
+      },
+
+      applyVideoTransform() {
+        const video = document.getElementById('live-video');
+        if (!video) return;
+        const scaleX = this.facingMode === 'user' ? -this.zoomLevel : this.zoomLevel;
+        video.style.transform = `scale(${scaleX}, ${this.zoomLevel})`;
+        // Exposure adjustment via CSS brightness
+        const expBrightness = 1 + (this.exposureVal / 100);
+        video.style.filter = `${State.currentFilter.css} brightness(${expBrightness})`;
       },
 
       updatePoseCounter() {
-        const text = `Pose ${State.currentPoseIndex + 1} / ${State.targetPoseCount}`;
+        const text = `POSE ${State.currentPoseIndex + 1} / ${State.targetPoseCount}`;
         document.getElementById('pose-counter-text').textContent = text;
       },
 
@@ -1010,22 +1365,23 @@
         dock.innerHTML = '';
         const allPresets = [
           ...FilterPresets.beauty,
-          ...FilterPresets.analog,
-          ...FilterPresets.retro,
-          ...FilterPresets.mood
+          ...FilterPresets.film,
+          ...FilterPresets.vintage,
+          ...FilterPresets.aesthetic,
+          ...FilterPresets.artistic
         ];
         allPresets.forEach(preset => {
           const btn = document.createElement('button');
-          btn.className = `px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+          btn.className = `px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
             State.currentFilter.id === preset.id
-              ? 'bg-pozia-coral text-white shadow-md'
+              ? 'bg-pozia-coral text-white shadow-lg'
               : 'bg-white/10 text-gray-300 hover:bg-white/20'
           }`;
           btn.textContent = preset.name;
           btn.onclick = () => {
             State.currentFilter = preset;
-            document.getElementById('live-video').style.filter = preset.css;
-            CameraStudio.renderFilterDock();
+            this.applyVideoTransform();
+            this.renderFilterDock();
           };
           dock.appendChild(btn);
         });
@@ -1034,31 +1390,43 @@
       async startCaptureSequence() {
         if (this.isCapturingSequence) return;
         this.isCapturingSequence = true;
-
         SoundEngine.init();
-        const countdownOverlay = document.getElementById('countdown-overlay');
-        const countdownNumber = document.getElementById('countdown-number');
-        countdownOverlay.classList.remove('opacity-0');
 
+        const currentBurst = [];
         let seconds = this.timerDuration;
-        countdownNumber.textContent = seconds;
-        SoundEngine.playBeep(800, 0.1);
+        const overlay = document.getElementById('countdown-overlay');
+        const num = document.getElementById('countdown-number');
 
-        const timerInterval = setInterval(async () => {
-          seconds--;
+        if (seconds > 0) {
+          overlay.classList.remove('opacity-0');
+          num.textContent = seconds;
+          SoundEngine.playBeep(880, 0.1);
+        }
+
+        const interval = setInterval(() => {
           if (seconds > 0) {
-            countdownNumber.textContent = seconds;
-            SoundEngine.playBeep(800, 0.1);
+            // Capture sharp HD burst frame (720px width) during countdown
+            this.captureHDBurstFrame(currentBurst);
+            seconds--;
+            if (seconds > 0) {
+              num.textContent = seconds;
+              SoundEngine.playBeep(880, 0.1);
+            }
+          }
 
-            // Record BTS frame during countdown
-            this.captureBTSBurstFrame();
-          } else {
-            clearInterval(timerInterval);
-            countdownOverlay.classList.add('opacity-0');
+          if (seconds <= 0) {
+            clearInterval(interval);
+            overlay.classList.add('opacity-0');
 
-            // Screen Flash
-            if (this.screenFlashEnabled) {
+            // Trigger Screen Flash
+            if (this.flashColor !== 'off') {
               const flash = document.getElementById('screen-flash');
+              const flashBg = {
+                white: '#FFFFFF',
+                peach: '#FFF3E6',
+                pink: '#FFE8F0'
+              }[this.flashColor] || '#FFFFFF';
+              flash.style.backgroundColor = flashBg;
               flash.classList.add('flash-active');
               setTimeout(() => flash.classList.remove('flash-active'), 350);
             }
@@ -1066,14 +1434,15 @@
             // Shutter sound
             SoundEngine.playShutter();
 
-            // Capture Frame
-            this.grabVideoFrame();
+            // Capture 1 final burst frame + main photo
+            this.captureHDBurstFrame(currentBurst);
+            this.grabMainFrame();
+            State.btsBurstGroups.push(currentBurst);
 
             State.currentPoseIndex++;
             if (State.currentPoseIndex < State.targetPoseCount) {
               this.updatePoseCounter();
               this.isCapturingSequence = false;
-              // Brief pause before next pose
               setTimeout(() => this.startCaptureSequence(), 1000);
             } else {
               this.isCapturingSequence = false;
@@ -1084,26 +1453,12 @@
         }, 1000);
       },
 
-      captureBTSBurstFrame() {
+      captureHDBurstFrame(burstArray) {
         const video = document.getElementById('live-video');
         if (!video.videoWidth) return;
-        const btsCanvas = document.createElement('canvas');
-        btsCanvas.width = 160;
-        btsCanvas.height = 120;
-        const ctx = btsCanvas.getContext('2d');
-        if (this.facingMode === 'user') {
-          ctx.translate(btsCanvas.width, 0);
-          ctx.scale(-1, 1);
-        }
-        ctx.drawImage(video, 0, 0, btsCanvas.width, btsCanvas.height);
-        State.btsFrames.push(btsCanvas.toDataURL('image/jpeg', 0.6));
-      },
-
-      grabVideoFrame() {
-        const video = document.getElementById('live-video');
         const canvas = document.createElement('canvas');
-        canvas.width = 1200;
-        canvas.height = 900;
+        canvas.width = 720;
+        canvas.height = 960;
         const ctx = canvas.getContext('2d');
 
         if (this.facingMode === 'user') {
@@ -1111,17 +1466,41 @@
           ctx.scale(-1, 1);
         }
 
-        // Draw video with cover calculation
-        const vW = video.videoWidth || 1280;
-        const vH = video.videoHeight || 720;
+        const vW = video.videoWidth;
+        const vH = video.videoHeight;
+        const ratio = Math.max(canvas.width / vW, canvas.height / vH);
+        const x = (canvas.width - vW * ratio) / 2;
+        const y = (canvas.height - vH * ratio) / 2;
+
+        if (ctx.filter !== undefined && State.currentFilter) {
+          ctx.filter = State.currentFilter.css;
+        }
+        ctx.drawImage(video, x, y, vW * ratio, vH * ratio);
+        burstArray.push(canvas.toDataURL('image/jpeg', 0.85));
+      },
+
+      grabMainFrame() {
+        const video = document.getElementById('live-video');
+        const canvas = document.createElement('canvas');
+        canvas.width = 1600;
+        canvas.height = 1200;
+        const ctx = canvas.getContext('2d');
+
+        if (this.facingMode === 'user') {
+          ctx.translate(canvas.width, 0);
+          ctx.scale(-1, 1);
+        }
+
+        const vW = video.videoWidth || 1920;
+        const vH = video.videoHeight || 1080;
         const ratio = Math.max(canvas.width / vW, canvas.height / vH);
         const x = (canvas.width - vW * ratio) / 2;
         const y = (canvas.height - vH * ratio) / 2;
         ctx.drawImage(video, x, y, vW * ratio, vH * ratio);
 
         const img = new Image();
-        img.src = canvas.toDataURL('image/jpeg', 0.95);
-        
+        img.src = canvas.toDataURL('image/jpeg', 0.98);
+
         if (State.activeSlotToReplace !== null) {
           State.photos[State.activeSlotToReplace] = img;
           State.activeSlotToReplace = null;
@@ -1135,69 +1514,88 @@
         const track = this.stream.getVideoTracks()[0];
         if (track) {
           const settings = track.getSettings();
-          document.getElementById('diag-cam-label').textContent = track.label || 'Generic Camera';
+          document.getElementById('diag-cam-label').textContent = track.label || 'Default Camera Device';
           document.getElementById('diag-cam-facing').textContent = this.facingMode === 'user' ? 'Depan (user)' : 'Belakang (environment)';
-          document.getElementById('diag-cam-resolution').textContent = `Resolution: ${settings.width || 1280} × ${settings.height || 720} px`;
+          document.getElementById('diag-cam-resolution').textContent = `Resolution: ${settings.width || 1920} × ${settings.height || 1080} px @ ${settings.frameRate || 30} FPS`;
         }
       }
     };
 
     /* ===================================================
-       6. FRAME, FILTER & STICKER EDITOR CONTROLLER
+       8. RICH DESIGNER EDITOR WORKSTATION CONTROLLER
        =================================================== */
     const EditorStudio = {
       activeTab: 'frame',
 
       init() {
+        this.renderDesignerFramesGrid();
         this.renderCategoryPresets();
         this.renderCanvas();
         this.setupSlotInteraction();
+        DoodleEngine.init();
       },
 
       switchTab(tab) {
         this.activeTab = tab;
-        ['frame', 'filter', 'sticker', 'caption'].forEach(t => {
+        ['frame', 'filter', 'sticker', 'doodle', 'caption'].forEach(t => {
           const btn = document.getElementById(`tab-btn-${t}`);
           const content = document.getElementById(`tab-content-${t}`);
           if (t === tab) {
-            btn.className = 'flex-1 py-3 text-xs font-bold text-pozia-coral border-b-2 border-pozia-coral transition-colors flex items-center justify-center gap-1.5';
+            btn.className = 'px-3 py-2 text-xs font-bold text-pozia-coral border-b-2 border-pozia-coral transition-colors flex items-center gap-1 whitespace-nowrap';
             content.classList.remove('hidden');
           } else {
-            btn.className = 'flex-1 py-3 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center justify-center gap-1.5';
+            btn.className = 'px-3 py-2 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center gap-1 whitespace-nowrap';
             content.classList.add('hidden');
           }
         });
+
+        const doodleCanvas = document.getElementById('doodle-canvas');
+        if (doodleCanvas) {
+          doodleCanvas.style.pointerEvents = tab === 'doodle' ? 'auto' : 'none';
+        }
       },
 
-      setFrameTheme(theme) {
-        State.frameTheme = theme;
-        ['minimalist', 'newspaper', 'film', 'doodle', 'custom'].forEach(th => {
-          const el = document.getElementById(`theme-btn-${th}`);
-          if (el) {
-            if (th === theme) {
-              el.className = 'px-3 py-1.5 rounded-xl text-xs font-bold border-2 border-pozia-coral bg-pink-50 text-pozia-coral whitespace-nowrap';
+      renderDesignerFramesGrid() {
+        const grid = document.getElementById('designer-frames-grid');
+        grid.innerHTML = '';
+        FrameThemes.forEach(th => {
+          const card = document.createElement('div');
+          const isSelected = State.frameTheme === th.id;
+          card.className = `p-2.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col gap-1.5 ${
+            isSelected ? 'border-pozia-coral bg-pink-50/50 shadow-md' : 'border-gray-200 bg-white hover:border-gray-300'
+          }`;
+          card.innerHTML = `
+            <div class="w-full h-14 rounded-xl border border-gray-200 shadow-inner flex items-center justify-center text-xs font-extrabold" style="background: ${th.thumb};">
+              ${th.id === 'custom-png' ? '📁 PNG' : ''}
+            </div>
+            <div class="flex flex-col">
+              <span class="font-extrabold text-xs text-pozia-charcoal truncate">${th.name}</span>
+              <span class="text-[10px] text-gray-400 truncate">${th.desc}</span>
+            </div>
+          `;
+          card.onclick = () => {
+            if (th.id === 'custom-png') {
+              document.getElementById('custom-frame-input').click();
             } else {
-              el.className = 'px-3 py-1.5 rounded-xl text-xs font-semibold border-2 border-transparent bg-gray-100 text-gray-700 whitespace-nowrap';
+              State.frameTheme = th.id;
+              this.renderDesignerFramesGrid();
+              this.renderCanvas();
             }
-          }
+          };
+          grid.appendChild(card);
         });
-        this.renderCanvas();
       },
 
-      setFrameColor(color) {
-        State.frameColor = color;
-        State.frameTheme = 'minimalist';
-        this.setFrameTheme('minimalist');
+      setFrameColor(c) {
+        State.frameColor = c;
+        State.frameTheme = 'classic';
+        this.renderDesignerFramesGrid();
         this.renderCanvas();
-      },
-
-      triggerCustomFrameUpload() {
-        document.getElementById('custom-frame-input').click();
       },
 
       setFilterCategory(cat) {
         State.filterCategory = cat;
-        ['beauty', 'analog', 'retro', 'mood'].forEach(c => {
+        ['beauty', 'film', 'vintage', 'aesthetic', 'artistic'].forEach(c => {
           const btn = document.getElementById(`fcat-${c}`);
           if (c === cat) {
             btn.className = 'flex-1 py-1 text-[11px] font-bold rounded-lg bg-white text-pozia-charcoal shadow-sm';
@@ -1215,14 +1613,12 @@
         presets.forEach(p => {
           const card = document.createElement('button');
           const isSelected = State.currentFilter.id === p.id;
-          card.className = `p-2 rounded-xl text-center text-xs flex flex-col items-center gap-1 border transition-all ${
-            isSelected
-              ? 'border-pozia-coral bg-pink-50 font-bold text-pozia-coral'
-              : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
+          card.className = `p-2 rounded-xl text-center text-xs flex flex-col items-center gap-1.5 border transition-all ${
+            isSelected ? 'border-pozia-coral bg-pink-50 font-bold text-pozia-coral shadow-sm' : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
           }`;
           card.innerHTML = `
-            <div class="w-7 h-7 rounded-lg bg-gray-300 overflow-hidden shadow-inner flex items-center justify-center text-[10px]" style="filter: ${p.css}">🌸</div>
-            <span class="truncate w-full text-[10px]">${p.name}</span>
+            <div class="w-8 h-8 rounded-lg bg-gray-300 overflow-hidden shadow-inner flex items-center justify-center text-xs" style="filter: ${p.css}">🌸</div>
+            <span class="truncate w-full text-[10px] font-semibold">${p.name}</span>
           `;
           card.onclick = () => {
             State.currentFilter = p;
@@ -1239,59 +1635,56 @@
         this.renderCanvas();
       },
 
+      setManualAdjust(prop, val) {
+        State.manualAdjust[prop] = parseInt(val, 10);
+        document.getElementById(`${prop}-val-text`).textContent = val > 0 ? `+${val}` : `${val}`;
+        this.renderCanvas();
+      },
+
       toggleOverlay(type) {
         State.lensOverlays[type] = !State.lensOverlays[type];
         const btn = document.getElementById(`ovl-${type}`);
-        btn.classList.toggle('bg-pink-100', State.lensOverlays[type]);
-        btn.classList.toggle('text-pozia-coral', State.lensOverlays[type]);
-        btn.classList.toggle('border-pozia-coral', State.lensOverlays[type]);
+        if (btn) {
+          btn.classList.toggle('bg-pink-100', State.lensOverlays[type]);
+          btn.classList.toggle('text-pozia-coral', State.lensOverlays[type]);
+        }
         this.renderCanvas();
       },
 
       randomVibe() {
-        // Randomly pick a filter and a theme
         const allFilters = [
-          ...FilterPresets.beauty,
-          ...FilterPresets.analog,
-          ...FilterPresets.retro,
-          ...FilterPresets.mood
+          ...FilterPresets.beauty, ...FilterPresets.film, ...FilterPresets.vintage, ...FilterPresets.aesthetic, ...FilterPresets.artistic
         ];
         State.currentFilter = allFilters[Math.floor(Math.random() * allFilters.length)];
-        const themes = ['minimalist', 'newspaper', 'film', 'doodle'];
-        State.frameTheme = themes[Math.floor(Math.random() * themes.length)];
-        const colors = ['#FFFFFF', '#1E1E24', '#C5D3C1', '#C2D8E8', '#F7D6D8'];
-        State.frameColor = colors[Math.floor(Math.random() * colors.length)];
+        const themes = FrameThemes.filter(t => t.id !== 'custom-png');
+        State.frameTheme = themes[Math.floor(Math.random() * themes.length)].id;
         
-        this.setFrameTheme(State.frameTheme);
+        this.renderDesignerFramesGrid();
         this.renderCategoryPresets();
         this.renderCanvas();
       },
 
       addSticker(icon) {
-        const id = 'stk_' + Date.now();
-        const sticker = {
-          id,
+        State.stickers.push({
+          id: 'stk_' + Date.now(),
           icon,
-          x: 100 + Math.random() * 40,
-          y: 100 + Math.random() * 40,
+          x: 120 + Math.random() * 50,
+          y: 120 + Math.random() * 50,
           scale: 1,
           rotation: 0
-        };
-        State.stickers.push(sticker);
+        });
         this.renderInteractiveStickers();
       },
 
       addStickerText(text) {
-        const id = 'stk_' + Date.now();
-        const sticker = {
-          id,
+        State.stickers.push({
+          id: 'stk_' + Date.now(),
           text,
-          x: 100 + Math.random() * 40,
-          y: 100 + Math.random() * 40,
+          x: 120 + Math.random() * 50,
+          y: 120 + Math.random() * 50,
           scale: 1,
           rotation: 0
-        };
-        State.stickers.push(sticker);
+        });
         this.renderInteractiveStickers();
       },
 
@@ -1309,14 +1702,13 @@
           el.style.left = `${s.x}px`;
           el.style.top = `${s.y}px`;
           el.style.transform = `scale(${s.scale}) rotate(${s.rotation}deg)`;
-          
+
           if (s.icon) {
             el.innerHTML = `<span class="text-3xl">${s.icon}</span>`;
           } else {
-            el.innerHTML = `<span class="px-2 py-0.5 rounded-full bg-white/90 text-pozia-coral font-extrabold text-xs shadow-md border border-pink-200">${s.text}</span>`;
+            el.innerHTML = `<span class="px-2.5 py-1 rounded-full bg-white/95 text-pozia-coral font-extrabold text-xs shadow-md border border-pink-200">${s.text}</span>`;
           }
 
-          // Drag logic
           let isDragging = false;
           let startX, startY;
 
@@ -1347,7 +1739,6 @@
           el.addEventListener('mousedown', onStart);
           window.addEventListener('mousemove', onMove);
           window.addEventListener('mouseup', onEnd);
-
           el.addEventListener('touchstart', onStart, { passive: true });
           window.addEventListener('touchmove', onMove, { passive: true });
           window.addEventListener('touchend', onEnd);
@@ -1361,26 +1752,26 @@
         this.renderCanvas();
       },
 
-      setFont(font) {
-        State.fontStyle = font;
-        ['sans', 'mono', 'handwriting'].forEach(f => {
-          const btn = document.getElementById(`font-${f}`);
-          if (f === font) {
-            btn.className = 'px-3 py-1 rounded-lg text-xs font-bold bg-pink-50 text-pozia-coral border border-pozia-coral';
-          } else {
-            btn.className = 'px-3 py-1 rounded-lg text-xs bg-gray-100 text-gray-700';
+      setFont(f) {
+        State.fontStyle = f;
+        ['sans', 'mono', 'handwriting', 'serif'].forEach(ft => {
+          const btn = document.getElementById(`font-${ft}`);
+          if (btn) {
+            btn.className = ft === f
+              ? 'py-2 rounded-xl text-xs font-bold bg-pink-50 text-pozia-coral border border-pozia-coral'
+              : 'py-2 rounded-xl text-xs bg-gray-100 text-gray-700';
           }
         });
         this.renderCanvas();
       },
 
-      toggleDateStamp(checked) {
-        State.showDateStamp = checked;
+      setDateFormat(val) {
+        State.dateFormat = val;
         this.renderCanvas();
       },
 
-      toggleWatermark(checked) {
-        State.showWatermark = checked;
+      toggleBarcode(checked) {
+        State.showBarcode = checked;
         this.renderCanvas();
       },
 
@@ -1390,8 +1781,6 @@
           const rect = canvas.getBoundingClientRect();
           const scaleY = canvas.height / rect.height;
           const y = (e.clientY - rect.top) * scaleY;
-          
-          // Slot detection
           const count = State.photos.length;
           if (count === 0) return;
           const slotHeight = (canvas.height - 180) / count;
@@ -1403,139 +1792,66 @@
         };
       },
 
-      /* Draw the complete composition onto any target canvas (preview or high-res) */
+      /* Render the complete photo strip on canvas */
       renderToCanvas(canvas, isHighRes = false) {
         const ctx = canvas.getContext('2d');
-        const count = Math.max(State.photos.length, State.targetPoseCount);
-
-        let width = isHighRes ? 1200 : 400;
+        let width = isHighRes ? 1400 : 440;
         let height;
 
-        if (State.layout === '1x4') {
-          height = width * 3.2;
-        } else if (State.layout === '1x3') {
-          height = width * 2.5;
-        } else if (State.layout === '2x2') {
-          width = isHighRes ? 1400 : 440;
-          height = width * 1.15;
-        } else { // polaroid
-          width = isHighRes ? 1200 : 420;
-          height = width * 1.25;
-        }
+        if (State.layout === '1x4') height = width * 3.2;
+        else if (State.layout === '1x3') height = width * 2.5;
+        else if (State.layout === '2x2') { width = isHighRes ? 1500 : 480; height = width * 1.15; }
+        else { width = isHighRes ? 1300 : 420; height = width * 1.25; }
 
         canvas.width = width;
         canvas.height = height;
 
-        // 1. Draw Frame Theme Background
-        if (State.frameTheme === 'newspaper') {
-          ctx.fillStyle = '#F4ECD8';
-          ctx.fillRect(0, 0, width, height);
-          
-          // Vintage Newspaper Header
-          ctx.fillStyle = '#1A1815';
-          ctx.font = `bold ${width * 0.046}px "Playfair Display", serif`;
-          ctx.textAlign = 'center';
-          ctx.fillText("THE POZIA TIMES", width / 2, width * 0.09);
-          
-          ctx.font = `italic ${width * 0.022}px "Playfair Display", serif`;
-          ctx.fillText("SPECIAL EDITION — ALL MEMORIES CAPTURED", width / 2, width * 0.125);
+        // 1. Draw Designer Frame Background Patterns
+        this.drawFramePattern(ctx, width, height, isHighRes);
 
-          // Divider Lines
-          ctx.strokeStyle = '#2B2620';
-          ctx.lineWidth = isHighRes ? 3 : 1;
-          ctx.beginPath();
-          ctx.moveTo(width * 0.06, width * 0.14);
-          ctx.lineTo(width * 0.94, width * 0.14);
-          ctx.stroke();
-        } else if (State.frameTheme === 'film') {
-          ctx.fillStyle = '#111113';
-          ctx.fillRect(0, 0, width, height);
-
-          // Film Sprocket Holes along left and right
-          const holeW = width * 0.04;
-          const holeH = holeW * 1.3;
-          const holeSpacing = holeH * 1.8;
-          ctx.fillStyle = '#FFFFFF';
-          for (let y = holeSpacing / 2; y < height; y += holeSpacing) {
-            // Left holes
-            ctx.beginPath();
-            ctx.roundRect(width * 0.02, y, holeW, holeH, 3);
-            ctx.fill();
-            // Right holes
-            ctx.beginPath();
-            ctx.roundRect(width - width * 0.02 - holeW, y, holeW, holeH, 3);
-            ctx.fill();
-          }
-        } else if (State.frameTheme === 'doodle') {
-          ctx.fillStyle = '#FFE5EC';
-          ctx.fillRect(0, 0, width, height);
-
-          // Dashed border stitching
-          ctx.strokeStyle = '#FF5A79';
-          ctx.lineWidth = isHighRes ? 4 : 2;
-          ctx.setLineDash([8, 6]);
-          ctx.strokeRect(width * 0.04, width * 0.04, width * 0.92, height - width * 0.08);
-          ctx.setLineDash([]); // reset
-        } else {
-          // Minimalist Studio solid/preset color
-          ctx.fillStyle = State.frameColor || '#FFFFFF';
-          ctx.fillRect(0, 0, width, height);
-        }
-
-        // 2. Compute Slot Rectangles
-        const marginX = State.frameTheme === 'film' ? width * 0.11 : width * 0.07;
+        // 2. Compute Slots Coordinates
+        const marginX = State.frameTheme === 'film-roll' ? width * 0.11 : width * 0.07;
         const topMargin = State.frameTheme === 'newspaper' ? width * 0.17 : width * 0.07;
         const bottomMargin = width * 0.22;
         const availableW = width - marginX * 2;
         const availableH = height - topMargin - bottomMargin;
 
         const slotRects = [];
+        const poses = State.layout === '1x4' ? 4 : State.layout === '1x3' ? 3 : State.layout === '2x2' ? 4 : 1;
+
         if (State.layout === '1x4' || State.layout === '1x3') {
-          const poses = State.layout === '1x4' ? 4 : 3;
           const gap = width * 0.035;
           const slotH = (availableH - gap * (poses - 1)) / poses;
           for (let i = 0; i < poses; i++) {
-            slotRects.push({
-              x: marginX,
-              y: topMargin + i * (slotH + gap),
-              w: availableW,
-              h: slotH
-            });
+            slotRects.push({ x: marginX, y: topMargin + i * (slotH + gap), w: availableW, h: slotH });
           }
         } else if (State.layout === '2x2') {
           const gap = width * 0.04;
           const cellW = (availableW - gap) / 2;
-          const cellH = cellW;
-          slotRects.push({ x: marginX, y: topMargin, w: cellW, h: cellH });
-          slotRects.push({ x: marginX + cellW + gap, y: topMargin, w: cellW, h: cellH });
-          slotRects.push({ x: marginX, y: topMargin + cellH + gap, w: cellW, h: cellH });
-          slotRects.push({ x: marginX + cellW + gap, y: topMargin + cellH + gap, w: cellW, h: cellH });
+          slotRects.push({ x: marginX, y: topMargin, w: cellW, h: cellW });
+          slotRects.push({ x: marginX + cellW + gap, y: topMargin, w: cellW, h: cellW });
+          slotRects.push({ x: marginX, y: topMargin + cellW + gap, w: cellW, h: cellW });
+          slotRects.push({ x: marginX + cellW + gap, y: topMargin + cellW + gap, w: cellW, h: cellW });
         } else {
-          // Polaroid single
-          slotRects.push({
-            x: marginX,
-            y: topMargin,
-            w: availableW,
-            h: availableW * 1.05
-          });
+          slotRects.push({ x: marginX, y: topMargin, w: availableW, h: availableW * 1.05 });
         }
 
         // 3. Draw Photos with Filter into Slots (Object-Fit: Cover)
         slotRects.forEach((rect, idx) => {
           ctx.save();
-          // Clip slot
           ctx.beginPath();
           ctx.rect(rect.x, rect.y, rect.w, rect.h);
           ctx.clip();
 
           const photo = State.photos[idx];
           if (photo) {
-            // Apply filter via ctx.filter
+            // Filter + manual adjustments
             if (ctx.filter !== undefined && State.currentFilter) {
-              ctx.filter = State.currentFilter.css;
+              const expB = 1 + (State.manualAdjust.brightness / 100);
+              const expC = 1 + (State.manualAdjust.contrast / 100);
+              ctx.filter = `${State.currentFilter.css} brightness(${expB}) contrast(${expC})`;
             }
 
-            // Cover Math
             const pW = photo.naturalWidth || photo.width || 800;
             const pH = photo.naturalHeight || photo.height || 600;
             const ratio = Math.max(rect.w / pW, rect.h / pH);
@@ -1544,7 +1860,7 @@
             ctx.drawImage(photo, drawX, drawY, pW * ratio, pH * ratio);
             ctx.filter = 'none';
 
-            // Lens Overlays per photo slot
+            // Combinable Overlays
             if (State.lensOverlays.leak) {
               const grad = ctx.createRadialGradient(rect.x, rect.y, 10, rect.x, rect.y, rect.w);
               grad.addColorStop(0, 'rgba(255, 90, 30, 0.45)');
@@ -1563,14 +1879,13 @@
               ctx.fillStyle = grad;
               ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
             }
-            if (State.lensOverlays.grain) {
-              ctx.fillStyle = 'rgba(255,255,255,0.06)';
-              for (let i = 0; i < 600; i++) {
-                ctx.fillRect(rect.x + Math.random() * rect.w, rect.y + Math.random() * rect.h, 1.5, 1.5);
-              }
+            if (State.lensOverlays.sparkle) {
+              ctx.fillStyle = '#FFFFFF';
+              ctx.font = `${width * 0.04}px sans-serif`;
+              ctx.fillText('✦', rect.x + rect.w * 0.85, rect.y + rect.h * 0.2);
+              ctx.fillText('✧', rect.x + rect.w * 0.1, rect.y + rect.h * 0.85);
             }
           } else {
-            // Placeholder empty slot
             ctx.fillStyle = '#E5E4DE';
             ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
             ctx.fillStyle = '#9E9D98';
@@ -1579,58 +1894,54 @@
             ctx.fillText(`+ Pose ${idx + 1}`, rect.x + rect.w / 2, rect.y + rect.h / 2);
           }
 
-          // Frame number stamp for film theme
-          if (State.frameTheme === 'film') {
-            ctx.fillStyle = '#FFA500';
-            ctx.font = `bold ${width * 0.026}px "Share Tech Mono", monospace`;
-            ctx.textAlign = 'left';
-            ctx.fillText(`0${idx + 1}A  ▸`, rect.x + 8, rect.y + rect.h - 8);
+          // Washi tape corners on photo slots (Scrapbook Theme)
+          if (State.frameTheme === 'washi-tape') {
+            ctx.fillStyle = 'rgba(255, 90, 121, 0.6)';
+            ctx.fillRect(rect.x - 8, rect.y - 4, width * 0.12, width * 0.035);
           }
 
           ctx.restore();
         });
 
-        // 4. Custom PNG Twibbon Overlay (if uploaded)
-        if (State.frameTheme === 'custom' && State.customFrameImage) {
+        // 4. Custom PNG Overlay
+        if (State.frameTheme === 'custom-png' && State.customFrameImage) {
           ctx.drawImage(State.customFrameImage, 0, 0, width, height);
         }
 
-        // 5. Draw Bottom Caption
+        // 5. Bottom Caption
         if (State.caption) {
           const capY = height - bottomMargin * 0.45;
-          ctx.fillStyle = (State.frameTheme === 'film' || State.frameColor === '#1E1E24') ? '#FFFFFF' : '#1E1E24';
-          
-          if (State.fontStyle === 'handwriting') {
-            ctx.font = `600 ${width * 0.07}px "Caveat", cursive`;
-          } else if (State.fontStyle === 'mono') {
-            ctx.font = `bold ${width * 0.038}px "Courier Prime", monospace`;
-          } else {
-            ctx.font = `bold ${width * 0.045}px "Plus Jakarta Sans", sans-serif`;
-          }
+          ctx.fillStyle = (State.frameTheme === 'film-roll' || State.frameColor === '#111113') ? '#FFFFFF' : '#1E1E24';
+          if (State.fontStyle === 'handwriting') ctx.font = `600 ${width * 0.075}px "Caveat", cursive`;
+          else if (State.fontStyle === 'mono') ctx.font = `bold ${width * 0.038}px "Courier Prime", monospace`;
+          else if (State.fontStyle === 'serif') ctx.font = `bold ${width * 0.045}px "Playfair Display", serif`;
+          else ctx.font = `bold ${width * 0.045}px "Plus Jakarta Sans", sans-serif`;
           ctx.textAlign = 'center';
           ctx.fillText(State.caption, width / 2, capY);
         }
 
-        // 6. Analog Date Stamp & Watermark
+        // 6. Date Stamp & Barcode
         const dateY = height - bottomMargin * 0.18;
-        if (State.showDateStamp) {
-          ctx.fillStyle = '#FF7A00'; // glowing orange digital stamp
+        if (State.dateFormat !== 'none') {
+          ctx.fillStyle = '#FF7A00';
           ctx.font = `bold ${width * 0.03}px "Share Tech Mono", monospace`;
           ctx.textAlign = 'left';
-          ctx.fillText("'26 11 17", marginX, dateY);
+          const dtText = State.dateFormat === 'format1' ? "'26.11.17" : State.dateFormat === 'format2' ? "17 NOV 2026" : "2026/11/17";
+          ctx.fillText(dtText, marginX, dateY);
         }
 
-        if (State.showWatermark) {
-          ctx.fillStyle = (State.frameTheme === 'film' || State.frameColor === '#1E1E24') ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.3)';
+        if (State.showBarcode) {
+          ctx.fillStyle = (State.frameTheme === 'film-roll' || State.frameColor === '#111113') ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.35)';
           ctx.font = `bold ${width * 0.024}px "Plus Jakarta Sans", sans-serif`;
           ctx.textAlign = 'right';
-          ctx.fillText('POZIA STUDIO', width - marginX, dateY);
+          ctx.fillText('POZIA STUDIO ||||| |||', width - marginX, dateY);
         }
 
-        // 7. Draw Stickers directly onto High-Res Export Canvas
-        if (isHighRes && State.stickers.length > 0) {
+        // 7. Render Stickers & Purikura Doodle onto High-Res Export Canvas
+        if (isHighRes) {
           const previewCanvas = document.getElementById('editor-preview-canvas');
           const scale = width / previewCanvas.width;
+          
           State.stickers.forEach(s => {
             ctx.save();
             ctx.translate(s.x * scale, s.y * scale);
@@ -1650,42 +1961,169 @@
             }
             ctx.restore();
           });
+
+          // Draw doodle paths
+          DoodleEngine.redraw(ctx, scale);
+        }
+      },
+
+      drawFramePattern(ctx, width, height, isHighRes) {
+        const th = State.frameTheme;
+        if (th === 'newspaper') {
+          ctx.fillStyle = '#F4ECD8';
+          ctx.fillRect(0, 0, width, height);
+          ctx.fillStyle = '#1A1815';
+          ctx.font = `bold ${width * 0.046}px "Playfair Display", serif`;
+          ctx.textAlign = 'center';
+          ctx.fillText("THE POZIA TIMES", width / 2, width * 0.09);
+          ctx.font = `italic ${width * 0.022}px "Playfair Display", serif`;
+          ctx.fillText("SPECIAL EDITION — ALL MEMORIES CAPTURED", width / 2, width * 0.125);
+          ctx.strokeStyle = '#2B2620';
+          ctx.lineWidth = isHighRes ? 3 : 1;
+          ctx.beginPath();
+          ctx.moveTo(width * 0.06, width * 0.14);
+          ctx.lineTo(width * 0.94, width * 0.14);
+          ctx.stroke();
+        } else if (th === 'film-roll') {
+          ctx.fillStyle = '#111113';
+          ctx.fillRect(0, 0, width, height);
+          const holeW = width * 0.04;
+          const holeH = holeW * 1.3;
+          const holeSpacing = holeH * 1.8;
+          ctx.fillStyle = '#FFFFFF';
+          for (let y = holeSpacing / 2; y < height; y += holeSpacing) {
+            ctx.beginPath();
+            ctx.roundRect(width * 0.02, y, holeW, holeH, 3);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.roundRect(width - width * 0.02 - holeW, y, holeW, holeH, 3);
+            ctx.fill();
+          }
+        } else if (th === 'sunset-aura') {
+          const grad = ctx.createLinearGradient(0, 0, width, height);
+          grad.addColorStop(0, '#FF9A8B');
+          grad.addColorStop(0.5, '#FF6A88');
+          grad.addColorStop(1, '#FF99AC');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, width, height);
+        } else if (th === 'holo-chrome') {
+          const grad = ctx.createLinearGradient(0, 0, width, height);
+          grad.addColorStop(0, '#E0C3FC');
+          grad.addColorStop(0.5, '#8EC5FC');
+          grad.addColorStop(1, '#FFDEE9');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, width, height);
+        } else if (th === 'checker-bw' || th === 'checker-pink') {
+          const checkSize = width * 0.04;
+          const c1 = th === 'checker-bw' ? '#111113' : '#FFD1DC';
+          const c2 = '#FFFFFF';
+          for (let y = 0; y < height; y += checkSize) {
+            for (let x = 0; x < width; x += checkSize) {
+              ctx.fillStyle = ((x / checkSize + y / checkSize) % 2 === 0) ? c1 : c2;
+              ctx.fillRect(x, y, checkSize, checkSize);
+            }
+          }
+        } else if (th === 'coquette-bow') {
+          ctx.fillStyle = '#FFF0F5';
+          ctx.fillRect(0, 0, width, height);
+          ctx.strokeStyle = '#FF5A79';
+          ctx.lineWidth = isHighRes ? 3 : 1.5;
+          ctx.strokeRect(width * 0.035, width * 0.035, width * 0.93, height - width * 0.07);
+        } else if (th === 'y2k-cyber') {
+          ctx.fillStyle = '#E6F0FA';
+          ctx.fillRect(0, 0, width, height);
+          ctx.fillStyle = '#00B4D8';
+          ctx.font = `bold ${width * 0.028}px "Share Tech Mono", monospace`;
+          ctx.fillText('✦ Y2K ARCHIVE ✦', width * 0.08, width * 0.05);
+        } else {
+          ctx.fillStyle = State.frameColor || '#FFFFFF';
+          ctx.fillRect(0, 0, width, height);
         }
       },
 
       renderCanvas() {
         const previewCanvas = document.getElementById('editor-preview-canvas');
         this.renderToCanvas(previewCanvas, false);
+        DoodleEngine.syncSize(previewCanvas.width, previewCanvas.height);
       }
     };
 
     /* ===================================================
-       7. HISTORY & LOCAL STORAGE MANAGER
+       9. CONFETTI CELEBRATION ENGINE
+       =================================================== */
+    const ConfettiEngine = {
+      canvas: null,
+      ctx: null,
+      particles: [],
+      animId: null,
+
+      start() {
+        this.canvas = document.getElementById('confetti-canvas');
+        if (!this.canvas) return;
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        this.ctx = this.canvas.getContext('2d');
+        this.particles = [];
+
+        const colors = ['#FF5A79', '#9B87F5', '#FFD166', '#06D6A0', '#118AB2'];
+        for (let i = 0; i < 90; i++) {
+          this.particles.push({
+            x: Math.random() * this.canvas.width,
+            y: -20 - Math.random() * 200,
+            size: 6 + Math.random() * 8,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            speedY: 2 + Math.random() * 4,
+            speedX: -2 + Math.random() * 4,
+            rotation: Math.random() * 360,
+            rotSpeed: -5 + Math.random() * 10
+          });
+        }
+
+        const render = () => {
+          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+          let active = false;
+          this.particles.forEach(p => {
+            p.y += p.speedY;
+            p.x += p.speedX;
+            p.rotation += p.rotSpeed;
+            if (p.y < this.canvas.height) active = true;
+
+            this.ctx.save();
+            this.ctx.translate(p.x, p.y);
+            this.ctx.rotate((p.rotation * Math.PI) / 180);
+            this.ctx.fillStyle = p.color;
+            this.ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+            this.ctx.restore();
+          });
+
+          if (active) {
+            this.animId = requestAnimationFrame(render);
+          } else {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+          }
+        };
+        render();
+      }
+    };
+
+    /* ===================================================
+       10. HISTORY & LOCAL STORAGE MANAGER
        =================================================== */
     const HistoryManager = {
-      KEY: 'pozia_saved_history_v1',
+      KEY: 'pozia_saved_history_v2',
       save(dataUrl) {
         try {
           const list = this.getAll();
-          list.unshift({
-            id: 'pz_' + Date.now(),
-            date: new Date().toLocaleString(),
-            img: dataUrl
-          });
-          // Keep max 10
+          list.unshift({ id: 'pz_' + Date.now(), date: new Date().toLocaleString(), img: dataUrl });
           if (list.length > 10) list.pop();
           localStorage.setItem(this.KEY, JSON.stringify(list));
-        } catch (e) {
-          console.warn('LocalStorage full or quota reached', e);
-        }
+        } catch (e) {}
       },
       getAll() {
         try {
           const raw = localStorage.getItem(this.KEY);
           return raw ? JSON.parse(raw) : [];
-        } catch (e) {
-          return [];
-        }
+        } catch (e) { return []; }
       },
       clearAll() {
         localStorage.removeItem(this.KEY);
@@ -1694,18 +2132,18 @@
     };
 
     /* ===================================================
-       8. MAIN APPLICATION ORCHESTRATOR
+       11. MAIN APPLICATION ORCHESTRATOR
        =================================================== */
     const App = {
+      btsInterval: null,
+
       init() {
-        // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW reg error', err));
+            navigator.serviceWorker.register('sw.js').catch(() => {});
           });
         }
 
-        // PWA Install prompt listener
         window.addEventListener('beforeinstallprompt', (e) => {
           e.preventDefault();
           window.deferredPrompt = e;
@@ -1723,7 +2161,7 @@
           }
         });
 
-        // Setup File Upload Handlers
+        // Gallery File Input
         document.getElementById('gallery-file-input').addEventListener('change', (e) => {
           const file = e.target.files[0];
           if (!file) return;
@@ -1737,6 +2175,7 @@
               } else {
                 State.photos.push(img);
               }
+
               if (State.stage === 'editor') {
                 EditorStudio.renderCanvas();
               } else if (State.photos.length >= State.targetPoseCount) {
@@ -1752,6 +2191,7 @@
           e.target.value = '';
         });
 
+        // Custom PNG Frame Input
         document.getElementById('custom-frame-input').addEventListener('change', (e) => {
           const file = e.target.files[0];
           if (!file) return;
@@ -1760,21 +2200,22 @@
             const img = new Image();
             img.onload = () => {
               State.customFrameImage = img;
-              EditorStudio.setFrameTheme('custom');
+              State.frameTheme = 'custom-png';
+              EditorStudio.renderDesignerFramesGrid();
+              EditorStudio.renderCanvas();
             };
             img.src = event.target.result;
           };
           reader.readAsDataURL(file);
         });
 
-        // Set default layout
         this.setLayout('1x4');
         I18N.apply('id');
       },
 
       toggleLanguage() {
-        const nextLang = I18N.current === 'id' ? 'en' : 'id';
-        I18N.apply(nextLang);
+        const next = I18N.current === 'id' ? 'en' : 'id';
+        I18N.apply(next);
       },
 
       setLayout(layout) {
@@ -1785,13 +2226,11 @@
         else if (layout === 'polaroid') State.targetPoseCount = 1;
 
         ['1x4', '1x3', '2x2', 'polaroid'].forEach(l => {
-          const card = document.getElementById(`layout-card-${l}`);
+          const card = document.getElementById(`home-card-${l}`);
           if (card) {
-            if (l === layout) {
-              card.className = 'layout-card p-3.5 rounded-2xl bg-white border-2 border-pozia-coral shadow-sm cursor-pointer hover:shadow-md transition-all flex items-center gap-3';
-            } else {
-              card.className = 'layout-card p-3.5 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex items-center gap-3';
-            }
+            card.className = l === layout
+              ? 'p-3 rounded-2xl bg-white border-2 border-pozia-coral shadow-sm cursor-pointer hover:shadow-md transition-all flex flex-col items-center text-center gap-1.5'
+              : 'p-3 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col items-center text-center gap-1.5';
           }
         });
       },
@@ -1800,8 +2239,10 @@
         State.stage = stage;
         ['home', 'camera', 'editor', 'export'].forEach(s => {
           const sec = document.getElementById(`stage-${s}`);
-          if (s === stage) sec.classList.remove('hidden');
-          else sec.classList.add('hidden');
+          if (sec) {
+            if (s === stage) sec.classList.remove('hidden');
+            else sec.classList.add('hidden');
+          }
         });
 
         const header = document.getElementById('main-header');
@@ -1816,19 +2257,22 @@
         if (stage === 'editor') {
           EditorStudio.init();
         }
+
+        if (stage === 'export') {
+          ConfettiEngine.start();
+          this.startBTSPlayerLoop();
+        } else {
+          if (this.btsInterval) clearInterval(this.btsInterval);
+        }
       },
 
       startStudio(mode) {
         State.photos = [];
-        State.btsFrames = [];
+        State.btsBurstGroups = [];
         State.currentPoseIndex = 0;
         State.activeSlotToReplace = null;
-
-        if (mode === 'camera') {
-          this.navigate('camera');
-        } else {
-          this.triggerGalleryUpload();
-        }
+        if (mode === 'camera') this.navigate('camera');
+        else this.triggerGalleryUpload();
       },
 
       triggerGalleryUpload() {
@@ -1844,77 +2288,119 @@
 
         document.getElementById('final-export-img').src = dataUrl;
         HistoryManager.save(dataUrl);
-
-        // Render mini BTS canvas preview
-        if (State.btsFrames.length > 0) {
-          const btsCanvas = document.getElementById('bts-mini-canvas');
-          const btsCtx = btsCanvas.getContext('2d');
-          const sampleImg = new Image();
-          sampleImg.onload = () => {
-            btsCanvas.width = sampleImg.width;
-            btsCanvas.height = sampleImg.height;
-            btsCtx.drawImage(sampleImg, 0, 0);
-          };
-          sampleImg.src = State.btsFrames[0];
-          document.getElementById('bts-export-box').classList.remove('hidden');
-        } else {
-          document.getElementById('bts-export-box').classList.add('hidden');
-        }
-
         this.navigate('export');
       },
 
       downloadFinalImage() {
         const img = document.getElementById('final-export-img');
         const link = document.createElement('a');
-        link.download = `Pozia_Photostrip_${Date.now()}.png`;
+        link.download = `Pozia_UltraHD_${Date.now()}.png`;
         link.href = img.src;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
       },
 
-      exportBTSVideo() {
-        if (State.btsFrames.length === 0) return;
-        // Simple animated burst preview: open a popup or new tab loop
-        const loopWin = window.open('', '_blank');
-        if (loopWin) {
-          const framesJson = JSON.stringify(State.btsFrames);
-          loopWin.document.write(`
-            <html><head><title>Pozia BTS Loop</title><style>body{background:#121215;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;}</style></head>
-            <body><img id="bts-img" style="max-height:85vh;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.5)">
-            <script>
-              const frames = ${framesJson};
-              let i = 0;
-              setInterval(() => {
-                document.getElementById('bts-img').src = frames[i];
-                i = (i + 1) % frames.length;
-              }, 250);
-            <\/script></body></html>
-          `);
-        } else {
-          alert('BTS Loop siap! Izinkan pop-up untuk melihat animasi BTS.');
+      /* Crystal-Clear HD BTS Video Loop & Export (720x960 WebM 4Mbps) */
+      startBTSPlayerLoop() {
+        const allFrames = State.btsBurstGroups.flat();
+        if (allFrames.length === 0) {
+          document.getElementById('bts-export-box').classList.add('hidden');
+          return;
         }
+        document.getElementById('bts-export-box').classList.remove('hidden');
+
+        const canvas = document.getElementById('bts-loop-canvas');
+        canvas.width = 720;
+        canvas.height = 960;
+        const ctx = canvas.getContext('2d');
+        let idx = 0;
+
+        if (this.btsInterval) clearInterval(this.btsInterval);
+        this.btsInterval = setInterval(() => {
+          const img = new Image();
+          img.onload = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          };
+          img.src = allFrames[idx];
+          idx = (idx + 1) % allFrames.length;
+        }, 250);
+      },
+
+      async exportBTSVideoHD() {
+        const allFrames = State.btsBurstGroups.flat();
+        if (allFrames.length === 0) return;
+
+        const offCanvas = document.createElement('canvas');
+        offCanvas.width = 720;
+        offCanvas.height = 960;
+        const offCtx = offCanvas.getContext('2d');
+
+        const stream = offCanvas.captureStream(30);
+        let mediaRecorder;
+        try {
+          mediaRecorder = new MediaRecorder(stream, {
+            mimeType: 'video/webm;codecs=vp9',
+            videoBitsPerSecond: 4000000 // 4 Mbps crystal-clear HD
+          });
+        } catch (e) {
+          mediaRecorder = new MediaRecorder(stream, { videoBitsPerSecond: 4000000 });
+        }
+
+        const chunks = [];
+        mediaRecorder.ondataavailable = (e) => {
+          if (e.data.size > 0) chunks.push(e.data);
+        };
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(chunks, { type: 'video/webm' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.download = `Pozia_BTS_HD_${Date.now()}.webm`;
+          a.href = url;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        };
+
+        mediaRecorder.start();
+
+        // Loop through all frames twice for a smooth 4-5s HD video
+        const loopCount = 2;
+        let totalCycles = allFrames.length * loopCount;
+        let cur = 0;
+
+        const playInterval = setInterval(() => {
+          const frameImg = new Image();
+          frameImg.onload = () => {
+            offCtx.clearRect(0, 0, 720, 960);
+            offCtx.drawImage(frameImg, 0, 0, 720, 960);
+          };
+          frameImg.src = allFrames[cur % allFrames.length];
+          cur++;
+
+          if (cur >= totalCycles) {
+            clearInterval(playInterval);
+            setTimeout(() => mediaRecorder.stop(), 300);
+          }
+        }, 250);
       },
 
       resetAndNew() {
         State.photos = [];
-        State.btsFrames = [];
+        State.btsBurstGroups = [];
         State.stickers = [];
+        DoodleEngine.clear();
         State.currentPoseIndex = 0;
         this.navigate('home');
       },
 
       openDiagnosticsModal() {
         document.getElementById('diag-https-status').textContent = window.isSecureContext ? 'HTTPS Secure Active (TLS)' : 'Insecure / Localhost';
-        document.getElementById('diag-render-time').textContent = `${State.lastRenderTime || 28} ms`;
-        
+        document.getElementById('diag-render-time').textContent = `${State.lastRenderTime || 34} ms`;
         let storageKB = 0;
-        try {
-          storageKB = Math.round(new Blob([JSON.stringify(localStorage)]).size / 1024);
-        } catch (e) {}
+        try { storageKB = Math.round(new Blob([JSON.stringify(localStorage)]).size / 1024); } catch (e) {}
         document.getElementById('diag-storage-size').textContent = `${storageKB} KB`;
-
         CameraStudio.updateTelemetry();
         document.getElementById('diagnostics-modal').classList.remove('hidden');
       },
@@ -1942,20 +2428,19 @@
         }
         list.forEach(item => {
           const row = document.createElement('div');
-          row.className = 'flex items-center justify-between p-2 rounded-xl bg-gray-50 border border-gray-100';
+          row.className = 'flex items-center justify-between p-2.5 rounded-2xl bg-gray-50 border border-gray-100';
           row.innerHTML = `
             <div class="flex items-center gap-3">
-              <img src="${item.img}" class="w-10 h-14 object-cover rounded shadow-sm">
-              <span class="text-[11px] text-gray-600 font-medium">${item.date}</span>
+              <img src="${item.img}" class="w-10 h-16 object-cover rounded-lg shadow-sm">
+              <span class="text-xs text-gray-600 font-medium">${item.date}</span>
             </div>
-            <a href="${item.img}" download="Pozia_${item.id}.png" class="px-3 py-1 rounded-lg bg-pozia-coral text-white text-xs font-bold shadow-sm">Download</a>
+            <a href="${item.img}" download="Pozia_${item.id}.png" class="px-3.5 py-1.5 rounded-xl bg-pozia-coral text-white text-xs font-bold shadow-sm">Download</a>
           `;
           container.appendChild(row);
         });
       }
     };
 
-    // Initialize Application on DOM Ready
     window.addEventListener('DOMContentLoaded', () => {
       App.init();
     });
