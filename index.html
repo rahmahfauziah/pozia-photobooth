@@ -1225,6 +1225,7 @@
       { id: 'sunset-aura', cat: 'kpop', name: 'Sunset Aura Glow', desc: 'Aura Gradient Color Shift', thumb: 'linear-gradient(135deg, #FF9A8B, #FF6A88, #FF99AC)' },
 
       // Kategori: Retro & Film
+      { id: 'denim-stars', cat: 'retro', name: 'Scrapbook Denim & Stars', desc: 'Navy Corduroy & Chrome Pozia', thumb: '#1E2436' },
       { id: 'scrapbook-washi', cat: 'retro', name: 'Scrapbook Washi Tape', desc: 'Parchment with Pastel Tape Corners', thumb: '#FAF6F0' },
       { id: 'film-roll', cat: 'retro', name: '35mm Film Roll', desc: 'Classic Cinema Sprocket Holes', thumb: '#111113' },
       { id: 'newspaper', cat: 'retro', name: 'The Pozia Times', desc: 'Vintage Newsprint Editorial', thumb: '#F4ECD8' },
@@ -1705,8 +1706,14 @@
        =================================================== */
     const EditorStudio = {
       activeTab: 'frame',
+      denimFrameImage: null,
 
       init() {
+        if (!this.denimFrameImage) {
+          this.denimFrameImage = new Image();
+          this.denimFrameImage.onload = () => this.renderCanvas();
+          this.denimFrameImage.src = './assets/denim-star-frame.png';
+        }
         this.renderDesignerFramesGrid();
         this.renderCategoryPresets();
         this.renderCanvas();
@@ -1759,24 +1766,41 @@
           const isSelected = State.frameTheme === th.id;
           card.className = `p-2.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col gap-1.5 ${isSelected ? 'border-pozia-coral bg-pink-50/60 shadow-md ring-2 ring-pozia-coral/30' : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
             }`;
-          card.innerHTML = `
-            <div class="w-full h-14 rounded-xl border border-gray-200/60 shadow-inner flex items-center justify-center p-1.5" style="background: ${th.thumb};">
-              <div class="w-7 h-10 rounded-sm bg-white/95 shadow-sm border border-black/5 flex flex-col justify-between p-1">
-                <div class="w-full h-2 rounded-xs bg-gray-200/70"></div>
-                <div class="w-full h-2 rounded-xs bg-gray-200/70"></div>
-                <div class="w-full h-1 rounded-xs bg-gray-300/50"></div>
+
+          if (th.id === 'denim-stars') {
+            card.innerHTML = `
+              <div class="w-full h-14 rounded-xl border border-gray-200/60 shadow-inner flex items-center justify-center p-1 overflow-hidden bg-[#1e2436]">
+                <img src="./assets/denim-star-frame.png" class="h-full w-auto object-contain rounded shadow-sm" alt="Denim Stars">
               </div>
-            </div>
-            <div class="flex flex-col">
-              <span class="font-extrabold text-xs text-pozia-charcoal truncate">${th.name}</span>
-              <span class="text-[10px] text-gray-400 truncate">${th.desc}</span>
-            </div>
-          `;
+              <div class="flex flex-col">
+                <span class="font-extrabold text-xs text-pozia-charcoal truncate">${th.name}</span>
+                <span class="text-[10px] text-gray-400 truncate">${th.desc}</span>
+              </div>
+            `;
+          } else {
+            card.innerHTML = `
+              <div class="w-full h-14 rounded-xl border border-gray-200/60 shadow-inner flex items-center justify-center p-1.5" style="background: ${th.thumb};">
+                <div class="w-7 h-10 rounded-sm bg-white/95 shadow-sm border border-black/5 flex flex-col justify-between p-1">
+                  <div class="w-full h-2 rounded-xs bg-gray-200/70"></div>
+                  <div class="w-full h-2 rounded-xs bg-gray-200/70"></div>
+                  <div class="w-full h-1 rounded-xs bg-gray-300/50"></div>
+                </div>
+              </div>
+              <div class="flex flex-col">
+                <span class="font-extrabold text-xs text-pozia-charcoal truncate">${th.name}</span>
+                <span class="text-[10px] text-gray-400 truncate">${th.desc}</span>
+              </div>
+            `;
+          }
+
           card.onclick = () => {
             if (th.id === 'custom-png') {
               document.getElementById('custom-frame-input').click();
             } else {
               State.frameTheme = th.id;
+              if (th.id === 'denim-stars') {
+                App.setLayout('1x3');
+              }
               this.renderDesignerFramesGrid();
               this.renderCanvas();
             }
@@ -1980,6 +2004,16 @@
           const rect = canvas.getBoundingClientRect();
           const scaleY = canvas.height / rect.height;
           const y = (e.clientY - rect.top) * scaleY;
+
+          if (State.frameTheme === 'denim-stars') {
+            let slot = 0;
+            if (y > canvas.height * 0.65) slot = 2;
+            else if (y > canvas.height * 0.35) slot = 1;
+            State.activeSlotToReplace = slot;
+            App.triggerGalleryUpload();
+            return;
+          }
+
           const count = State.photos.length;
           if (count === 0) return;
           const slotHeight = (canvas.height - 180) / count;
@@ -1994,6 +2028,95 @@
       /* Render the complete photo strip on canvas */
       renderToCanvas(canvas, isHighRes = false) {
         const ctx = canvas.getContext('2d');
+
+        // Custom Scrapbook Denim & Stars Frame
+        if (State.frameTheme === 'denim-stars') {
+          const width = isHighRes ? 1152 : 576;
+          const height = isHighRes ? 2048 : 1024;
+          canvas.width = width;
+          canvas.height = height;
+
+          const s = width / 576;
+          const denimSlots = [
+            { cx: 288 * s, cy: 208 * s, w: 260 * s, h: 205 * s, rot: -0.045 },
+            { cx: 288 * s, cy: 512 * s, w: 255 * s, h: 195 * s, rot: 0.035 },
+            { cx: 291 * s, cy: 806 * s, w: 275 * s, h: 205 * s, rot: -0.052 }
+          ];
+
+          // 1. Draw base corduroy color under slots
+          ctx.fillStyle = '#1e2436';
+          ctx.fillRect(0, 0, width, height);
+
+          // 2. Draw user photos under transparent slots
+          denimSlots.forEach((slot, idx) => {
+            const photo = State.photos[idx] !== undefined ? State.photos[idx] : State.photos[0];
+            if (photo) {
+              if (photo instanceof HTMLImageElement && !photo.complete) {
+                photo.onload = () => EditorStudio.renderCanvas();
+              }
+              ctx.save();
+              ctx.translate(slot.cx, slot.cy);
+              ctx.rotate(slot.rot);
+
+              if (ctx.filter !== undefined && State.currentFilter) {
+                ctx.filter = State.currentFilter.css;
+              }
+
+              const pW = photo.videoWidth || photo.naturalWidth || photo.width;
+              const pH = photo.videoHeight || photo.naturalHeight || photo.height;
+              if (pW && pH) {
+                const imgRatio = pW / pH;
+                const slotRatio = slot.w / slot.h;
+                let sW, sH, sX, sY;
+                if (imgRatio > slotRatio) {
+                  sH = pH; sW = pH * slotRatio;
+                  sX = (pW - sW) / 2; sY = 0;
+                } else {
+                  sW = pW; sH = pW / slotRatio;
+                  sX = 0; sY = (pH - sH) / 2;
+                }
+                ctx.drawImage(photo, sX, sY, sW, sH, -slot.w / 2, -slot.h / 2, slot.w, slot.h);
+              }
+              ctx.restore();
+            }
+          });
+
+          // 3. Draw Denim Frame with clips, pins, stars, and chrome POZIA logo on top
+          if (this.denimFrameImage && this.denimFrameImage.complete && this.denimFrameImage.naturalWidth > 0) {
+            ctx.drawImage(this.denimFrameImage, 0, 0, width, height);
+          } else {
+            if (!this.denimFrameImage) {
+              this.denimFrameImage = new Image();
+              this.denimFrameImage.onload = () => this.renderCanvas();
+              this.denimFrameImage.src = './assets/denim-star-frame.png';
+            }
+          }
+
+          // 4. Render stickers & doodles if on high-res export
+          if (isHighRes) {
+            const previewCanvas = document.getElementById('editor-preview-canvas');
+            const scale = width / previewCanvas.width;
+            State.stickers.forEach(stk => {
+              ctx.save();
+              ctx.translate(stk.x * scale, stk.y * scale);
+              ctx.rotate((stk.rotation * Math.PI) / 180);
+              ctx.scale(stk.scale * scale, stk.scale * scale);
+              if (stk.icon) {
+                ctx.font = '28px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(stk.icon, 0, 0);
+              }
+              ctx.restore();
+            });
+            const doodleCanvas = document.getElementById('doodle-canvas');
+            if (doodleCanvas) {
+              ctx.drawImage(doodleCanvas, 0, 0, width, height);
+            }
+          }
+          return;
+        }
+
         let width = isHighRes ? 1400 : 440;
         let height;
 
