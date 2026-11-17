@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pozia-v2.6.0';
+const CACHE_NAME = 'pozia-v2.7.0';
 const ASSETS_TO_CACHE = [
   './manifest.json'
 ];
