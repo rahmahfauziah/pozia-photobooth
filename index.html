@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Pozia">
-  <meta name="description" content="Production-ready Korean & Y2K style Photobooth & Photo Strip Studio for Workstations and Mobile">
+  <meta name="description" content="Production-ready Korean & Y2K style Photobooth & Photo Strip Studio with Adorable Designer Frames">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='128' fill='%23FF5A79'/%3E%3Ccircle cx='256' cy='256' r='90' fill='%23FFFFFF'/%3E%3Ccircle cx='256' cy='256' r='60' fill='%23FF5A79'/%3E%3Ccircle cx='380' cy='140' r='35' fill='%239B87F5'/%3E%3C/svg%3E">
 
@@ -76,14 +76,19 @@
 
     /* Washi Tape Effect */
     .washi-tape-pink {
-      background: rgba(255, 90, 121, 0.55);
+      background: rgba(255, 90, 121, 0.6);
       backdrop-filter: blur(2px);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
     }
     .washi-tape-yellow {
-      background: rgba(255, 214, 10, 0.65);
+      background: rgba(255, 214, 10, 0.7);
       backdrop-filter: blur(2px);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    }
+    .washi-tape-mint {
+      background: rgba(6, 214, 160, 0.65);
+      backdrop-filter: blur(2px);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
     }
 
     /* Shutter Button Glow Pulse */
@@ -130,7 +135,7 @@
       <div>
         <div class="flex items-center gap-2">
           <span class="font-extrabold text-xl tracking-tight text-pozia-charcoal">Pozia</span>
-          <span class="px-2 py-0.5 rounded-full bg-pozia-coral/10 text-pozia-coral text-[10px] font-extrabold tracking-wider uppercase">Studio v2</span>
+          <span class="px-2 py-0.5 rounded-full bg-pozia-coral/10 text-pozia-coral text-[10px] font-extrabold tracking-wider uppercase">Studio v2.2</span>
         </div>
         <span class="text-[10px] uppercase tracking-widest text-gray-400 font-semibold block -mt-0.5">Korean & Y2K Photobooth</span>
       </div>
@@ -138,6 +143,11 @@
 
     <!-- Navigation Status & Actions -->
     <div class="flex items-center gap-2 md:gap-3">
+      <!-- Force Refresh Cache Button -->
+      <button onclick="App.forceRefresh()" title="Muat Ulang Versi Terbaru" class="px-2.5 py-1 text-xs font-semibold rounded-full bg-pink-50 text-pozia-coral hover:bg-pozia-coral hover:text-white transition-all">
+        🔄 Refresh Update
+      </button>
+
       <!-- Bilingual Switcher Pill -->
       <button id="lang-btn" onclick="App.toggleLanguage()" class="px-3 py-1.5 text-xs font-bold rounded-full bg-pozia-softgray text-pozia-charcoal hover:bg-pozia-coral hover:text-white transition-all shadow-sm">
         ID | EN
@@ -164,7 +174,7 @@
     <!-- STAGE 1: HOME WORKSTATION (BERANDA)                   -->
     <!-- ====================================================== -->
     <section id="stage-home" class="flex-1 w-full flex flex-col md:flex-row overflow-y-auto no-scrollbar">
-      <!-- Left Hero Column (50% on desktop) -->
+      <!-- Left Hero Column -->
       <div class="w-full md:w-1/2 p-6 md:p-12 flex flex-col justify-center gap-6">
         <div class="flex items-center gap-2">
           <span class="px-3 py-1 rounded-full bg-pozia-coral/10 text-pozia-coral text-xs font-extrabold tracking-wide uppercase">
@@ -176,11 +186,11 @@
         </div>
 
         <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-pozia-charcoal leading-tight">
-          Bikin Photo Strip Estetik & Purikura Ala Korea.
+          Bikin Photo Strip Lucu & Purikura Ala Korea.
         </h1>
 
         <p class="text-sm md:text-base text-gray-500 leading-relaxed max-w-lg">
-          Studio foto interaktif dengan 12+ tema bingkai desainer (Checker, Y2K Chrome, Coquette, Washi Tape), 24 filter warna, stiker lucu, purikura doodle pen, serta export foto Ultra HD & video BTS jernih tanpa blur!
+          Studio foto interaktif dengan 15+ tema bingkai super menggemaskan (Pita Stroberi, Kotak Susu Korea, K-Pop Toploader, Meow Cat, Teddy Bakery, Y2K Cyber), 24 filter warna, spidol coret Purikura, dan export foto Ultra HD!
         </p>
 
         <!-- CTA Action Buttons -->
@@ -240,34 +250,29 @@
         </div>
       </div>
 
-      <!-- Right Visual Studio Showcase (50% on desktop) with Tilted Photo Strips & Washi Tape -->
+      <!-- Right Visual Studio Showcase -->
       <div class="w-full md:w-1/2 studio-dot-grid p-6 md:p-12 flex items-center justify-center relative overflow-hidden">
-        <!-- Floating Ambient Glow -->
         <div class="absolute w-72 h-72 rounded-full bg-pink-200/40 blur-3xl pointer-events-none"></div>
 
         <!-- Showcase Strips Cluster -->
-        <div class="relative flex items-center justify-center w-full max-w-md h-[460px]">
-          <!-- Tilted Left Strip (Checkerboard + Washi Tape) -->
-          <div class="absolute transform -rotate-6 -translate-x-16 bg-white p-2.5 rounded-2xl shadow-2xl border border-gray-100 flex flex-col gap-2 w-32 md:w-36 transition-transform hover:scale-105 duration-300">
-            <!-- Washi Tape Accent -->
+        <div class="relative flex items-center justify-center w-full max-w-md h-[480px]">
+          <!-- Tilted Left Strip (Coquette Strawberry) -->
+          <div class="absolute transform -rotate-6 -translate-x-16 bg-[#FFE8EC] p-3 rounded-2xl shadow-2xl border-2 border-pink-200 flex flex-col gap-2 w-32 md:w-36 transition-transform hover:scale-105 duration-300">
             <div class="absolute -top-3 left-4 w-12 h-5 washi-tape-pink -rotate-12 rounded-sm pointer-events-none"></div>
-            
-            <div class="h-20 bg-gradient-to-b from-pink-200 to-pink-100 rounded-xl flex items-center justify-center text-2xl">🎀</div>
-            <div class="h-20 bg-gradient-to-b from-purple-200 to-purple-100 rounded-xl flex items-center justify-center text-2xl">✨</div>
-            <div class="h-20 bg-gradient-to-b from-yellow-200 to-yellow-100 rounded-xl flex items-center justify-center text-2xl">💖</div>
-            <div class="text-center font-handwriting text-xs text-gray-500 pt-1">pozia korean photobox</div>
+            <div class="h-20 bg-white/80 rounded-xl flex items-center justify-center text-2xl shadow-inner">🍓</div>
+            <div class="h-20 bg-white/80 rounded-xl flex items-center justify-center text-2xl shadow-inner">🎀</div>
+            <div class="h-20 bg-white/80 rounded-xl flex items-center justify-center text-2xl shadow-inner">💖</div>
+            <div class="text-center font-handwriting text-xs text-pink-600 font-bold pt-1">sweet strawberry</div>
           </div>
 
-          <!-- Tilted Right Strip (Film Roll + Washi Tape) -->
-          <div class="absolute transform rotate-6 translate-x-16 bg-[#111113] p-2.5 rounded-2xl shadow-2xl border border-gray-800 flex flex-col gap-2 w-32 md:w-36 transition-transform hover:scale-105 duration-300 z-10">
-            <!-- Washi Tape Accent -->
+          <!-- Tilted Right Strip (Toploader K-Pop Deco) -->
+          <div class="absolute transform rotate-6 translate-x-16 bg-[#F3E8FF] p-3 rounded-2xl shadow-2xl border-2 border-purple-200 flex flex-col gap-2 w-32 md:w-36 transition-transform hover:scale-105 duration-300 z-10">
             <div class="absolute -top-3 right-4 w-12 h-5 washi-tape-yellow rotate-12 rounded-sm pointer-events-none"></div>
-
-            <div class="h-20 bg-gradient-to-b from-cyan-900 to-cyan-950 rounded-xl flex items-center justify-center text-2xl text-cyan-300">🕶️</div>
-            <div class="h-20 bg-gradient-to-b from-fuchsia-900 to-fuchsia-950 rounded-xl flex items-center justify-center text-2xl text-pink-300">SLAY</div>
-            <div class="h-20 bg-gradient-to-b from-emerald-900 to-emerald-950 rounded-xl flex items-center justify-center text-2xl text-emerald-300">✦</div>
-            <div class="flex justify-between items-center px-1 text-[9px] font-digital text-amber-500 pt-1">
-              <span>01A</span>
+            <div class="h-20 bg-white/80 rounded-xl flex items-center justify-center text-2xl shadow-inner">✨</div>
+            <div class="h-20 bg-white/80 rounded-xl flex items-center justify-center text-2xl shadow-inner">🐰</div>
+            <div class="h-20 bg-white/80 rounded-xl flex items-center justify-center text-2xl shadow-inner">✦</div>
+            <div class="flex justify-between items-center px-1 text-[9px] font-digital text-purple-600 font-bold pt-1">
+              <span>MY BIAS ♡</span>
               <span>'26 11 17</span>
             </div>
           </div>
@@ -279,7 +284,7 @@
     <!-- STAGE 2: UPGRADED CAMERA STUDIO (STUDIO KAMERA)        -->
     <!-- ====================================================== -->
     <section id="stage-camera" class="hidden flex-1 w-full flex flex-col md:flex-row bg-pozia-dark text-white overflow-hidden">
-      <!-- Left / Center Main Stage: Viewfinder (58% width on desktop) -->
+      <!-- Left / Center Main Stage: Viewfinder -->
       <div class="w-full md:w-[58%] h-[55vh] md:h-full flex flex-col relative bg-black/50 justify-between p-4 md:p-6 overflow-hidden">
         <!-- Viewfinder Top Bar -->
         <div class="flex items-center justify-between z-20">
@@ -287,13 +292,11 @@
             &larr; <span data-i18n="back_home">Beranda</span>
           </button>
 
-          <!-- Current Pose Badge -->
           <div class="px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-xs font-extrabold tracking-wider flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-pozia-coral animate-ping"></span>
             <span id="pose-counter-text">POSE 1 / 4</span>
           </div>
 
-          <!-- Flip / Mirror Camera -->
           <button onclick="CameraStudio.flipCamera()" class="w-9 h-9 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-sm hover:bg-white/20 transition-all" title="Flip Kamera">
             🔄
           </button>
@@ -302,10 +305,8 @@
         <!-- Live Viewfinder Aspect Container -->
         <div class="flex-1 flex items-center justify-center relative my-2">
           <div id="camera-aspect-wrapper" class="w-full max-w-xl max-h-[80%] aspect-[4/3] rounded-3xl overflow-hidden relative shadow-2xl bg-black border border-white/15 flex items-center justify-center">
-            <!-- Video Feed -->
             <video id="live-video" autoplay playsinline muted class="w-full h-full object-cover transform scale-x-[-1] transition-all duration-300"></video>
 
-            <!-- Countdown Overlay -->
             <div id="countdown-overlay" class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-150 z-30">
               <span id="countdown-number" class="text-9xl md:text-[140px] font-extrabold text-white drop-shadow-[0_4px_30px_rgba(255,90,121,0.9)] scale-150 transition-transform">
                 3
@@ -336,15 +337,13 @@
           </div>
         </div>
 
-        <!-- Viewfinder Live Filter Bar (Horizontal Scroll) -->
+        <!-- Viewfinder Live Filter Bar -->
         <div class="z-20">
-          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1" id="camera-filter-dock">
-            <!-- Populated via JS -->
-          </div>
+          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1" id="camera-filter-dock"></div>
         </div>
       </div>
 
-      <!-- Right Control Panel: Rich Studio Controls (42% width on desktop) -->
+      <!-- Right Control Panel: Rich Studio Controls -->
       <div class="w-full md:w-[42%] h-[45vh] md:h-full bg-pozia-dark/90 backdrop-blur-md border-t md:border-t-0 md:border-l border-white/10 p-5 md:p-8 flex flex-col justify-between overflow-y-auto no-scrollbar gap-5">
         <div>
           <h2 class="text-base font-extrabold text-white mb-4 flex items-center gap-2">
@@ -352,7 +351,6 @@
           </h2>
 
           <div class="flex flex-col gap-4 text-xs">
-            <!-- Pose Count Selector -->
             <div>
               <label class="block text-gray-400 font-semibold mb-1.5" data-i18n="pose_count">Jumlah Pose:</label>
               <div class="grid grid-cols-4 gap-1.5">
@@ -363,7 +361,6 @@
               </div>
             </div>
 
-            <!-- Timer Selector (Off, 3s, 5s, 10s) -->
             <div>
               <label class="block text-gray-400 font-semibold mb-1.5" data-i18n="timer_label">Timer Countdown:</label>
               <div class="grid grid-cols-4 gap-1.5">
@@ -374,7 +371,6 @@
               </div>
             </div>
 
-            <!-- Screen Flash Color Selector -->
             <div>
               <label class="block text-gray-400 font-semibold mb-1.5" data-i18n="flash_color">Screen Flash Warna:</label>
               <div class="grid grid-cols-4 gap-1.5">
@@ -385,7 +381,6 @@
               </div>
             </div>
 
-            <!-- Digital Zoom & Exposure Sliders -->
             <div class="grid grid-cols-2 gap-3 pt-1">
               <div>
                 <div class="flex justify-between text-gray-400 mb-1">
@@ -405,14 +400,12 @@
           </div>
         </div>
 
-        <!-- Big Shutter & Actions Dock -->
         <div class="flex items-center justify-between pt-4 border-t border-white/10">
           <button onclick="App.triggerGalleryUpload()" class="p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-all flex flex-col items-center gap-1" title="Upload dari galeri">
             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
             <span class="text-[10px] text-gray-400">Upload</span>
           </button>
 
-          <!-- Big Shutter Button -->
           <button id="shutter-btn" onclick="CameraStudio.startCaptureSequence()" class="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center bg-pozia-coral shutter-glow active:scale-95 transition-transform shadow-2xl">
             <div class="w-14 h-14 rounded-full bg-white/25"></div>
           </button>
@@ -429,34 +422,25 @@
     <!-- STAGE 3: RICH DESIGNER EDITOR WORKSTATION (STUDIO EDIT)-->
     <!-- ====================================================== -->
     <section id="stage-editor" class="hidden flex-1 w-full flex flex-col md:flex-row overflow-hidden bg-pozia-bg">
-      <!-- Left / Center Main Stage: Interactive Canvas Workstation (58% width on desktop) -->
+      <!-- Left / Center Main Stage: Interactive Canvas Workstation -->
       <div class="w-full md:w-[58%] h-[50vh] md:h-full studio-dot-grid p-4 md:p-8 flex flex-col items-center justify-center relative overflow-hidden">
-        
-        <!-- Interactive Preview Container -->
         <div id="interactive-preview-container" class="relative transition-all duration-300 shadow-2xl rounded-2xl overflow-hidden bg-white max-h-[88%] flex items-center justify-center">
-          <!-- Main Photo Strip Canvas -->
           <canvas id="editor-preview-canvas" class="max-h-[75vh] w-auto h-auto block select-none"></canvas>
-
-          <!-- Interactive Stickers Layer -->
           <div id="sticker-interactive-layer" class="absolute inset-0 pointer-events-auto overflow-hidden"></div>
-
-          <!-- Purikura Doodle Canvas Layer -->
           <canvas id="doodle-canvas" class="absolute inset-0 pointer-events-none"></canvas>
         </div>
 
-        <!-- Slot Action Toolbar (Retake / Swap / Pan-Zoom) -->
         <div class="mt-3 px-4 py-2 rounded-full bg-white/95 backdrop-blur-md shadow-md border border-gray-100 flex items-center gap-2 text-xs">
-          <span class="text-pozia-coral font-bold">💡 Klik Foto di Strip:</span>
-          <span class="text-gray-500">Ganti Foto | Geser Urutan | Pan/Zoom</span>
+          <span class="text-pozia-coral font-bold">💡 Tips:</span>
+          <span class="text-gray-500">Klik slot foto di bingkai untuk mengganti / retake foto!</span>
         </div>
       </div>
 
-      <!-- Right Control Panel: 5 Tabs Studio Dock (42% width on desktop) -->
+      <!-- Right Control Panel: 5 Tabs Studio Dock -->
       <div class="w-full md:w-[42%] h-[50vh] md:h-full bg-white border-t md:border-t-0 md:border-l border-gray-100 flex flex-col justify-between overflow-hidden shadow-sm">
         
         <!-- Top Tab Bar & Random Vibe / Finish CTAs -->
         <div class="border-b border-gray-100 px-3 py-2 flex items-center justify-between bg-white z-10">
-          <!-- 5 Tabs Buttons -->
           <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
             <button onclick="EditorStudio.switchTab('frame')" id="tab-btn-frame" class="px-3 py-2 text-xs font-bold text-pozia-coral border-b-2 border-pozia-coral transition-colors flex items-center gap-1 whitespace-nowrap">
               🖼️ <span data-i18n="tab_frame">Bingkai</span>
@@ -475,7 +459,6 @@
             </button>
           </div>
 
-          <!-- Quick Actions -->
           <div class="flex items-center gap-2">
             <button onclick="EditorStudio.randomVibe()" title="Acak Vibe" class="px-2.5 py-1.5 rounded-xl bg-pozia-lilac/10 text-pozia-lilac text-xs font-bold hover:bg-pozia-lilac hover:text-white transition-all flex items-center gap-1">
               🎲 <span class="hidden sm:inline" data-i18n="random_vibe">Acak</span>
@@ -489,14 +472,19 @@
         <!-- Scrollable Tab Content Area -->
         <div class="flex-1 overflow-y-auto no-scrollbar p-5">
           
-          <!-- TAB 1: BINGKAI (12+ DESIGNER FRAMES WITH PREVIEW THUMBNAILS) -->
+          <!-- TAB 1: BINGKAI (15+ SUPER CUTE DESIGNER FRAMES) -->
           <div id="tab-content-frame" class="flex flex-col gap-4">
-            <div>
-              <h3 class="text-xs font-extrabold uppercase tracking-wider text-gray-400 mb-2">Tema Bingkai Desainer:</h3>
-              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="designer-frames-grid">
-                <!-- Populated via JS with miniature visual cards -->
-              </div>
+            <!-- Category Filter Chips -->
+            <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+              <button onclick="EditorStudio.setFrameCategory('all')" id="frame-cat-all" class="px-3 py-1 text-xs font-bold rounded-full bg-pozia-coral text-white whitespace-nowrap shadow-sm">Semua</button>
+              <button onclick="EditorStudio.setFrameCategory('cute')" id="frame-cat-cute" class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pozia-coral whitespace-nowrap">Super Lucu 🎀</button>
+              <button onclick="EditorStudio.setFrameCategory('kpop')" id="frame-cat-kpop" class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pozia-coral whitespace-nowrap">K-Pop & Y2K ✨</button>
+              <button onclick="EditorStudio.setFrameCategory('retro')" id="frame-cat-retro" class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pozia-coral whitespace-nowrap">Retro & Aesthetic 🎞️</button>
+              <button onclick="EditorStudio.setFrameCategory('solid')" id="frame-cat-solid" class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pozia-coral whitespace-nowrap">Warna Polos 🎨</button>
             </div>
+
+            <!-- Frames Grid with Visual Preview Thumbnails -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="designer-frames-grid"></div>
 
             <!-- Custom Solid Color Bar (for Classic Frame) -->
             <div id="classic-color-section" class="pt-2 border-t border-gray-100 flex items-center gap-2">
@@ -513,9 +501,8 @@
             </div>
           </div>
 
-          <!-- TAB 2: FILTER & EFEK (24 REAL-TIME FILTERS WITH VISUAL THUMBNAILS) -->
+          <!-- TAB 2: FILTER & EFEK -->
           <div id="tab-content-filter" class="hidden flex flex-col gap-4">
-            <!-- 5 Sub-Tabs -->
             <div class="flex items-center gap-1 bg-gray-100 p-1 rounded-xl">
               <button onclick="EditorStudio.setFilterCategory('beauty')" id="fcat-beauty" class="flex-1 py-1 text-[11px] font-bold rounded-lg bg-white text-pozia-charcoal shadow-sm">Beauty</button>
               <button onclick="EditorStudio.setFilterCategory('film')" id="fcat-film" class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">Film</button>
@@ -524,12 +511,8 @@
               <button onclick="EditorStudio.setFilterCategory('artistic')" id="fcat-artistic" class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">Pop</button>
             </div>
 
-            <!-- Filters Grid -->
-            <div id="filter-presets-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-2">
-              <!-- Populated via JS -->
-            </div>
+            <div id="filter-presets-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-2"></div>
 
-            <!-- Sliders: Intensity, Brightness, Contrast, Warmth -->
             <div class="flex flex-col gap-2.5 pt-2 border-t border-gray-100 text-xs">
               <div class="flex items-center gap-2">
                 <span class="w-20 text-gray-500 font-semibold" data-i18n="intensity">Intensitas:</span>
@@ -548,7 +531,6 @@
               </div>
             </div>
 
-            <!-- 4 Combinable Overlays -->
             <div class="pt-2 border-t border-gray-100 flex items-center gap-2 flex-wrap">
               <span class="text-xs text-gray-400 font-medium" data-i18n="lens_overlays">Efek Lensa:</span>
               <button onclick="EditorStudio.toggleOverlay('leak')" id="ovl-leak" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100">Light Leak</button>
@@ -558,16 +540,14 @@
             </div>
           </div>
 
-          <!-- TAB 3: STIKER (40+ INTERACTIVE STICKERS IN CATEGORIES) -->
+          <!-- TAB 3: STIKER (40+ INTERACTIVE STICKERS) -->
           <div id="tab-content-sticker" class="hidden flex flex-col gap-4">
             <div class="flex items-center justify-between">
               <span class="text-xs text-gray-500 font-medium" data-i18n="sticker_instruction">Klik stiker untuk menambah. Geser untuk memindahkan.</span>
               <button onclick="EditorStudio.clearStickers()" class="text-xs text-red-500 font-bold hover:underline" data-i18n="clear_stickers">Hapus Semua</button>
             </div>
 
-            <!-- Sticker Categories -->
             <div class="flex flex-col gap-3">
-              <!-- Y2K Chrome -->
               <div>
                 <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Y2K Chrome & Stars</span>
                 <div class="grid grid-cols-6 sm:grid-cols-8 gap-2">
@@ -582,7 +562,6 @@
                 </div>
               </div>
 
-              <!-- Coquette & Bows -->
               <div>
                 <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Coquette Bows & Cute</span>
                 <div class="grid grid-cols-6 sm:grid-cols-8 gap-2">
@@ -597,7 +576,6 @@
                 </div>
               </div>
 
-              <!-- Cute Pets & Props -->
               <div>
                 <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Cute Pets & Props</span>
                 <div class="grid grid-cols-6 sm:grid-cols-8 gap-2">
@@ -612,7 +590,6 @@
                 </div>
               </div>
 
-              <!-- Text Badges -->
               <div>
                 <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Text Badges</span>
                 <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
@@ -635,15 +612,11 @@
               </div>
             </div>
 
-            <!-- Pen Colors (10 Vibrant Purikura Colors) -->
             <div>
               <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Warna Spidol:</span>
-              <div class="flex items-center gap-2 flex-wrap" id="doodle-colors-bar">
-                <!-- Populated via JS -->
-              </div>
+              <div class="flex items-center gap-2 flex-wrap" id="doodle-colors-bar"></div>
             </div>
 
-            <!-- Brush Size & Neon Glow -->
             <div class="flex items-center justify-between pt-2 border-t border-gray-100">
               <div class="flex items-center gap-2">
                 <span class="text-xs text-gray-500 font-semibold">Ukuran:</span>
@@ -652,7 +625,6 @@
                 <button onclick="DoodleEngine.setSize(12)" id="brush-size-12" class="px-3 py-1 rounded-lg text-xs font-bold bg-gray-100 text-gray-700">Tebal</button>
               </div>
 
-              <!-- Neon Glow Toggle -->
               <label class="flex items-center gap-1.5 cursor-pointer">
                 <input type="checkbox" id="neon-glow-toggle" onchange="DoodleEngine.setNeonGlow(this.checked)" class="accent-pozia-coral w-4 h-4">
                 <span class="text-xs text-pozia-charcoal font-bold">Neon Glow ✨</span>
@@ -660,15 +632,13 @@
             </div>
           </div>
 
-          <!-- TAB 5: TEKS & CAP (CAPTION, DATE & BARCODE) -->
+          <!-- TAB 5: TEKS & CAP -->
           <div id="tab-content-caption" class="hidden flex flex-col gap-4">
-            <!-- Caption Input -->
             <div>
               <label class="block text-xs font-bold text-gray-600 mb-1" data-i18n="caption_label">Teks Caption Bawah</label>
               <input type="text" id="caption-input" value="Pozia Studio" oninput="EditorStudio.setCaption(this.value)" placeholder="Ketik caption strip..." class="w-full px-3 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:border-pozia-coral">
             </div>
 
-            <!-- 4 Font Choices -->
             <div>
               <span class="text-xs text-gray-400 font-medium block mb-1.5" data-i18n="font_style">Pilihan Font:</span>
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -679,7 +649,6 @@
               </div>
             </div>
 
-            <!-- Date Stamp Formats & Barcode -->
             <div class="pt-3 border-t border-gray-100 flex flex-col gap-2.5">
               <div class="flex items-center justify-between">
                 <span class="text-xs text-gray-600 font-semibold">Format Tanggal:</span>
@@ -706,7 +675,6 @@
     <!-- STAGE 4: HIGH-RES EXPORT & CRYSTAL-CLEAR HD BTS VIDEO  -->
     <!-- ====================================================== -->
     <section id="stage-export" class="hidden flex-1 w-full flex flex-col md:flex-row overflow-y-auto no-scrollbar bg-pozia-bg">
-      <!-- Left Stage: High-Res Image Preview (58% width on desktop) -->
       <div class="w-full md:w-[58%] studio-dot-grid p-6 md:p-10 flex flex-col items-center justify-center relative">
         <div class="bg-white p-3 rounded-2xl shadow-2xl border border-gray-100 max-h-[80vh] flex flex-col items-center">
           <img id="final-export-img" alt="Pozia Strip Ultra HD" class="max-h-[70vh] w-auto h-auto rounded-lg shadow-sm block select-none">
@@ -716,7 +684,6 @@
         </div>
       </div>
 
-      <!-- Right Stage: Download HD & Crystal-Clear HD BTS Video (42% width on desktop) -->
       <div class="w-full md:w-[42%] p-6 md:p-10 bg-white border-t md:border-t-0 md:border-l border-gray-100 flex flex-col justify-center gap-6">
         <div>
           <div class="flex items-center gap-2 mb-2">
@@ -728,7 +695,6 @@
           </p>
         </div>
 
-        <!-- Crystal-Clear HD BTS Video Player Card (720x960 WebM 4Mbps) -->
         <div id="bts-export-box" class="p-4 rounded-3xl bg-gradient-to-br from-purple-50 via-pink-50 to-white border border-purple-100 shadow-sm flex flex-col gap-3">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -741,7 +707,6 @@
             <span class="px-2 py-0.5 rounded-full bg-pozia-lilac text-white text-[10px] font-bold">4 Mbps HD</span>
           </div>
 
-          <!-- Video / Mini Canvas Player Loop -->
           <div class="w-full h-36 bg-black rounded-2xl overflow-hidden flex items-center justify-center relative">
             <canvas id="bts-loop-canvas" class="w-auto h-full object-contain"></canvas>
             <div class="absolute bottom-2 left-3 px-2 py-0.5 rounded bg-black/60 text-white text-[9px] font-mono">
@@ -755,7 +720,6 @@
           </button>
         </div>
 
-        <!-- Action Buttons -->
         <div class="flex flex-col gap-3">
           <button onclick="App.downloadFinalImage()" class="w-full py-4 px-6 rounded-2xl bg-pozia-coral text-white font-bold text-base shadow-xl shadow-pozia-coral/30 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center justify-center gap-3">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
@@ -843,9 +807,7 @@
         <button onclick="App.closeHistoryModal()" class="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200">&times;</button>
       </div>
 
-      <div id="history-list" class="flex-1 overflow-y-auto no-scrollbar flex flex-col gap-3 min-h-[140px]">
-        <!-- Populated via JS -->
-      </div>
+      <div id="history-list" class="flex-1 overflow-y-auto no-scrollbar flex flex-col gap-3 min-h-[140px]"></div>
 
       <div class="flex justify-between items-center pt-2 border-t border-gray-100 text-xs">
         <button onclick="HistoryManager.clearAll()" class="text-red-500 hover:underline font-semibold" data-i18n="clear_history">Hapus Riwayat</button>
@@ -859,7 +821,7 @@
   <!-- ======================================================== -->
   <script>
     /* ===================================================
-       1. WEB AUDIO API SYNTHESIZER (ZERO EXTERNAL ASSETS)
+       1. WEB AUDIO API SYNTHESIZER
        =================================================== */
     const SoundEngine = {
       ctx: null,
@@ -1040,22 +1002,33 @@
     };
 
     /* ===================================================
-       4. 12+ DESIGNER FRAME THEMES DEFINITIONS
+       4. 16 ADORABLE & KAWAII DESIGNER FRAMES
        =================================================== */
     const FrameThemes = [
-      { id: 'classic', name: 'Classic Solid', desc: 'Minimalist Studio Solid', thumb: '#FFFFFF' },
-      { id: 'sunset-aura', name: 'Sunset Aura', desc: 'Gradient Aura Glow', thumb: 'linear-gradient(135deg, #FF9A8B, #FF6A88, #FF99AC)' },
-      { id: 'holo-chrome', name: 'Holo Chrome', desc: 'Futuristic Gradient', thumb: 'linear-gradient(135deg, #E0C3FC, #8EC5FC, #FFDEE9)' },
-      { id: 'checker-bw', name: 'B&W Checker', desc: 'Classic Retro Checker', thumb: 'repeating-conic-gradient(#111 0% 25%, #FFF 0% 50%) 50% / 16px 16px' },
-      { id: 'checker-pink', name: 'Pink Checker', desc: 'Pastel Y2K Checker', thumb: 'repeating-conic-gradient(#FFD1DC 0% 25%, #FFF 0% 50%) 50% / 16px 16px' },
-      { id: 'coquette-bow', name: 'Coquette Lace', desc: 'Vector Bows & Hearts', thumb: '#FFF0F5' },
-      { id: 'y2k-cyber', name: 'Y2K Cyber', desc: 'Chrome Stars & Grid', thumb: '#E6F0FA' },
-      { id: 'kpop-photocard', name: 'Idol Photocard', desc: 'Holographic & Stamp', thumb: '#F5E6FF' },
-      { id: 'film-roll', name: '35mm Film Roll', desc: 'Analog Sprocket Holes', thumb: '#111113' },
-      { id: 'newspaper', name: 'The Pozia Times', desc: 'Vintage Editorial Print', thumb: '#F4ECD8' },
-      { id: 'gingham-picnic', name: 'Gingham Picnic', desc: 'Pastel Cloth Pattern', thumb: '#EBF4DD' },
-      { id: 'washi-tape', name: 'Scrapbook Tape', desc: 'Washi Tape Corners', thumb: '#FAF4EB' },
-      { id: 'custom-png', name: 'Upload Custom PNG', desc: 'Twibbon Transparent', thumb: '#F3F4F6' }
+      // Kategori: Super Lucu 🎀
+      { id: 'coquette-strawberry', cat: 'cute', name: 'Pita & Stroberi', desc: 'Coquette Bows & Sweet Strawberry', thumb: 'linear-gradient(135deg, #FFE8EC, #FFD1DC)', emoji: '🍓 🎀' },
+      { id: 'korean-milk', cat: 'cute', name: 'Kotak Susu Korea', desc: 'Strawberry Milk Ddalgi-Uyu', thumb: 'linear-gradient(135deg, #FFFDF5, #FFD1DC)', emoji: '🧃 🍓' },
+      { id: 'kawaii-bunny', cat: 'cute', name: 'Kelinci & Daisy', desc: 'Fluffy Bunny & Fresh Daisy', thumb: 'linear-gradient(135deg, #F0F3FA, #E2D4F0)', emoji: '🐰 🌼' },
+      { id: 'meow-cat', cat: 'cute', name: 'Kucing & Pink Paw', desc: 'Cute Kitten & Paw Prints', thumb: 'linear-gradient(135deg, #FFF9E6, #FFE5EC)', emoji: '🐱 🐾' },
+      { id: 'teddy-bakery', cat: 'cute', name: 'Teddy Bear Bakery', desc: 'Warm Bear & Croissant Cafe', thumb: 'linear-gradient(135deg, #F7EFE5, #EBD9C3)', emoji: '🧸 🥐' },
+      { id: 'cherry-pop', cat: 'cute', name: 'Cherry Pop Polka', desc: 'Glossy Twin Cherries & Polka', thumb: 'linear-gradient(135deg, #FFFDF9, #FFD6DC)', emoji: '🍒 🔴' },
+
+      // Kategori: K-Pop & Y2K ✨
+      { id: 'toploader-deco', cat: 'kpop', name: 'Idol Photocard Deco', desc: 'Wavy Sticker Ribbons & Stars', thumb: 'linear-gradient(135deg, #F3E8FF, #DDD6FE)', emoji: '💖 ✦' },
+      { id: 'dreamy-clouds', cat: 'kpop', name: 'Awan & Sayap Malaikat', desc: 'Soft Cloud Sky & Sparkle Halo', thumb: 'linear-gradient(135deg, #E0F2FE, #FCE7F3)', emoji: '☁️ ✨' },
+      { id: 'y2k-cyber', cat: 'kpop', name: 'Y2K Cyber Chrome', desc: 'Metallic Stars & Retro Butterfly', thumb: 'linear-gradient(135deg, #E2E8F0, #BAE6FD)', emoji: '✦ 🦋' },
+      { id: 'checker-pink', cat: 'kpop', name: 'Checker Pink Daisy', desc: 'Korean Pastel Pink Checker', thumb: 'repeating-conic-gradient(#FFD1DC 0% 25%, #FFF 0% 50%) 50% / 18px 18px', emoji: '🏁 🌸' },
+      { id: 'checker-lavender', cat: 'kpop', name: 'Checker Lavender', desc: 'Soft Lavender Checker & Ribbon', thumb: 'repeating-conic-gradient(#E2D4F0 0% 25%, #FFF 0% 50%) 50% / 18px 18px', emoji: '🏁 🎀' },
+      { id: 'sunset-aura', cat: 'kpop', name: 'Sunset Aura Glow', desc: 'Aura Gradient Color Shift', thumb: 'linear-gradient(135deg, #FF9A8B, #FF6A88, #FF99AC)', emoji: '🌅 ✨' },
+
+      // Kategori: Retro & Aesthetic 🎞️
+      { id: 'scrapbook-washi', cat: 'retro', name: 'Scrapbook Washi Tape', desc: 'Parchment with Pastel Tape Corners', thumb: '#FAF6F0', emoji: '📐 📝' },
+      { id: 'film-roll', cat: 'retro', name: '35mm Film Roll', desc: 'Classic Cinema Sprocket Holes', thumb: '#111113', emoji: '🎞️ 01A' },
+      { id: 'newspaper', cat: 'retro', name: 'The Pozia Times', desc: 'Vintage Newsprint Editorial', thumb: '#F4ECD8', emoji: '📰 🖋️' },
+
+      // Kategori: Warna Polos & Custom 🎨
+      { id: 'classic', cat: 'solid', name: 'Warna Polos / Solid', desc: 'Pilihan Warna Pastel Kustom', thumb: '#FFFFFF', emoji: '🎨 ⚪' },
+      { id: 'custom-png', cat: 'solid', name: 'Upload Twibbon PNG', desc: 'Bingkai Custom Transparan', thumb: '#F3F4F6', emoji: '📁 🖼️' }
     ];
 
     /* ===================================================
@@ -1067,18 +1040,19 @@
       targetPoseCount: 4,
       currentPoseIndex: 0,
       photos: [],
-      btsBurstGroups: [], // array of 4 bursts per pose
+      btsBurstGroups: [],
       currentFilter: FilterPresets.beauty[0],
       filterCategory: 'beauty',
       filterIntensity: 100,
       manualAdjust: { brightness: 0, contrast: 0, warmth: 0 },
       lensOverlays: { leak: false, grain: false, vignette: false, sparkle: false },
-      frameTheme: 'classic',
+      frameTheme: 'coquette-strawberry', // Default to super cute strawberry coquette!
+      frameCategory: 'all',
       frameColor: '#FFFFFF',
       customFrameImage: null,
       stickers: [],
       caption: 'Pozia Studio',
-      fontStyle: 'sans',
+      fontStyle: 'handwriting',
       dateFormat: 'format1',
       showBarcode: true,
       activeSlotToReplace: null,
@@ -1086,7 +1060,7 @@
     };
 
     /* ===================================================
-       6. PURIKURA DOODLE ENGINE (FREEHAND DRAWING)
+       6. PURIKURA DOODLE ENGINE
        =================================================== */
     const DoodleEngine = {
       canvas: null,
@@ -1095,7 +1069,7 @@
       color: '#FF5A79',
       size: 3,
       neonGlow: false,
-      paths: [], // { color, size, glow, points: [{x,y}, ...] }
+      paths: [],
       currentPath: null,
 
       init() {
@@ -1350,7 +1324,6 @@
         if (!video) return;
         const scaleX = this.facingMode === 'user' ? -this.zoomLevel : this.zoomLevel;
         video.style.transform = `scale(${scaleX}, ${this.zoomLevel})`;
-        // Exposure adjustment via CSS brightness
         const expBrightness = 1 + (this.exposureVal / 100);
         video.style.filter = `${State.currentFilter.css} brightness(${expBrightness})`;
       },
@@ -1405,7 +1378,6 @@
 
         const interval = setInterval(() => {
           if (seconds > 0) {
-            // Capture sharp HD burst frame (720px width) during countdown
             this.captureHDBurstFrame(currentBurst);
             seconds--;
             if (seconds > 0) {
@@ -1418,7 +1390,6 @@
             clearInterval(interval);
             overlay.classList.add('opacity-0');
 
-            // Trigger Screen Flash
             if (this.flashColor !== 'off') {
               const flash = document.getElementById('screen-flash');
               const flashBg = {
@@ -1431,10 +1402,7 @@
               setTimeout(() => flash.classList.remove('flash-active'), 350);
             }
 
-            // Shutter sound
             SoundEngine.playShutter();
-
-            // Capture 1 final burst frame + main photo
             this.captureHDBurstFrame(currentBurst);
             this.grabMainFrame();
             State.btsBurstGroups.push(currentBurst);
@@ -1555,18 +1523,35 @@
         }
       },
 
+      setFrameCategory(cat) {
+        State.frameCategory = cat;
+        ['all', 'cute', 'kpop', 'retro', 'solid'].forEach(c => {
+          const btn = document.getElementById(`frame-cat-${c}`);
+          if (btn) {
+            btn.className = c === cat
+              ? 'px-3 py-1 text-xs font-bold rounded-full bg-pozia-coral text-white whitespace-nowrap shadow-sm'
+              : 'px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pozia-coral whitespace-nowrap';
+          }
+        });
+        this.renderDesignerFramesGrid();
+      },
+
       renderDesignerFramesGrid() {
         const grid = document.getElementById('designer-frames-grid');
         grid.innerHTML = '';
-        FrameThemes.forEach(th => {
+        const list = State.frameCategory === 'all'
+          ? FrameThemes
+          : FrameThemes.filter(t => t.cat === State.frameCategory);
+
+        list.forEach(th => {
           const card = document.createElement('div');
           const isSelected = State.frameTheme === th.id;
           card.className = `p-2.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col gap-1.5 ${
-            isSelected ? 'border-pozia-coral bg-pink-50/50 shadow-md' : 'border-gray-200 bg-white hover:border-gray-300'
+            isSelected ? 'border-pozia-coral bg-pink-50/60 shadow-md ring-2 ring-pozia-coral/30' : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
           }`;
           card.innerHTML = `
-            <div class="w-full h-14 rounded-xl border border-gray-200 shadow-inner flex items-center justify-center text-xs font-extrabold" style="background: ${th.thumb};">
-              ${th.id === 'custom-png' ? '📁 PNG' : ''}
+            <div class="w-full h-14 rounded-xl border border-gray-200/80 shadow-inner flex items-center justify-center text-sm font-extrabold relative overflow-hidden" style="background: ${th.thumb};">
+              <span class="text-base drop-shadow-sm">${th.emoji || '✨'}</span>
             </div>
             <div class="flex flex-col">
               <span class="font-extrabold text-xs text-pozia-charcoal truncate">${th.name}</span>
@@ -1584,6 +1569,12 @@
           };
           grid.appendChild(card);
         });
+
+        // Show/hide solid color section
+        const colorSection = document.getElementById('classic-color-section');
+        if (colorSection) {
+          colorSection.style.display = (State.frameTheme === 'classic') ? 'flex' : 'none';
+        }
       },
 
       setFrameColor(c) {
@@ -1656,8 +1647,8 @@
           ...FilterPresets.beauty, ...FilterPresets.film, ...FilterPresets.vintage, ...FilterPresets.aesthetic, ...FilterPresets.artistic
         ];
         State.currentFilter = allFilters[Math.floor(Math.random() * allFilters.length)];
-        const themes = FrameThemes.filter(t => t.id !== 'custom-png');
-        State.frameTheme = themes[Math.floor(Math.random() * themes.length)].id;
+        const cuteThemes = FrameThemes.filter(t => t.id !== 'custom-png');
+        State.frameTheme = cuteThemes[Math.floor(Math.random() * cuteThemes.length)].id;
         
         this.renderDesignerFramesGrid();
         this.renderCategoryPresets();
@@ -1806,13 +1797,13 @@
         canvas.width = width;
         canvas.height = height;
 
-        // 1. Draw Designer Frame Background Patterns
-        this.drawFramePattern(ctx, width, height, isHighRes);
+        // 1. Draw Adorable Designer Frame Background Patterns
+        this.drawCuteFramePattern(ctx, width, height, isHighRes);
 
         // 2. Compute Slots Coordinates
-        const marginX = State.frameTheme === 'film-roll' ? width * 0.11 : width * 0.07;
-        const topMargin = State.frameTheme === 'newspaper' ? width * 0.17 : width * 0.07;
-        const bottomMargin = width * 0.22;
+        const marginX = State.frameTheme === 'film-roll' ? width * 0.11 : width * 0.08;
+        const topMargin = (State.frameTheme === 'newspaper' || State.frameTheme === 'korean-milk') ? width * 0.17 : width * 0.08;
+        const bottomMargin = width * 0.23;
         const availableW = width - marginX * 2;
         const availableH = height - topMargin - bottomMargin;
 
@@ -1839,13 +1830,14 @@
         // 3. Draw Photos with Filter into Slots (Object-Fit: Cover)
         slotRects.forEach((rect, idx) => {
           ctx.save();
+          
+          // Cute rounded inner photo corners
           ctx.beginPath();
-          ctx.rect(rect.x, rect.y, rect.w, rect.h);
+          ctx.roundRect(rect.x, rect.y, rect.w, rect.h, width * 0.02);
           ctx.clip();
 
           const photo = State.photos[idx];
           if (photo) {
-            // Filter + manual adjustments
             if (ctx.filter !== undefined && State.currentFilter) {
               const expB = 1 + (State.manualAdjust.brightness / 100);
               const expC = 1 + (State.manualAdjust.contrast / 100);
@@ -1860,7 +1852,7 @@
             ctx.drawImage(photo, drawX, drawY, pW * ratio, pH * ratio);
             ctx.filter = 'none';
 
-            // Combinable Overlays
+            // Overlays
             if (State.lensOverlays.leak) {
               const grad = ctx.createRadialGradient(rect.x, rect.y, 10, rect.x, rect.y, rect.w);
               grad.addColorStop(0, 'rgba(255, 90, 30, 0.45)');
@@ -1886,31 +1878,28 @@
               ctx.fillText('✧', rect.x + rect.w * 0.1, rect.y + rect.h * 0.85);
             }
           } else {
-            ctx.fillStyle = '#E5E4DE';
+            ctx.fillStyle = '#F3F0EA';
             ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
-            ctx.fillStyle = '#9E9D98';
+            ctx.fillStyle = '#B5B1A8';
             ctx.font = `bold ${width * 0.04}px sans-serif`;
             ctx.textAlign = 'center';
             ctx.fillText(`+ Pose ${idx + 1}`, rect.x + rect.w / 2, rect.y + rect.h / 2);
           }
 
-          // Washi tape corners on photo slots (Scrapbook Theme)
-          if (State.frameTheme === 'washi-tape') {
-            ctx.fillStyle = 'rgba(255, 90, 121, 0.6)';
-            ctx.fillRect(rect.x - 8, rect.y - 4, width * 0.12, width * 0.035);
-          }
-
           ctx.restore();
+
+          // 4. Draw slot-specific cute border decorations
+          this.drawSlotAccents(ctx, rect, idx, width, isHighRes);
         });
 
-        // 4. Custom PNG Overlay
+        // 5. Custom PNG Overlay
         if (State.frameTheme === 'custom-png' && State.customFrameImage) {
           ctx.drawImage(State.customFrameImage, 0, 0, width, height);
         }
 
-        // 5. Bottom Caption
+        // 6. Bottom Caption
         if (State.caption) {
-          const capY = height - bottomMargin * 0.45;
+          const capY = height - bottomMargin * 0.42;
           ctx.fillStyle = (State.frameTheme === 'film-roll' || State.frameColor === '#111113') ? '#FFFFFF' : '#1E1E24';
           if (State.fontStyle === 'handwriting') ctx.font = `600 ${width * 0.075}px "Caveat", cursive`;
           else if (State.fontStyle === 'mono') ctx.font = `bold ${width * 0.038}px "Courier Prime", monospace`;
@@ -1920,8 +1909,8 @@
           ctx.fillText(State.caption, width / 2, capY);
         }
 
-        // 6. Date Stamp & Barcode
-        const dateY = height - bottomMargin * 0.18;
+        // 7. Date Stamp & Barcode
+        const dateY = height - bottomMargin * 0.16;
         if (State.dateFormat !== 'none') {
           ctx.fillStyle = '#FF7A00';
           ctx.font = `bold ${width * 0.03}px "Share Tech Mono", monospace`;
@@ -1937,7 +1926,7 @@
           ctx.fillText('POZIA STUDIO ||||| |||', width - marginX, dateY);
         }
 
-        // 7. Render Stickers & Purikura Doodle onto High-Res Export Canvas
+        // 8. Render Stickers & Purikura Doodle onto High-Res Export Canvas
         if (isHighRes) {
           const previewCanvas = document.getElementById('editor-preview-canvas');
           const scale = width / previewCanvas.width;
@@ -1962,29 +1951,207 @@
             ctx.restore();
           });
 
-          // Draw doodle paths
           DoodleEngine.redraw(ctx, scale);
         }
       },
 
-      drawFramePattern(ctx, width, height, isHighRes) {
+      /* Draw rich, super cute patterns programmatically */
+      drawCuteFramePattern(ctx, width, height, isHighRes) {
         const th = State.frameTheme;
-        if (th === 'newspaper') {
-          ctx.fillStyle = '#F4ECD8';
+
+        // 1. Pita & Stroberi Coquette
+        if (th === 'coquette-strawberry') {
+          ctx.fillStyle = '#FFE8EC';
           ctx.fillRect(0, 0, width, height);
-          ctx.fillStyle = '#1A1815';
-          ctx.font = `bold ${width * 0.046}px "Playfair Display", serif`;
-          ctx.textAlign = 'center';
-          ctx.fillText("THE POZIA TIMES", width / 2, width * 0.09);
-          ctx.font = `italic ${width * 0.022}px "Playfair Display", serif`;
-          ctx.fillText("SPECIAL EDITION — ALL MEMORIES CAPTURED", width / 2, width * 0.125);
-          ctx.strokeStyle = '#2B2620';
-          ctx.lineWidth = isHighRes ? 3 : 1;
+
+          // Scalloped lace border
+          ctx.fillStyle = '#FFFFFF';
+          const r = width * 0.022;
+          for (let x = r; x < width; x += r * 2) {
+            ctx.beginPath();
+            ctx.arc(x, r, r, 0, Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(x, height - r, r, Math.PI, 0);
+            ctx.fill();
+          }
+
+          // Scattered cute strawberries and bows
+          ctx.font = `${width * 0.045}px sans-serif`;
+          ctx.fillText('🎀', width * 0.03, width * 0.065);
+          ctx.fillText('🎀', width * 0.88, width * 0.065);
+          ctx.fillText('🍓', width * 0.03, height * 0.45);
+          ctx.fillText('🍓', width * 0.88, height * 0.45);
+          ctx.fillText('💖', width * 0.03, height * 0.8);
+          ctx.fillText('💖', width * 0.88, height * 0.8);
+        }
+        // 2. Kotak Susu Korea (Strawberry Milk)
+        else if (th === 'korean-milk') {
+          ctx.fillStyle = '#FFFDF5';
+          ctx.fillRect(0, 0, width, height);
+
+          // Pink milk wave bottom
+          ctx.fillStyle = '#FFD1DC';
           ctx.beginPath();
-          ctx.moveTo(width * 0.06, width * 0.14);
-          ctx.lineTo(width * 0.94, width * 0.14);
+          ctx.moveTo(0, height - width * 0.35);
+          ctx.bezierCurveTo(width * 0.3, height - width * 0.4, width * 0.7, height - width * 0.3, width, height - width * 0.36);
+          ctx.lineTo(width, height);
+          ctx.lineTo(0, height);
+          ctx.fill();
+
+          // Cute Milk Header
+          ctx.fillStyle = '#FF5A79';
+          ctx.font = `bold ${width * 0.038}px "Plus Jakarta Sans", sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.fillText('🍓 딸기우유 • STRAWBERRY MILK 🍓', width / 2, width * 0.08);
+
+          ctx.font = `600 ${width * 0.024}px sans-serif`;
+          ctx.fillStyle = '#7E66DE';
+          ctx.fillText('100% FRESH & SWEET MEMORIES', width / 2, width * 0.12);
+        }
+        // 3. Idol Photocard Deco (Toploader Deco)
+        else if (th === 'toploader-deco') {
+          const grad = ctx.createLinearGradient(0, 0, width, height);
+          grad.addColorStop(0, '#F3E8FF');
+          grad.addColorStop(0.5, '#E0E7FF');
+          grad.addColorStop(1, '#FCE7F3');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, width, height);
+
+          // Wavy holographic ribbon stickers along border
+          ctx.strokeStyle = 'rgba(255, 90, 121, 0.45)';
+          ctx.lineWidth = width * 0.015;
+          ctx.beginPath();
+          for (let y = 0; y < height; y += 40) {
+            ctx.lineTo(width * 0.03 + Math.sin(y * 0.05) * 8, y);
+          }
           ctx.stroke();
-        } else if (th === 'film-roll') {
+
+          ctx.strokeStyle = 'rgba(155, 135, 245, 0.45)';
+          ctx.beginPath();
+          for (let y = 0; y < height; y += 40) {
+            ctx.lineTo(width * 0.97 - Math.sin(y * 0.05) * 8, y);
+          }
+          ctx.stroke();
+
+          // Deco stickers
+          ctx.font = `${width * 0.042}px sans-serif`;
+          ctx.fillText('✦', width * 0.02, width * 0.06);
+          ctx.fillText('✨', width * 0.88, width * 0.06);
+          ctx.fillText('💖', width * 0.88, height * 0.4);
+          ctx.fillText('🐰', width * 0.02, height * 0.4);
+        }
+        // 4. Kelinci & Daisy
+        else if (th === 'kawaii-bunny') {
+          ctx.fillStyle = '#F0F3FA';
+          ctx.fillRect(0, 0, width, height);
+
+          ctx.font = `${width * 0.046}px sans-serif`;
+          ctx.fillText('🐰', width * 0.03, width * 0.07);
+          ctx.fillText('🐰', width * 0.88, width * 0.07);
+          ctx.fillText('🌼', width * 0.03, height * 0.35);
+          ctx.fillText('🌼', width * 0.88, height * 0.35);
+          ctx.fillText('🥕', width * 0.03, height * 0.7);
+          ctx.fillText('🥕', width * 0.88, height * 0.7);
+        }
+        // 5. Kucing & Pink Paw
+        else if (th === 'meow-cat') {
+          ctx.fillStyle = '#FFF9E6';
+          ctx.fillRect(0, 0, width, height);
+
+          ctx.font = `${width * 0.046}px sans-serif`;
+          ctx.fillText('🐱', width * 0.03, width * 0.07);
+          ctx.fillText('🐱', width * 0.88, width * 0.07);
+          ctx.fillText('🐾', width * 0.03, height * 0.3);
+          ctx.fillText('🐾', width * 0.88, height * 0.3);
+          ctx.fillText('🐾', width * 0.03, height * 0.6);
+          ctx.fillText('🐾', width * 0.88, height * 0.6);
+        }
+        // 6. Teddy Bear Bakery
+        else if (th === 'teddy-bakery') {
+          ctx.fillStyle = '#F7EFE5';
+          ctx.fillRect(0, 0, width, height);
+
+          ctx.font = `${width * 0.046}px sans-serif`;
+          ctx.fillText('🧸', width * 0.03, width * 0.07);
+          ctx.fillText('🥐', width * 0.88, width * 0.07);
+          ctx.fillText('☕', width * 0.03, height * 0.5);
+          ctx.fillText('🧸', width * 0.88, height * 0.5);
+        }
+        // 7. Cherry Pop Polka
+        else if (th === 'cherry-pop') {
+          ctx.fillStyle = '#FFFDF9';
+          ctx.fillRect(0, 0, width, height);
+
+          // Red polka dots
+          ctx.fillStyle = '#FFCCD5';
+          const dotSpacing = width * 0.08;
+          for (let y = dotSpacing / 2; y < height; y += dotSpacing) {
+            for (let x = dotSpacing / 2; x < width; x += dotSpacing) {
+              ctx.beginPath();
+              ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+
+          ctx.font = `${width * 0.046}px sans-serif`;
+          ctx.fillText('🍒', width * 0.03, width * 0.07);
+          ctx.fillText('🍒', width * 0.88, width * 0.07);
+        }
+        // 8. Awan & Sayap Malaikat
+        else if (th === 'dreamy-clouds') {
+          const grad = ctx.createLinearGradient(0, 0, 0, height);
+          grad.addColorStop(0, '#E0F2FE');
+          grad.addColorStop(1, '#FCE7F3');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, width, height);
+
+          ctx.font = `${width * 0.046}px sans-serif`;
+          ctx.fillText('☁️', width * 0.03, width * 0.07);
+          ctx.fillText('✨', width * 0.88, width * 0.07);
+          ctx.fillText('☁️', width * 0.88, height * 0.5);
+          ctx.fillText('✨', width * 0.03, height * 0.5);
+        }
+        // 9. Y2K Cyber Chrome
+        else if (th === 'y2k-cyber') {
+          ctx.fillStyle = '#E2E8F0';
+          ctx.fillRect(0, 0, width, height);
+          ctx.fillStyle = '#0284C7';
+          ctx.font = `bold ${width * 0.03}px "Share Tech Mono", monospace`;
+          ctx.textAlign = 'center';
+          ctx.fillText('★ 2000s CYBER ARCHIVE ★', width / 2, width * 0.05);
+
+          ctx.font = `${width * 0.04}px sans-serif`;
+          ctx.fillText('✦', width * 0.03, height * 0.4);
+          ctx.fillText('🦋', width * 0.88, height * 0.4);
+        }
+        // 10. Checker Pink & Lavender
+        else if (th === 'checker-pink' || th === 'checker-lavender') {
+          const checkSize = width * 0.045;
+          const c1 = th === 'checker-pink' ? '#FFD1DC' : '#E2D4F0';
+          for (let y = 0; y < height; y += checkSize) {
+            for (let x = 0; x < width; x += checkSize) {
+              ctx.fillStyle = ((x / checkSize + y / checkSize) % 2 === 0) ? c1 : '#FFFFFF';
+              ctx.fillRect(x, y, checkSize, checkSize);
+            }
+          }
+        }
+        // 11. Sunset Aura
+        else if (th === 'sunset-aura') {
+          const grad = ctx.createLinearGradient(0, 0, width, height);
+          grad.addColorStop(0, '#FF9A8B');
+          grad.addColorStop(0.5, '#FF6A88');
+          grad.addColorStop(1, '#FF99AC');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, width, height);
+        }
+        // 12. Scrapbook Washi
+        else if (th === 'scrapbook-washi') {
+          ctx.fillStyle = '#FAF6F0';
+          ctx.fillRect(0, 0, width, height);
+        }
+        // 13. Film Roll
+        else if (th === 'film-roll') {
           ctx.fillStyle = '#111113';
           ctx.fillRect(0, 0, width, height);
           const holeW = width * 0.04;
@@ -1999,45 +2166,53 @@
             ctx.roundRect(width - width * 0.02 - holeW, y, holeW, holeH, 3);
             ctx.fill();
           }
-        } else if (th === 'sunset-aura') {
-          const grad = ctx.createLinearGradient(0, 0, width, height);
-          grad.addColorStop(0, '#FF9A8B');
-          grad.addColorStop(0.5, '#FF6A88');
-          grad.addColorStop(1, '#FF99AC');
-          ctx.fillStyle = grad;
+        }
+        // 14. Newspaper
+        else if (th === 'newspaper') {
+          ctx.fillStyle = '#F4ECD8';
           ctx.fillRect(0, 0, width, height);
-        } else if (th === 'holo-chrome') {
-          const grad = ctx.createLinearGradient(0, 0, width, height);
-          grad.addColorStop(0, '#E0C3FC');
-          grad.addColorStop(0.5, '#8EC5FC');
-          grad.addColorStop(1, '#FFDEE9');
-          ctx.fillStyle = grad;
-          ctx.fillRect(0, 0, width, height);
-        } else if (th === 'checker-bw' || th === 'checker-pink') {
-          const checkSize = width * 0.04;
-          const c1 = th === 'checker-bw' ? '#111113' : '#FFD1DC';
-          const c2 = '#FFFFFF';
-          for (let y = 0; y < height; y += checkSize) {
-            for (let x = 0; x < width; x += checkSize) {
-              ctx.fillStyle = ((x / checkSize + y / checkSize) % 2 === 0) ? c1 : c2;
-              ctx.fillRect(x, y, checkSize, checkSize);
-            }
-          }
-        } else if (th === 'coquette-bow') {
-          ctx.fillStyle = '#FFF0F5';
-          ctx.fillRect(0, 0, width, height);
-          ctx.strokeStyle = '#FF5A79';
-          ctx.lineWidth = isHighRes ? 3 : 1.5;
-          ctx.strokeRect(width * 0.035, width * 0.035, width * 0.93, height - width * 0.07);
-        } else if (th === 'y2k-cyber') {
-          ctx.fillStyle = '#E6F0FA';
-          ctx.fillRect(0, 0, width, height);
-          ctx.fillStyle = '#00B4D8';
-          ctx.font = `bold ${width * 0.028}px "Share Tech Mono", monospace`;
-          ctx.fillText('✦ Y2K ARCHIVE ✦', width * 0.08, width * 0.05);
-        } else {
+          ctx.fillStyle = '#1A1815';
+          ctx.font = `bold ${width * 0.046}px "Playfair Display", serif`;
+          ctx.textAlign = 'center';
+          ctx.fillText("THE POZIA TIMES", width / 2, width * 0.09);
+          ctx.font = `italic ${width * 0.022}px "Playfair Display", serif`;
+          ctx.fillText("SPECIAL EDITION — ALL MEMORIES CAPTURED", width / 2, width * 0.125);
+          ctx.strokeStyle = '#2B2620';
+          ctx.lineWidth = isHighRes ? 3 : 1;
+          ctx.beginPath();
+          ctx.moveTo(width * 0.06, width * 0.14);
+          ctx.lineTo(width * 0.94, width * 0.14);
+          ctx.stroke();
+        }
+        // 15. Classic Solid
+        else {
           ctx.fillStyle = State.frameColor || '#FFFFFF';
           ctx.fillRect(0, 0, width, height);
+        }
+      },
+
+      /* Draw cute accents around each slot */
+      drawSlotAccents(ctx, rect, idx, width, isHighRes) {
+        const th = State.frameTheme;
+
+        // Washi tape corners for Scrapbook
+        if (th === 'scrapbook-washi') {
+          const tapeColors = ['rgba(255, 90, 121, 0.65)', 'rgba(255, 214, 10, 0.75)', 'rgba(6, 214, 160, 0.7)'];
+          ctx.fillStyle = tapeColors[idx % tapeColors.length];
+          ctx.fillRect(rect.x - 8, rect.y - 6, width * 0.12, width * 0.038);
+        }
+        // Film roll frame number
+        else if (th === 'film-roll') {
+          ctx.fillStyle = '#FFA500';
+          ctx.font = `bold ${width * 0.026}px "Share Tech Mono", monospace`;
+          ctx.textAlign = 'left';
+          ctx.fillText(`0${idx + 1}A  ▸`, rect.x + 8, rect.y + rect.h - 8);
+        }
+        // Toploader ribbon bow at top of first slot
+        else if (th === 'toploader-deco' && idx === 0) {
+          ctx.font = `${width * 0.05}px sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.fillText('🎀', rect.x + rect.w / 2, rect.y + 6);
         }
       },
 
@@ -2139,9 +2314,9 @@
 
       init() {
         if ('serviceWorker' in navigator) {
-          window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js').catch(() => {});
-          });
+          navigator.serviceWorker.register('sw.js').then((reg) => {
+            reg.update();
+          }).catch(() => {});
         }
 
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -2211,6 +2386,15 @@
 
         this.setLayout('1x4');
         I18N.apply('id');
+      },
+
+      forceRefresh() {
+        if ('caches' in window) {
+          caches.keys().then((names) => {
+            for (let name of names) caches.delete(name);
+          });
+        }
+        window.location.reload(true);
       },
 
       toggleLanguage() {
@@ -2294,14 +2478,13 @@
       downloadFinalImage() {
         const img = document.getElementById('final-export-img');
         const link = document.createElement('a');
-        link.download = `Pozia_UltraHD_${Date.now()}.png`;
+        link.download = `Pozia_Cute_${Date.now()}.png`;
         link.href = img.src;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
       },
 
-      /* Crystal-Clear HD BTS Video Loop & Export (720x960 WebM 4Mbps) */
       startBTSPlayerLoop() {
         const allFrames = State.btsBurstGroups.flat();
         if (allFrames.length === 0) {
@@ -2342,7 +2525,7 @@
         try {
           mediaRecorder = new MediaRecorder(stream, {
             mimeType: 'video/webm;codecs=vp9',
-            videoBitsPerSecond: 4000000 // 4 Mbps crystal-clear HD
+            videoBitsPerSecond: 4000000
           });
         } catch (e) {
           mediaRecorder = new MediaRecorder(stream, { videoBitsPerSecond: 4000000 });
@@ -2365,7 +2548,6 @@
 
         mediaRecorder.start();
 
-        // Loop through all frames twice for a smooth 4-5s HD video
         const loopCount = 2;
         let totalCycles = allFrames.length * loopCount;
         let cur = 0;
