@@ -102,13 +102,10 @@
 
     /* Shutter Button Glow Pulse */
     @keyframes studio-pulse {
-
-      0%,
-      100% {
+      0%, 100% {
         transform: scale(1);
         box-shadow: 0 0 0 0 rgba(255, 90, 121, 0.45);
       }
-
       50% {
         transform: scale(1.05);
         box-shadow: 0 0 0 16px rgba(255, 90, 121, 0);
@@ -128,12 +125,6 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
-
-    /* Interactive Sticker Selected Border */
-    .sticker-selected {
-      outline: 2px dashed #FF5A79;
-      outline-offset: 4px;
-    }
   </style>
 </head>
 
@@ -147,7 +138,7 @@
   <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
 
   <!-- Hidden Photo & PNG Frame Inputs -->
-  <input type="file" id="gallery-file-input" accept="image/*" class="hidden">
+  <input type="file" id="gallery-file-input" accept="image/*" multiple class="hidden">
   <input type="file" id="custom-frame-input" accept="image/png" class="hidden">
 
   <!-- ======================================================== -->
@@ -172,8 +163,6 @@
 
     <!-- Navigation Status & Actions -->
     <div class="flex items-center gap-2 md:gap-3">
-
-
       <!-- Bilingual Switcher Pill -->
       <button id="lang-btn" onclick="App.toggleLanguage()"
         class="px-3 py-1.5 text-xs font-bold rounded-full bg-pozia-softgray text-pozia-charcoal hover:bg-pozia-coral hover:text-white transition-all shadow-sm">
@@ -213,7 +202,8 @@
       <div class="w-full md:w-1/2 p-6 md:p-12 flex flex-col justify-center gap-6">
         <div>
           <div class="flex items-center gap-2 mb-1.5">
-            <span class="text-xs px-2.5 py-1 rounded-full bg-pink-100 text-pozia-coral font-bold tracking-wide" data-i18n="hero_badge">Abadikan Kenanganmu</span>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-pink-100 text-pozia-coral font-bold tracking-wide"
+              data-i18n="hero_badge">Abadikan Kenanganmu</span>
           </div>
           <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-pozia-charcoal">
             Pozia Studio
@@ -230,7 +220,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-            <span data-i18n="cta_camera">Mulai Foto</span>
+            <span data-i18n="cta_camera">Mulai Foto Sekarang</span>
           </button>
 
           <button onclick="App.startStudio('upload')"
@@ -245,13 +235,18 @@
 
         <!-- Layout Selector Cards Grid -->
         <div class="pt-4 flex flex-col gap-2.5">
-          <span class="text-xs font-bold uppercase tracking-wider text-gray-400" data-i18n="choose_layout">
-            Pilih Format Layout
-          </span>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-gray-400" data-i18n="choose_layout">
+              Pilih Format Layout
+            </span>
+            <span class="text-[11px] font-semibold text-pozia-coral bg-pink-50 px-2 py-0.5 rounded-full" id="home-layout-badge">
+              4 Foto Vertikal
+            </span>
+          </div>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
             <!-- 1x4 -->
             <div onclick="App.setLayout('1x4')" id="home-card-1x4"
-              class="p-3 rounded-2xl bg-white border-2 border-pozia-coral shadow-sm cursor-pointer hover:shadow-md transition-all flex flex-col items-center text-center gap-1.5">
+              class="p-3 rounded-2xl bg-white border-2 border-pozia-coral shadow-sm cursor-pointer hover:shadow-md transition-all flex flex-col items-center text-center gap-1.5 ring-2 ring-pozia-coral/20">
               <span class="font-extrabold text-sm text-pozia-charcoal">Strip 4 Pose</span>
               <span class="text-[10px] text-gray-400">1x4 Photobox</span>
             </div>
@@ -280,7 +275,12 @@
         <div id="pwa-install-banner"
           class="hidden p-4 rounded-2xl bg-gradient-to-r from-pozia-coral/10 to-pozia-lilac/10 border border-pozia-coral/20 flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <span class="text-2xl">📲</span>
+            <div class="w-9 h-9 rounded-xl bg-pozia-coral/15 flex items-center justify-center text-pozia-coral">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+            </div>
             <div>
               <h4 class="font-bold text-xs text-pozia-charcoal">Install Pozia App</h4>
               <p class="text-[10px] text-gray-500">Pasang di Desktop / HP untuk akses offline cepat</p>
@@ -293,37 +293,19 @@
         </div>
       </div>
 
-      <!-- Right Visual Studio Showcase -->
+      <!-- Right Visual Studio Showcase (Dynamic Real-Time Layout Preview) -->
       <div
-        class="w-full md:w-1/2 studio-dot-grid p-6 md:p-12 flex items-center justify-center relative overflow-hidden">
+        class="w-full md:w-1/2 studio-dot-grid p-6 md:p-12 flex flex-col items-center justify-center relative overflow-hidden">
         <div class="absolute w-72 h-72 rounded-full bg-pink-200/40 blur-3xl pointer-events-none"></div>
 
-        <!-- Showcase Strips Cluster -->
-        <div class="relative flex items-center justify-center w-full max-w-md h-[480px]">
-          <!-- Tilted Left Strip (Coquette Strawberry) -->
-          <div
-            class="absolute transform -rotate-6 -translate-x-16 bg-[#FFE8EC] p-3 rounded-2xl shadow-2xl border-2 border-pink-200 flex flex-col gap-2 w-32 md:w-36 transition-transform hover:scale-105 duration-300">
-            <div class="absolute -top-3 left-4 w-12 h-5 washi-tape-pink -rotate-12 rounded-sm pointer-events-none">
-            </div>
-            <div class="h-20 bg-white/80 rounded-xl flex items-center justify-center text-2xl shadow-inner">🍓</div>
-            <div class="h-20 bg-white/80 rounded-xl flex items-center justify-center text-2xl shadow-inner">🎀</div>
-            <div class="h-20 bg-white/80 rounded-xl flex items-center justify-center text-2xl shadow-inner">💖</div>
-            <div class="text-center font-handwriting text-xs text-pink-600 font-bold pt-1">sweet strawberry</div>
+        <div class="z-10 flex flex-col items-center gap-3 w-full max-w-sm">
+          <div id="home-preview-wrapper"
+            class="w-full transition-all duration-300 flex items-center justify-center min-h-[460px]">
+            <!-- Rendered dynamically by App.updateHomeLayoutPreview() -->
           </div>
-
-          <!-- Tilted Right Strip (Toploader K-Pop Deco) -->
-          <div
-            class="absolute transform rotate-6 translate-x-16 bg-[#F3E8FF] p-3 rounded-2xl shadow-2xl border-2 border-purple-200 flex flex-col gap-2 w-32 md:w-36 transition-transform hover:scale-105 duration-300 z-10">
-            <div class="absolute -top-3 right-4 w-12 h-5 washi-tape-yellow rotate-12 rounded-sm pointer-events-none">
-            </div>
-            <div class="h-20 bg-white/80 rounded-xl flex items-center justify-center text-2xl shadow-inner">✨</div>
-            <div class="h-20 bg-white/80 rounded-xl flex items-center justify-center text-2xl shadow-inner">🐰</div>
-            <div class="h-20 bg-white/80 rounded-xl flex items-center justify-center text-2xl shadow-inner">✦</div>
-            <div class="flex justify-between items-center px-1 text-[9px] font-digital text-purple-600 font-bold pt-1">
-              <span>MY BIAS ♡</span>
-              <span>'26 11 17</span>
-            </div>
-          </div>
+          <p class="text-xs text-gray-400 font-medium text-center">
+            Pilih format di samping untuk melihat preview layout secara langsung
+          </p>
         </div>
       </div>
     </section>
@@ -337,23 +319,47 @@
       <div
         class="w-full md:w-[58%] h-[55vh] md:h-full flex flex-col relative bg-black/50 justify-between p-4 md:p-6 overflow-hidden">
         <!-- Viewfinder Top Bar -->
-        <div class="flex items-center justify-between z-20">
-          <button onclick="App.navigate('home')"
-            class="px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-xs font-bold hover:bg-white/20 transition-all flex items-center gap-1.5">
-            &larr; <span data-i18n="back_home">Beranda</span>
+        <div class="flex items-center justify-between z-20 gap-2">
+          <!-- Back to Home Button -->
+          <button onclick="CameraStudio.handleBack()"
+            class="px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-xs font-bold hover:bg-white/20 transition-all flex items-center gap-1.5 text-white"
+            title="Kembali ke Beranda">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span data-i18n="back_btn">Kembali</span>
           </button>
 
+          <!-- Pose Progress Counter -->
           <div
             class="px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-xs font-extrabold tracking-wider flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-pozia-coral animate-ping"></span>
-            <span id="pose-counter-text">POSE 1 / 4</span>
+            <span id="pose-counter-text">Foto 1 dari 4</span>
           </div>
 
-          <button onclick="CameraStudio.flipCamera()"
-            class="w-9 h-9 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-sm hover:bg-white/20 transition-all"
-            title="Flip Kamera">
-            🔄
-          </button>
+          <!-- Camera Controls (Switch Camera & Mirror) -->
+          <div class="flex items-center gap-2">
+            <!-- Switch Front / Back Camera (Available if device has multiple cameras) -->
+            <button id="cam-switch-btn" onclick="CameraStudio.switchFacingMode()"
+              class="hidden w-9 h-9 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-sm hover:bg-white/20 transition-all text-white"
+              title="Ganti Kamera Depan / Belakang">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            </button>
+
+            <!-- Mirror Camera Toggle -->
+            <button id="cam-mirror-btn" onclick="CameraStudio.toggleMirror()"
+              class="px-3 py-1.5 rounded-full bg-pozia-coral text-white text-xs font-bold shadow-md flex items-center gap-1.5 transition-all"
+              title="Mirror Tampilan Kamera">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+              </svg>
+              <span id="mirror-status-text">Mirror ON</span>
+            </button>
+          </div>
         </div>
 
         <!-- Live Viewfinder Aspect Container -->
@@ -387,7 +393,14 @@
             <!-- Fallback Upload Button if Camera is unavailable -->
             <div id="camera-fallback-msg"
               class="hidden absolute inset-0 bg-pozia-dark/95 flex flex-col items-center justify-center p-6 text-center gap-3 z-40">
-              <span class="text-4xl">📷</span>
+              <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-gray-300">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
               <p class="text-xs text-gray-300 max-w-xs" data-i18n="cam_error">Kamera tidak dapat diakses atau diblokir.
                 Anda tetap bisa upload foto dari galeri!</p>
               <button onclick="App.triggerGalleryUpload()"
@@ -398,7 +411,7 @@
           </div>
         </div>
 
-        <!-- Viewfinder Live Filter Bar -->
+        <!-- Viewfinder Live Filter Bar (All 14 Filters) -->
         <div class="z-20">
           <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1" id="camera-filter-dock"></div>
         </div>
@@ -409,25 +422,53 @@
         class="w-full md:w-[42%] h-[45vh] md:h-full bg-pozia-dark/90 backdrop-blur-md border-t md:border-t-0 md:border-l border-white/10 p-5 md:p-8 flex flex-col justify-between overflow-y-auto no-scrollbar gap-5">
         <div>
           <h2 class="text-base font-extrabold text-white mb-4 flex items-center gap-2">
-            <span>⚙️</span> <span data-i18n="camera_settings">Pengaturan Studio Kamera</span>
+            <svg class="w-4 h-4 text-pozia-coral" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span data-i18n="camera_settings">Pengaturan Studio Kamera</span>
           </h2>
 
           <div class="flex flex-col gap-4 text-xs">
+            <!-- Layout Selector inside Studio -->
             <div>
-              <label class="block text-gray-400 font-semibold mb-1.5" data-i18n="pose_count">Jumlah Pose:</label>
-              <div class="grid grid-cols-4 gap-1.5">
-                <button onclick="CameraStudio.setPoseTarget(1)" id="target-pose-1"
-                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold hover:bg-white/20 transition-all">1
-                  Pose</button>
-                <button onclick="CameraStudio.setPoseTarget(3)" id="target-pose-3"
-                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold hover:bg-white/20 transition-all">3
-                  Pose</button>
-                <button onclick="CameraStudio.setPoseTarget(4)" id="target-pose-4"
-                  class="py-2 rounded-xl bg-pozia-coral text-white font-bold transition-all shadow-md">4 Pose</button>
-                <button onclick="CameraStudio.setPoseTarget(6)" id="target-pose-6"
-                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold hover:bg-white/20 transition-all">6
-                  Pose</button>
+              <div class="flex items-center justify-between mb-1.5">
+                <label class="text-gray-400 font-semibold">Format Layout:</label>
+                <span class="text-pozia-coral font-bold" id="cam-active-layout-label">Strip 4 Pose</span>
               </div>
+              <div class="grid grid-cols-4 gap-1.5">
+                <button onclick="App.setLayout('1x4')" id="cam-layout-1x4"
+                  class="py-2 rounded-xl bg-pozia-coral text-white font-bold transition-all shadow-md">Strip 4</button>
+                <button onclick="App.setLayout('1x3')" id="cam-layout-1x3"
+                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold hover:bg-white/20 transition-all">Strip 3</button>
+                <button onclick="App.setLayout('2x2')" id="cam-layout-2x2"
+                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold hover:bg-white/20 transition-all">Grid 2x2</button>
+                <button onclick="App.setLayout('polaroid')" id="cam-layout-polaroid"
+                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold hover:bg-white/20 transition-all">Polaroid</button>
+              </div>
+            </div>
+
+            <!-- Mirror & Camera Hardware Controls -->
+            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
+              <button onclick="CameraStudio.toggleMirror()" id="sidebar-mirror-btn"
+                class="py-2 px-3 rounded-xl bg-pozia-coral text-white font-bold flex items-center justify-center gap-1.5 transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                </svg>
+                <span id="sidebar-mirror-text">Mirror ON</span>
+              </button>
+
+              <button id="sidebar-switch-cam-btn" onclick="CameraStudio.switchFacingMode()"
+                class="hidden py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center gap-1.5 transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                <span id="sidebar-facing-text">Kamera Depan</span>
+              </button>
             </div>
 
             <div>
@@ -448,34 +489,31 @@
               <label class="block text-gray-400 font-semibold mb-1.5" data-i18n="flash_color">Screen Flash
                 Warna:</label>
               <div class="grid grid-cols-4 gap-1.5">
-                <button onclick="CameraStudio.setFlashColor('off')" id="flash-color-off"
-                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">OFF</button>
                 <button onclick="CameraStudio.setFlashColor('white')" id="flash-color-white"
-                  class="py-2 rounded-xl bg-pozia-coral text-white font-bold">Cool White</button>
+                  class="py-2 rounded-xl bg-pozia-coral text-white font-bold">White</button>
                 <button onclick="CameraStudio.setFlashColor('peach')" id="flash-color-peach"
-                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Warm Peach</button>
+                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Peach</button>
                 <button onclick="CameraStudio.setFlashColor('pink')" id="flash-color-pink"
-                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Soft Pink</button>
+                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Pink</button>
+                <button onclick="CameraStudio.setFlashColor('off')" id="flash-color-off"
+                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Off</button>
               </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-3 pt-1">
-              <div>
-                <div class="flex justify-between text-gray-400 mb-1">
-                  <span>Zoom Digital:</span>
-                  <span id="zoom-val-label" class="font-bold text-white">1.0x</span>
-                </div>
-                <input type="range" id="cam-zoom-slider" min="1.0" max="2.0" step="0.1" value="1.0"
-                  oninput="CameraStudio.setZoom(this.value)" class="w-full accent-pozia-coral">
+            <div class="pt-2 border-t border-white/10 flex flex-col gap-2.5">
+              <div class="flex items-center justify-between">
+                <span class="text-gray-400 font-semibold">Digital Zoom:</span>
+                <span id="zoom-val-label" class="font-bold text-white">1.0x</span>
               </div>
-              <div>
-                <div class="flex justify-between text-gray-400 mb-1">
-                  <span>Exposure/Kecerahan:</span>
-                  <span id="exposure-val-label" class="font-bold text-white">0</span>
-                </div>
-                <input type="range" id="cam-exposure-slider" min="-30" max="30" step="1" value="0"
-                  oninput="CameraStudio.setExposure(this.value)" class="w-full accent-pozia-coral">
+              <input type="range" id="zoom-slider" min="1.0" max="2.0" step="0.1" value="1.0"
+                oninput="CameraStudio.setZoom(this.value)" class="w-full accent-pozia-coral">
+
+              <div class="flex items-center justify-between pt-1">
+                <span class="text-gray-400 font-semibold">Exposure / Brightness:</span>
+                <span id="exposure-val-label" class="font-bold text-white">0</span>
               </div>
+              <input type="range" id="exposure-slider" min="-30" max="30" step="5" value="0"
+                oninput="CameraStudio.setExposure(this.value)" class="w-full accent-pozia-coral">
             </div>
           </div>
         </div>
@@ -518,49 +556,51 @@
         <div id="interactive-preview-container"
           class="relative transition-all duration-300 shadow-2xl rounded-2xl overflow-hidden bg-white max-h-[88%] flex items-center justify-center">
           <canvas id="editor-preview-canvas" class="max-h-[75vh] w-auto h-auto block select-none"></canvas>
-          <div id="sticker-interactive-layer" class="absolute inset-0 pointer-events-auto overflow-hidden"></div>
-          <canvas id="doodle-canvas" class="absolute inset-0 pointer-events-none"></canvas>
         </div>
 
         <div
           class="mt-3 px-4 py-2 rounded-full bg-white/95 backdrop-blur-md shadow-md border border-gray-100 flex items-center gap-2 text-xs">
-          <span class="text-pozia-coral font-bold">💡 Tips:</span>
-          <span class="text-gray-500">Klik slot foto di bingkai untuk mengganti / retake foto!</span>
+          <span class="text-pozia-coral font-bold">Tips:</span>
+          <span class="text-gray-500">Klik slot foto di bingkai untuk mengganti foto slot tersebut!</span>
         </div>
       </div>
 
-      <!-- Right Control Panel: 5 Tabs Studio Dock -->
+      <!-- Right Control Panel: Refined 4-Action Studio Dock -->
       <div
         class="w-full md:w-[42%] h-[50vh] md:h-full bg-white border-t md:border-t-0 md:border-l border-gray-100 flex flex-col justify-between overflow-hidden shadow-sm">
 
-        <!-- Top Tab Bar & Random Vibe / Finish CTAs -->
-        <div class="border-b border-gray-100 px-3 py-2 flex items-center justify-between bg-white z-10">
-          <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
+        <!-- Top Navigation Bar: Back + Frame, Filter, Random Vibe, Finish -->
+        <div class="border-b border-gray-100 px-3 py-2.5 flex items-center justify-between bg-white z-10 gap-2 overflow-x-auto no-scrollbar">
+          <!-- Back to Camera Button -->
+          <button onclick="App.navigate('camera')"
+            class="shrink-0 px-3 py-1.5 rounded-xl bg-gray-100 text-pozia-charcoal text-xs font-bold hover:bg-gray-200 transition-all flex items-center gap-1.5 shadow-sm"
+            title="Kembali ke Kamera">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span data-i18n="back_btn">Kembali</span>
+          </button>
+
+          <!-- Navigation Tabs: Frame & Filter -->
+          <div class="shrink-0 flex items-center gap-1 bg-gray-100 p-1 rounded-xl">
             <button onclick="EditorStudio.switchTab('frame')" id="tab-btn-frame"
-              class="px-3 py-2 text-xs font-bold text-pozia-coral border-b-2 border-pozia-coral transition-colors flex items-center gap-1 whitespace-nowrap">
+              class="px-4 py-1.5 text-xs font-bold text-white bg-pozia-coral rounded-lg transition-all shadow-sm">
               <span data-i18n="tab_frame">Bingkai</span>
             </button>
             <button onclick="EditorStudio.switchTab('filter')" id="tab-btn-filter"
-              class="px-3 py-2 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center gap-1 whitespace-nowrap">
+              class="px-4 py-1.5 text-xs font-semibold text-gray-600 rounded-lg transition-all hover:text-pozia-coral">
               <span data-i18n="tab_filter">Filter</span>
-            </button>
-            <button onclick="EditorStudio.switchTab('sticker')" id="tab-btn-sticker"
-              class="px-3 py-2 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center gap-1 whitespace-nowrap">
-              <span data-i18n="tab_sticker">Stiker</span>
-            </button>
-            <button onclick="EditorStudio.switchTab('doodle')" id="tab-btn-doodle"
-              class="px-3 py-2 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center gap-1 whitespace-nowrap">
-              <span data-i18n="tab_doodle">Coret</span>
-            </button>
-            <button onclick="EditorStudio.switchTab('caption')" id="tab-btn-caption"
-              class="px-3 py-2 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center gap-1 whitespace-nowrap">
-              <span data-i18n="tab_caption">Teks</span>
             </button>
           </div>
 
-          <div class="flex items-center gap-2">
-            <button onclick="EditorStudio.randomVibe()" title="Acak Vibe"
-              class="px-2.5 py-1.5 rounded-xl bg-pozia-lilac/10 text-pozia-lilac text-xs font-bold hover:bg-pozia-lilac hover:text-white transition-all flex items-center gap-1">
+          <!-- CTAs: Random Vibe & Finish -->
+          <div class="shrink-0 flex items-center gap-1.5">
+            <button onclick="EditorStudio.randomVibe()" title="Acak Tema Bingkai & Filter"
+              class="px-3 py-1.5 rounded-xl bg-pozia-lilac/15 text-pozia-lilac text-xs font-bold hover:bg-pozia-lilac hover:text-white transition-all flex items-center gap-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
               <span data-i18n="random_vibe">Acak Vibe</span>
             </button>
             <button onclick="App.exportFinalImage()"
@@ -573,8 +613,23 @@
         <!-- Scrollable Tab Content Area -->
         <div class="flex-1 overflow-y-auto no-scrollbar p-5">
 
-          <!-- TAB 1: BINGKAI (15+ SUPER CUTE DESIGNER FRAMES) -->
+          <!-- TAB 1: BINGKAI (FRAMES & LAYOUT FORMAT SWITCHER) -->
           <div id="tab-content-frame" class="flex flex-col gap-4">
+            <!-- Format Layout Switcher -->
+            <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+              <span class="text-xs text-gray-500 font-bold">Pilih Layout:</span>
+              <div class="flex items-center gap-1.5">
+                <button onclick="App.setLayout('1x4'); EditorStudio.renderCanvas();" id="frame-layout-1x4"
+                  class="px-2.5 py-1 text-xs font-bold rounded-lg bg-pink-50 text-pozia-coral border border-pozia-coral transition-all">Strip 4</button>
+                <button onclick="App.setLayout('1x3'); EditorStudio.renderCanvas();" id="frame-layout-1x3"
+                  class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 transition-all">Strip 3</button>
+                <button onclick="App.setLayout('2x2'); EditorStudio.renderCanvas();" id="frame-layout-2x2"
+                  class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 transition-all">Grid 2x2</button>
+                <button onclick="App.setLayout('polaroid'); EditorStudio.renderCanvas();" id="frame-layout-polaroid"
+                  class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 transition-all">Polaroid</button>
+              </div>
+            </div>
+
             <!-- Category Filter Chips -->
             <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
               <button onclick="EditorStudio.setFrameCategory('all')" id="frame-cat-all"
@@ -619,24 +674,17 @@
             </div>
           </div>
 
-          <!-- TAB 2: FILTER & EFEK -->
+          <!-- TAB 2: FILTER & EFEK (14 REAL-TIME FILTERS) -->
           <div id="tab-content-filter" class="hidden flex flex-col gap-4">
-            <div class="flex items-center gap-1 bg-gray-100 p-1 rounded-xl">
-              <button onclick="EditorStudio.setFilterCategory('beauty')" id="fcat-beauty"
-                class="flex-1 py-1 text-[11px] font-bold rounded-lg bg-white text-pozia-charcoal shadow-sm">Beauty</button>
-              <button onclick="EditorStudio.setFilterCategory('film')" id="fcat-film"
-                class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">Film</button>
-              <button onclick="EditorStudio.setFilterCategory('vintage')" id="fcat-vintage"
-                class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">B&W</button>
-              <button onclick="EditorStudio.setFilterCategory('aesthetic')" id="fcat-aesthetic"
-                class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">Color</button>
-              <button onclick="EditorStudio.setFilterCategory('artistic')" id="fcat-artistic"
-                class="flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500">Pop</button>
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-gray-700">Pilih Filter (14 Variasi):</span>
+              <span class="text-[11px] font-semibold text-pozia-coral bg-pink-50 px-2 py-0.5 rounded-full" id="active-filter-badge">Original</span>
             </div>
 
-            <div id="filter-presets-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-2"></div>
+            <!-- 14 Filter Cards Grid -->
+            <div id="filter-presets-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5"></div>
 
-            <div class="flex flex-col gap-2.5 pt-2 border-t border-gray-100 text-xs">
+            <div class="flex flex-col gap-2.5 pt-3 border-t border-gray-100 text-xs">
               <div class="flex items-center gap-2">
                 <span class="w-20 text-gray-500 font-semibold" data-i18n="intensity">Intensitas:</span>
                 <input type="range" id="filter-intensity-slider" min="0" max="100" value="100"
@@ -656,193 +704,6 @@
                 <span id="contrast-val-text" class="w-10 font-bold text-gray-700 text-right">0</span>
               </div>
             </div>
-
-            <div class="pt-2 border-t border-gray-100 flex items-center gap-2 flex-wrap">
-              <span class="text-xs text-gray-400 font-medium" data-i18n="lens_overlays">Efek Lensa:</span>
-              <button onclick="EditorStudio.toggleOverlay('leak')" id="ovl-leak"
-                class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100">Light
-                Leak</button>
-              <button onclick="EditorStudio.toggleOverlay('grain')" id="ovl-grain"
-                class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100">Film
-                Grain</button>
-              <button onclick="EditorStudio.toggleOverlay('vignette')" id="ovl-vignette"
-                class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100">Fisheye</button>
-              <button onclick="EditorStudio.toggleOverlay('sparkle')" id="ovl-sparkle"
-                class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-pink-100">Sparkle
-                ✦</button>
-            </div>
-          </div>
-
-          <!-- TAB 3: STIKER (40+ INTERACTIVE STICKERS) -->
-          <div id="tab-content-sticker" class="hidden flex flex-col gap-4">
-            <div class="flex items-center justify-between">
-              <span class="text-xs text-gray-500 font-medium" data-i18n="sticker_instruction">Klik stiker untuk
-                menambah. Geser untuk memindahkan.</span>
-              <button onclick="EditorStudio.clearStickers()" class="text-xs text-red-500 font-bold hover:underline"
-                data-i18n="clear_stickers">Hapus Semua</button>
-            </div>
-
-            <div class="flex flex-col gap-3">
-              <div>
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Y2K Chrome &
-                  Stars</span>
-                <div class="grid grid-cols-6 sm:grid-cols-8 gap-2">
-                  <button onclick="EditorStudio.addSticker('✦')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✦</button>
-                  <button onclick="EditorStudio.addSticker('✧')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✧</button>
-                  <button onclick="EditorStudio.addSticker('✮')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✮</button>
-                  <button onclick="EditorStudio.addSticker('✰')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✰</button>
-                  <button onclick="EditorStudio.addSticker('💿')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">💿</button>
-                  <button onclick="EditorStudio.addSticker('🪩')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🪩</button>
-                  <button onclick="EditorStudio.addSticker('👽')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">👽</button>
-                  <button onclick="EditorStudio.addSticker('🛸')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🛸</button>
-                </div>
-              </div>
-
-              <div>
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Coquette Bows &
-                  Cute</span>
-                <div class="grid grid-cols-6 sm:grid-cols-8 gap-2">
-                  <button onclick="EditorStudio.addSticker('🎀')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🎀</button>
-                  <button onclick="EditorStudio.addSticker('🩰')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🩰</button>
-                  <button onclick="EditorStudio.addSticker('🌸')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🌸</button>
-                  <button onclick="EditorStudio.addSticker('🌷')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🌷</button>
-                  <button onclick="EditorStudio.addSticker('🍰')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🍰</button>
-                  <button onclick="EditorStudio.addSticker('🍓')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🍓</button>
-                  <button onclick="EditorStudio.addSticker('🍒')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🍒</button>
-                  <button onclick="EditorStudio.addSticker('💌')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">💌</button>
-                </div>
-              </div>
-
-              <div>
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Cute Pets &
-                  Props</span>
-                <div class="grid grid-cols-6 sm:grid-cols-8 gap-2">
-                  <button onclick="EditorStudio.addSticker('🐱')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🐱</button>
-                  <button onclick="EditorStudio.addSticker('🐶')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🐶</button>
-                  <button onclick="EditorStudio.addSticker('🐰')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🐰</button>
-                  <button onclick="EditorStudio.addSticker('🐻')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🐻</button>
-                  <button onclick="EditorStudio.addSticker('🕶️')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🕶️</button>
-                  <button onclick="EditorStudio.addSticker('👑')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">👑</button>
-                  <button onclick="EditorStudio.addSticker('🦋')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">🦋</button>
-                  <button onclick="EditorStudio.addSticker('✨')"
-                    class="p-2 text-2xl bg-gray-50 hover:bg-pink-50 rounded-xl">✨</button>
-                </div>
-              </div>
-
-              <div>
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Text Badges</span>
-                <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                  <button onclick="EditorStudio.addStickerText('SLAY!')"
-                    class="py-2 text-xs font-extrabold rounded-xl bg-pink-100 text-pozia-coral hover:bg-pink-200">SLAY!</button>
-                  <button onclick="EditorStudio.addStickerText('BESTIE')"
-                    class="py-2 text-xs font-extrabold rounded-xl bg-purple-100 text-pozia-lilac hover:bg-purple-200">BESTIE</button>
-                  <button onclick="EditorStudio.addStickerText('CUTIE')"
-                    class="py-2 text-xs font-extrabold rounded-xl bg-yellow-100 text-yellow-700 hover:bg-yellow-200">CUTIE</button>
-                  <button onclick="EditorStudio.addStickerText('2026')"
-                    class="py-2 text-xs font-extrabold rounded-xl bg-blue-100 text-blue-600 hover:bg-blue-200">2026</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- TAB 4: CORET / PURIKURA DOODLE PEN -->
-          <div id="tab-content-doodle" class="hidden flex flex-col gap-4">
-            <div class="flex items-center justify-between">
-              <span class="text-xs text-gray-500 font-medium">Gambar langsung di strip foto dengan mouse/touch:</span>
-              <div class="flex items-center gap-2">
-                <button onclick="DoodleEngine.undo()"
-                  class="px-2.5 py-1 rounded-lg bg-gray-100 text-xs font-bold text-gray-600 hover:bg-gray-200">Undo</button>
-                <button onclick="DoodleEngine.clear()"
-                  class="px-2.5 py-1 rounded-lg bg-red-50 text-xs font-bold text-red-500 hover:bg-red-100">Hapus</button>
-              </div>
-            </div>
-
-            <div>
-              <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Warna
-                Spidol:</span>
-              <div class="flex items-center gap-2 flex-wrap" id="doodle-colors-bar"></div>
-            </div>
-
-            <div class="flex items-center justify-between pt-2 border-t border-gray-100">
-              <div class="flex items-center gap-2">
-                <span class="text-xs text-gray-500 font-semibold">Ukuran:</span>
-                <button onclick="DoodleEngine.setSize(3)" id="brush-size-3"
-                  class="px-3 py-1 rounded-lg text-xs font-bold bg-pink-50 text-pozia-coral border border-pozia-coral">Tipis</button>
-                <button onclick="DoodleEngine.setSize(6)" id="brush-size-6"
-                  class="px-3 py-1 rounded-lg text-xs font-bold bg-gray-100 text-gray-700">Sedang</button>
-                <button onclick="DoodleEngine.setSize(12)" id="brush-size-12"
-                  class="px-3 py-1 rounded-lg text-xs font-bold bg-gray-100 text-gray-700">Tebal</button>
-              </div>
-
-              <label class="flex items-center gap-1.5 cursor-pointer">
-                <input type="checkbox" id="neon-glow-toggle" onchange="DoodleEngine.setNeonGlow(this.checked)"
-                  class="accent-pozia-coral w-4 h-4">
-                <span class="text-xs text-pozia-charcoal font-bold">Neon Glow ✨</span>
-              </label>
-            </div>
-          </div>
-
-          <!-- TAB 5: TEKS & CAP -->
-          <div id="tab-content-caption" class="hidden flex flex-col gap-4">
-            <div>
-              <label class="block text-xs font-bold text-gray-600 mb-1" data-i18n="caption_label">Teks Caption
-                Bawah</label>
-              <input type="text" id="caption-input" value="Pozia Studio" oninput="EditorStudio.setCaption(this.value)"
-                placeholder="Ketik caption strip..."
-                class="w-full px-3 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:border-pozia-coral">
-            </div>
-
-            <div>
-              <span class="text-xs text-gray-400 font-medium block mb-1.5" data-i18n="font_style">Pilihan Font:</span>
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                <button onclick="EditorStudio.setFont('sans')" id="font-sans"
-                  class="py-2 rounded-xl text-xs font-bold bg-pink-50 text-pozia-coral border border-pozia-coral">Modern
-                  Sans</button>
-                <button onclick="EditorStudio.setFont('mono')" id="font-mono"
-                  class="py-2 rounded-xl text-xs font-mono bg-gray-100 text-gray-700">Typewriter</button>
-                <button onclick="EditorStudio.setFont('handwriting')" id="font-handwriting"
-                  class="py-2 rounded-xl text-xs font-handwriting text-base font-bold bg-gray-100 text-gray-700">Handwriting</button>
-                <button onclick="EditorStudio.setFont('serif')" id="font-serif"
-                  class="py-2 rounded-xl text-xs font-serif font-bold bg-gray-100 text-gray-700">Editorial
-                  Serif</button>
-              </div>
-            </div>
-
-            <div class="pt-3 border-t border-gray-100 flex flex-col gap-2.5">
-              <div class="flex items-center justify-between">
-                <span class="text-xs text-gray-600 font-semibold">Format Tanggal:</span>
-                <select id="date-format-select" onchange="EditorStudio.setDateFormat(this.value)"
-                  class="text-xs border border-gray-200 rounded-lg p-1.5">
-                  <option value="format1">'26.11.17 (Analog)</option>
-                  <option value="format2">17 NOV 2026 (Classic)</option>
-                  <option value="format3">2026/11/17 (Y2K Digital)</option>
-                  <option value="none">Tanpa Tanggal</option>
-                </select>
-              </div>
-            </div>
           </div>
 
         </div>
@@ -859,7 +720,7 @@
           <img id="final-export-img" alt="Pozia Strip Ultra HD"
             class="max-h-[70vh] w-auto h-auto rounded-lg shadow-sm block select-none">
           <p class="text-[11px] text-gray-400 mt-2 text-center" data-i18n="hold_save_hint">
-            💡 Jika download otomatis terhambat di HP/WebView, tekan dan tahan gambar di atas untuk "Simpan ke Galeri".
+            Tips: Jika download otomatis terhambat di HP/WebView, tekan dan tahan gambar di atas untuk "Simpan ke Galeri".
           </p>
         </div>
       </div>
@@ -868,7 +729,11 @@
         class="w-full md:w-[42%] p-6 md:p-10 bg-white border-t md:border-t-0 md:border-l border-gray-100 flex flex-col justify-center gap-6">
         <div>
           <div class="flex items-center gap-2 mb-2">
-            <span class="text-3xl">🎉</span>
+            <div class="w-8 h-8 rounded-full bg-pozia-coral/15 flex items-center justify-center text-pozia-coral">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
             <h2 class="text-2xl font-extrabold text-pozia-charcoal" data-i18n="export_title">Foto Selesai Dirender!</h2>
           </div>
           <p class="text-xs text-gray-500" data-i18n="export_desc">
@@ -880,7 +745,12 @@
           class="p-4 rounded-3xl bg-gradient-to-br from-purple-50 via-pink-50 to-white border border-purple-100 shadow-sm flex flex-col gap-3">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <span class="text-xl">🎬</span>
+              <div class="w-6 h-6 rounded-lg bg-pozia-lilac/20 flex items-center justify-center text-pozia-lilac">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+              </div>
               <div>
                 <h4 class="font-extrabold text-xs text-pozia-charcoal" data-i18n="bts_title">Behind-The-Scenes HD Video
                 </h4>
@@ -920,11 +790,18 @@
           <div class="grid grid-cols-2 gap-3">
             <button onclick="App.navigate('editor')"
               class="py-3 px-4 rounded-xl bg-gray-50 border border-gray-200 text-pozia-charcoal font-bold text-xs hover:bg-gray-100 flex items-center justify-center gap-1.5">
-              ✏️ <span data-i18n="edit_again">Edit Ulang</span>
+              <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+              <span data-i18n="edit_again">Edit Ulang</span>
             </button>
             <button onclick="App.resetAndNew()"
               class="py-3 px-4 rounded-xl bg-gray-50 border border-gray-200 text-pozia-charcoal font-bold text-xs hover:bg-gray-100 flex items-center justify-center gap-1.5">
-              🔄 <span data-i18n="new_session">Buat Foto Baru</span>
+              <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+              <span data-i18n="new_session">Buat Foto Baru</span>
             </button>
           </div>
         </div>
@@ -941,7 +818,12 @@
     <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl flex flex-col gap-4 text-xs">
       <div class="flex items-center justify-between border-b pb-3 border-gray-100">
         <div class="flex items-center gap-2">
-          <span class="text-base">🛠️</span>
+          <svg class="w-4 h-4 text-pozia-coral" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
           <h3 class="font-extrabold text-sm text-pozia-charcoal" data-i18n="diag_title">Diagnostik Sistem & Arsitektur
           </h3>
         </div>
@@ -950,34 +832,27 @@
       </div>
 
       <div class="flex flex-col gap-2.5 text-gray-600">
-        <div class="flex items-center justify-between p-2 rounded-xl bg-gray-50">
-          <span class="font-medium">Protokol Keamanan:</span>
-          <span id="diag-https-status" class="font-bold text-green-600">Checking...</span>
+        <div class="flex justify-between items-center py-1 border-b border-gray-50">
+          <span class="font-medium">Context Security:</span>
+          <span id="diag-https-status" class="font-bold text-emerald-600">HTTPS Secure Active (TLS)</span>
         </div>
-
-        <div class="flex flex-col gap-1 p-2 rounded-xl bg-gray-50">
-          <div class="flex justify-between">
-            <span class="font-medium">Hardware Kamera:</span>
-            <span id="diag-cam-facing" class="font-semibold text-pozia-charcoal">Depan (user)</span>
-          </div>
-          <div class="text-[10px] text-gray-400 font-mono" id="diag-cam-label">Default Camera</div>
-          <div class="text-[10px] text-gray-400 font-mono" id="diag-cam-resolution">Resolution: --</div>
+        <div class="flex justify-between items-center py-1 border-b border-gray-50">
+          <span class="font-medium">Camera Hardware:</span>
+          <span id="diag-cam-label" class="font-mono text-gray-700 truncate max-w-[170px]">Detecting...</span>
         </div>
-
-        <div class="flex items-center justify-between p-2 rounded-xl bg-gray-50">
-          <span class="font-medium">Canvas Acceleration:</span>
-          <span class="font-bold text-green-600">Hardware 2D Active</span>
+        <div class="flex justify-between items-center py-1 border-b border-gray-50">
+          <span class="font-medium">Facing Mode:</span>
+          <span id="diag-cam-facing" class="font-bold text-pozia-charcoal">Depan (user)</span>
         </div>
-        <div class="flex items-center justify-between p-2 rounded-xl bg-gray-50">
-          <span class="font-medium">Render Export Speed:</span>
-          <span id="diag-render-time" class="font-bold text-pozia-coral">-- ms</span>
+        <div class="flex justify-between items-center py-1 border-b border-gray-50">
+          <span class="font-medium">Video Stream Spec:</span>
+          <span id="diag-cam-resolution" class="font-mono text-[10px] text-gray-500">1920x1080 @ 30fps</span>
         </div>
-
-        <div class="flex items-center justify-between p-2 rounded-xl bg-gray-50">
-          <span class="font-medium">PWA Offline Mode:</span>
-          <span id="diag-pwa-status" class="font-bold text-green-600">Active (Service Worker)</span>
+        <div class="flex justify-between items-center py-1 border-b border-gray-50">
+          <span class="font-medium">Export Render Latency:</span>
+          <span id="diag-render-time" class="font-bold text-pozia-coral">0 ms</span>
         </div>
-        <div class="flex items-center justify-between p-2 rounded-xl bg-gray-50">
+        <div class="flex justify-between items-center py-1">
           <span class="font-medium">Local Storage Usage:</span>
           <span id="diag-storage-size" class="font-bold text-pozia-charcoal">0 KB</span>
         </div>
@@ -985,8 +860,8 @@
 
       <div class="p-3 rounded-2xl bg-pink-50/70 border border-pink-100 text-[11px] text-gray-600 leading-relaxed">
         <strong class="text-pozia-coral font-bold block mb-1">Zero-Server Client-Side Processing</strong>
-        Semua pemrosesan kamera, manipulasi piksel filter, dan render HD berjalan 100% lokal di RAM perangkat Anda. Foto
-        Anda tidak pernah dikirim ke server manapun demi privasi mutlak.
+        Semua pemrosesan kamera, manipulasi piksel filter, dan render HD berjalan 100% lokal di RAM perangkat Anda.
+        Foto Anda tidak pernah dikirim ke server manapun demi privasi mutlak.
       </div>
     </div>
   </div>
@@ -999,7 +874,10 @@
     <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl flex flex-col gap-4 max-h-[80vh]">
       <div class="flex items-center justify-between border-b pb-3 border-gray-100">
         <div class="flex items-center gap-2">
-          <span class="text-base">📸</span>
+          <svg class="w-4 h-4 text-pozia-coral" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
           <h3 class="font-bold text-sm text-pozia-charcoal" data-i18n="history_title">Galeri Hasil Tersimpan</h3>
         </div>
         <button onclick="App.closeHistoryModal()"
@@ -1018,7 +896,7 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- JAVASCRIPT ENGINE & ARCHITECTURE                         -->
+  <!-- APPLICATION CORE SCRIPT ENGINE                           -->
   <!-- ======================================================== -->
   <script>
     /* ===================================================
@@ -1028,14 +906,11 @@
       ctx: null,
       init() {
         if (!this.ctx) {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          if (AudioContext) this.ctx = new AudioContext();
-        }
-        if (this.ctx && this.ctx.state === 'suspended') {
-          this.ctx.resume();
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
         }
       },
-      playBeep(freq = 880, duration = 0.08) {
+      playBeep(freq = 880, duration = 0.1) {
         try {
           this.init();
           if (!this.ctx) return;
@@ -1043,7 +918,7 @@
           const gain = this.ctx.createGain();
           osc.type = 'sine';
           osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-          gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+          gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
           gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
           osc.connect(gain);
           gain.connect(this.ctx.destination);
@@ -1086,6 +961,7 @@
           cta_camera: 'Mulai Foto Sekarang',
           cta_upload: 'Pilih dari Galeri',
           choose_layout: 'Pilih Format Layout',
+          back_btn: 'Kembali',
           cam_error: 'Kamera tidak dapat diakses atau diblokir. Anda tetap bisa upload foto dari galeri!',
           back_home: 'Beranda',
           camera_settings: 'Pengaturan Studio Kamera',
@@ -1094,21 +970,13 @@
           flash_color: 'Screen Flash Warna:',
           tab_frame: 'Bingkai',
           tab_filter: 'Filter',
-          tab_sticker: 'Stiker',
-          tab_doodle: 'Coret',
-          tab_caption: 'Teks',
           random_vibe: 'Acak Vibe',
           done_btn: 'Selesai',
           color_label: 'Warna Polos:',
           intensity: 'Intensitas:',
-          lens_overlays: 'Efek Lensa:',
-          sticker_instruction: 'Klik stiker untuk menambah. Geser untuk memindahkan.',
-          clear_stickers: 'Hapus Semua',
-          caption_label: 'Teks Caption Bawah',
-          font_style: 'Pilihan Font:',
           export_title: 'Foto Selesai Dirender!',
           export_desc: 'Komposisi strip Anda telah dirender tajam dalam resolusi ultra tinggi (> 1400px).',
-          hold_save_hint: '💡 Jika download otomatis terhambat di HP/WebView, tekan dan tahan gambar di atas untuk "Simpan ke Galeri".',
+          hold_save_hint: 'Tips: Jika download otomatis terhambat di HP/WebView, tekan dan tahan gambar di atas untuk "Simpan ke Galeri".',
           bts_title: 'Behind-The-Scenes HD Video',
           download_hd: 'Simpan Foto Ultra HD (PNG)',
           edit_again: 'Edit Ulang',
@@ -1122,6 +990,7 @@
           cta_camera: 'Take Photos Now',
           cta_upload: 'Pick from Gallery',
           choose_layout: 'Choose Layout Format',
+          back_btn: 'Back',
           cam_error: 'Camera access denied or unavailable. You can still upload photos from gallery!',
           back_home: 'Home',
           camera_settings: 'Camera Studio Settings',
@@ -1130,21 +999,13 @@
           flash_color: 'Screen Flash Color:',
           tab_frame: 'Frame',
           tab_filter: 'Filter',
-          tab_sticker: 'Stickers',
-          tab_doodle: 'Doodle',
-          tab_caption: 'Text',
           random_vibe: 'Random Vibe',
           done_btn: 'Finish',
           color_label: 'Solid Color:',
           intensity: 'Intensity:',
-          lens_overlays: 'Lens Effects:',
-          sticker_instruction: 'Click a sticker to add. Drag to reposition.',
-          clear_stickers: 'Clear All',
-          caption_label: 'Bottom Strip Caption',
-          font_style: 'Font Style:',
           export_title: 'Photo Successfully Rendered!',
           export_desc: 'Your photo strip is rendered in sharp ultra-high resolution (> 1400px).',
-          hold_save_hint: '💡 If automatic download is blocked in mobile WebView, press and hold the image above to save to gallery.',
+          hold_save_hint: 'Tips: If automatic download is blocked in mobile WebView, press and hold the image above to save to gallery.',
           bts_title: 'Behind-The-Scenes HD Video',
           download_hd: 'Save Ultra HD Photo (PNG)',
           edit_again: 'Edit Again',
@@ -1165,49 +1026,35 @@
     };
 
     /* ===================================================
-       3. 24 REAL-TIME FILTERS IN 5 CATEGORIES
+       3. 14 COMPREHENSIVE REAL-TIME FILTERS
        =================================================== */
-    const FilterPresets = {
-      beauty: [
-        { id: 'seoul-glow', name: 'Seoul Glow', css: 'brightness(1.09) contrast(0.96) saturate(1.12) sepia(0.08)' },
-        { id: 'peach-milk', name: 'Peach Milk', css: 'brightness(1.07) saturate(1.18) hue-rotate(-8deg) contrast(0.98)' },
-        { id: 'porcelain', name: 'Porcelain Clean', css: 'brightness(1.13) contrast(1.04) saturate(0.95)' },
-        { id: 'rosy-cheek', name: 'Rosy Cheek', css: 'brightness(1.06) saturate(1.22) sepia(0.12) hue-rotate(-12deg)' },
-        { id: 'soft-studio', name: 'Soft Studio', css: 'brightness(1.05) contrast(0.94) saturate(1.08)' }
-      ],
-      film: [
-        { id: 'kodak-gold', name: 'Kodak Gold 200', css: 'sepia(0.28) contrast(1.12) saturate(1.35) brightness(1.03)' },
-        { id: 'fuji-superia', name: 'Fuji Superia', css: 'contrast(1.14) saturate(1.2) hue-rotate(8deg) brightness(0.98)' },
-        { id: 'cinestill-800t', name: 'Cinestill 800T', css: 'hue-rotate(175deg) contrast(1.22) saturate(1.25) brightness(0.96)' },
-        { id: 'disposable-98', name: 'Disposable 98', css: 'contrast(1.2) saturate(1.3) sepia(0.15) brightness(1.04)' },
-        { id: 'warm-polaroid', name: 'Warm Polaroid', css: 'sepia(0.35) contrast(1.05) saturate(1.15) brightness(1.02)' }
-      ],
-      vintage: [
-        { id: 'photobox-bw', name: 'Photobox B&W', css: 'grayscale(1) contrast(1.4) brightness(1.05)' },
-        { id: 'noir', name: 'High-Contrast Noir', css: 'grayscale(1) contrast(1.7) brightness(0.95)' },
-        { id: 'silver-halide', name: 'Silver Halide', css: 'grayscale(1) contrast(1.08) brightness(1.03)' },
-        { id: 'koran-sepia', name: 'Koran Sepia', css: 'sepia(0.75) contrast(1.15) brightness(0.94)' },
-        { id: 'faded-1990', name: 'Faded 1990', css: 'contrast(0.85) brightness(1.15) grayscale(0.25) sepia(0.15)' }
-      ],
-      aesthetic: [
-        { id: 'matcha-latte', name: 'Matcha Latte', css: 'hue-rotate(45deg) saturate(0.85) contrast(1.05) sepia(0.18)' },
-        { id: 'golden-hour', name: 'Golden Hour', css: 'sepia(0.38) saturate(1.35) brightness(1.06) contrast(1.02)' },
-        { id: 'blue-hour', name: 'Blue Hour', css: 'hue-rotate(190deg) saturate(1.15) brightness(0.96) contrast(1.1)' },
-        { id: 'sakura-pink', name: 'Sakura Pink', css: 'hue-rotate(320deg) saturate(1.25) brightness(1.05) contrast(0.98)' },
-        { id: 'sunset-warm', name: 'Sunset Warm', css: 'sepia(0.4) saturate(1.4) contrast(1.1) brightness(1.02)' }
-      ],
-      artistic: [
-        { id: 'y2k-digicam', name: 'Y2K Digicam', css: 'contrast(1.28) saturate(1.45) brightness(1.08)' },
-        { id: 'cyber-duotone', name: 'Cyber Duotone', css: 'hue-rotate(265deg) saturate(1.65) contrast(1.22)' },
-        { id: 'dreamy-bloom', name: 'Dreamy Bloom', css: 'brightness(1.12) contrast(0.9) saturate(1.1) blur(0.25px)' },
-        { id: 'retro-vhs', name: 'Retro VHS', css: 'contrast(1.18) saturate(1.35) hue-rotate(-18deg)' }
-      ]
-    };
+    const FilterPresets = [
+      { id: 'original', name: 'Original', css: 'none', desc: 'Asli tanpa filter' },
+      { id: 'vintage', name: 'Vintage', css: 'sepia(0.38) contrast(1.12) brightness(0.96) saturate(1.15)', desc: 'Klasik & hangat' },
+      { id: 'retro', name: 'Retro', css: 'contrast(1.22) saturate(1.3) hue-rotate(-10deg) sepia(0.12)', desc: 'Analog 90-an' },
+      { id: 'warm', name: 'Warm', css: 'sepia(0.24) saturate(1.22) brightness(1.05) hue-rotate(-6deg)', desc: 'Hangat & lembut' },
+      { id: 'cool', name: 'Cool', css: 'saturate(1.1) hue-rotate(15deg) brightness(1.02) contrast(1.06)', desc: 'Nuansa dingin' },
+      { id: 'soft', name: 'Soft', css: 'contrast(0.92) brightness(1.08) saturate(1.06)', desc: 'Lembut & halus' },
+      { id: 'film', name: 'Film', css: 'contrast(1.16) brightness(0.98) saturate(1.12) sepia(0.18)', desc: 'Film 35mm' },
+      { id: 'bw', name: 'Black & White', css: 'grayscale(1) contrast(1.22) brightness(1.04)', desc: 'Hitam putih klasik' },
+      { id: 'sepia', name: 'Sepia', css: 'sepia(0.85) contrast(1.08) brightness(0.95)', desc: 'Cokelat nostalgia' },
+      { id: 'dreamy', name: 'Dreamy', css: 'brightness(1.14) contrast(0.92) saturate(1.18)', desc: 'Lembut & glowing' },
+      { id: 'bright', name: 'Bright', css: 'brightness(1.2) contrast(1.05) saturate(1.1)', desc: 'Cerah & tajam' },
+      { id: 'moody', name: 'Moody', css: 'brightness(0.9) contrast(1.28) saturate(1.22) sepia(0.14)', desc: 'Karakter kuat & gelap' },
+      { id: 'pastel', name: 'Pastel', css: 'brightness(1.08) contrast(0.94) saturate(0.92) hue-rotate(6deg)', desc: 'Warna pastel manis' },
+      { id: 'faded', name: 'Faded', css: 'contrast(0.86) brightness(1.1) saturate(0.82) sepia(0.08)', desc: 'Efek pudar vintage' }
+    ];
 
     /* ===================================================
-       4. 16 ADORABLE & KAWAII DESIGNER FRAMES
+       4. 17 DESIGNER FRAMES & CUSTOM IMAGE TEMPLATES
        =================================================== */
     const FrameThemes = [
+      // Kategori: Retro & Film
+      { id: 'denim-stars', cat: 'retro', name: 'Scrapbook Denim & Stars', desc: 'Navy Corduroy & Chrome Pozia', thumb: '#1E2436' },
+      { id: 'scrapbook-washi', cat: 'retro', name: 'Scrapbook Washi Tape', desc: 'Parchment with Pastel Tape Corners', thumb: '#FAF6F0' },
+      { id: 'film-roll', cat: 'retro', name: '35mm Film Roll', desc: 'Classic Cinema Sprocket Holes', thumb: '#111113' },
+      { id: 'newspaper', cat: 'retro', name: 'The Pozia Times', desc: 'Vintage Newsprint Editorial', thumb: '#F4ECD8' },
+
       // Kategori: Pastel & Cute
       { id: 'coquette-strawberry', cat: 'cute', name: 'Pita & Stroberi', desc: 'Coquette Bows & Sweet Strawberry', thumb: 'linear-gradient(135deg, #FFE8EC, #FFD1DC)' },
       { id: 'korean-milk', cat: 'cute', name: 'Kotak Susu Korea', desc: 'Strawberry Milk Ddalgi-Uyu', thumb: 'linear-gradient(135deg, #FFFDF5, #FFD1DC)' },
@@ -1224,13 +1071,7 @@
       { id: 'checker-lavender', cat: 'kpop', name: 'Checker Lavender', desc: 'Soft Lavender Checker & Ribbon', thumb: 'repeating-conic-gradient(#E2D4F0 0% 25%, #FFF 0% 50%) 50% / 18px 18px' },
       { id: 'sunset-aura', cat: 'kpop', name: 'Sunset Aura Glow', desc: 'Aura Gradient Color Shift', thumb: 'linear-gradient(135deg, #FF9A8B, #FF6A88, #FF99AC)' },
 
-      // Kategori: Retro & Film
-      { id: 'denim-stars', cat: 'retro', name: 'Scrapbook Denim & Stars', desc: 'Navy Corduroy & Chrome Pozia', thumb: '#1E2436' },
-      { id: 'scrapbook-washi', cat: 'retro', name: 'Scrapbook Washi Tape', desc: 'Parchment with Pastel Tape Corners', thumb: '#FAF6F0' },
-      { id: 'film-roll', cat: 'retro', name: '35mm Film Roll', desc: 'Classic Cinema Sprocket Holes', thumb: '#111113' },
-      { id: 'newspaper', cat: 'retro', name: 'The Pozia Times', desc: 'Vintage Newsprint Editorial', thumb: '#F4ECD8' },
-
-      // Kategori: Warna Polos & Custom 🎨
+      // Kategori: Warna Polos & Custom
       { id: 'classic', cat: 'solid', name: 'Warna Polos / Solid', desc: 'Pilihan Warna Pastel Kustom', thumb: '#FFFFFF' },
       { id: 'custom-png', cat: 'solid', name: 'Upload Twibbon PNG', desc: 'Bingkai Custom Transparan', thumb: '#F3F4F6' }
     ];
@@ -1240,184 +1081,29 @@
        =================================================== */
     const State = {
       stage: 'home',
-      layout: '1x4',
-      targetPoseCount: 4,
+      layout: '1x4',             // '1x4', '1x3', '2x2', 'polaroid'
+      targetPoseCount: 4,        // 4, 3, 4, 1
       currentPoseIndex: 0,
-      photos: [],
+      photos: [],                // Array of Image elements
       btsBurstGroups: [],
-      currentFilter: FilterPresets.beauty[0],
-      filterCategory: 'beauty',
+      currentFilter: FilterPresets[0], // Original default
       filterIntensity: 100,
-      manualAdjust: { brightness: 0, contrast: 0, warmth: 0 },
-      lensOverlays: { leak: false, grain: false, vignette: false, sparkle: false },
-      frameTheme: 'coquette-strawberry', // Default to super cute strawberry coquette!
+      manualAdjust: { brightness: 0, contrast: 0 },
+      frameTheme: 'coquette-strawberry',
       frameCategory: 'all',
       frameColor: '#FFFFFF',
       customFrameImage: null,
-      stickers: [],
-      caption: 'Pozia Studio',
-      fontStyle: 'handwriting',
-      dateFormat: 'format1',
       activeSlotToReplace: null,
       lastRenderTime: 0
     };
 
     /* ===================================================
-       6. PURIKURA DOODLE ENGINE
-       =================================================== */
-    const DoodleEngine = {
-      canvas: null,
-      ctx: null,
-      isDrawing: false,
-      color: '#FF5A79',
-      size: 3,
-      neonGlow: false,
-      paths: [],
-      currentPath: null,
-
-      init() {
-        this.canvas = document.getElementById('doodle-canvas');
-        if (!this.canvas) return;
-        this.ctx = this.canvas.getContext('2d');
-        this.renderColorsBar();
-        this.setupEvents();
-      },
-
-      syncSize(width, height) {
-        if (!this.canvas) return;
-        this.canvas.width = width;
-        this.canvas.height = height;
-        this.redraw();
-      },
-
-      setupEvents() {
-        const getPos = (e) => {
-          const rect = this.canvas.getBoundingClientRect();
-          const scaleX = this.canvas.width / rect.width;
-          const scaleY = this.canvas.height / rect.height;
-          const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-          const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-          return {
-            x: (clientX - rect.left) * scaleX,
-            y: (clientY - rect.top) * scaleY
-          };
-        };
-
-        const start = (e) => {
-          if (EditorStudio.activeTab !== 'doodle') return;
-          this.isDrawing = true;
-          const pos = getPos(e);
-          this.currentPath = {
-            color: this.color,
-            size: this.size,
-            glow: this.neonGlow,
-            points: [pos]
-          };
-          this.paths.push(this.currentPath);
-        };
-
-        const move = (e) => {
-          if (!this.isDrawing || !this.currentPath) return;
-          const pos = getPos(e);
-          this.currentPath.points.push(pos);
-          this.redraw();
-        };
-
-        const end = () => {
-          this.isDrawing = false;
-          this.currentPath = null;
-        };
-
-        this.canvas.addEventListener('mousedown', start);
-        window.addEventListener('mousemove', move);
-        window.addEventListener('mouseup', end);
-
-        this.canvas.addEventListener('touchstart', start, { passive: true });
-        window.addEventListener('touchmove', move, { passive: true });
-        window.addEventListener('touchend', end);
-      },
-
-      setColor(c) {
-        this.color = c;
-        this.renderColorsBar();
-      },
-
-      setSize(s) {
-        this.size = s;
-        [3, 6, 12].forEach(sz => {
-          const btn = document.getElementById(`brush-size-${sz}`);
-          if (btn) {
-            btn.className = sz === s
-              ? 'px-3 py-1 rounded-lg text-xs font-bold bg-pink-50 text-pozia-coral border border-pozia-coral'
-              : 'px-3 py-1 rounded-lg text-xs font-bold bg-gray-100 text-gray-700';
-          }
-        });
-      },
-
-      setNeonGlow(active) {
-        this.neonGlow = active;
-      },
-
-      undo() {
-        this.paths.pop();
-        this.redraw();
-      },
-
-      clear() {
-        this.paths = [];
-        this.redraw();
-      },
-
-      redraw(targetCtx = null, scale = 1) {
-        const ctx = targetCtx || this.ctx;
-        if (!ctx) return;
-        if (!targetCtx) ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        this.paths.forEach(p => {
-          if (p.points.length < 2) return;
-          ctx.save();
-          ctx.beginPath();
-          ctx.lineCap = 'round';
-          ctx.lineJoin = 'round';
-          ctx.strokeStyle = p.color;
-          ctx.lineWidth = p.size * scale;
-
-          if (p.glow) {
-            ctx.shadowColor = p.color;
-            ctx.shadowBlur = p.size * 3 * scale;
-          }
-
-          ctx.moveTo(p.points[0].x * scale, p.points[0].y * scale);
-          for (let i = 1; i < p.points.length; i++) {
-            ctx.lineTo(p.points[i].x * scale, p.points[i].y * scale);
-          }
-          ctx.stroke();
-          ctx.restore();
-        });
-      },
-
-      renderColorsBar() {
-        const bar = document.getElementById('doodle-colors-bar');
-        if (!bar) return;
-        bar.innerHTML = '';
-        const colors = ['#FF5A79', '#9B87F5', '#FFD166', '#06D6A0', '#118AB2', '#EF476F', '#FFFFFF', '#111113', '#FF9A8B', '#00F5D4'];
-        colors.forEach(c => {
-          const btn = document.createElement('button');
-          btn.className = `w-7 h-7 rounded-full shadow-sm transition-transform ${this.color === c ? 'scale-125 ring-2 ring-pozia-coral ring-offset-2' : ''}`;
-          btn.style.backgroundColor = c;
-          if (c === '#FFFFFF') btn.style.border = '1px solid #ccc';
-          btn.onclick = () => this.setColor(c);
-          bar.appendChild(btn);
-        });
-      }
-    };
-
-    /* ===================================================
-       7. UPGRADED CAMERA STUDIO CONTROLLER
+       6. CAMERA STUDIO CONTROLLER
        =================================================== */
     const CameraStudio = {
       stream: null,
-      facingMode: 'user',
+      facingMode: 'user',        // 'user' (front) or 'environment' (back)
+      isMirrored: true,          // Mirror horizontal flip (default ON)
       timerDuration: 3,
       flashColor: 'white',
       zoomLevel: 1.0,
@@ -1427,12 +1113,33 @@
       async init() {
         this.updatePoseCounter();
         this.renderFilterDock();
+        await this.checkAvailableCameras();
         await this.startStream();
+      },
+
+      async checkAvailableCameras() {
+        try {
+          if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) return;
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          const videoDevices = devices.filter(d => d.kind === 'videoinput');
+          const switchBtn = document.getElementById('cam-switch-btn');
+          const sidebarBtn = document.getElementById('sidebar-switch-cam-btn');
+          if (videoDevices.length > 1) {
+            if (switchBtn) switchBtn.classList.remove('hidden');
+            if (sidebarBtn) sidebarBtn.classList.remove('hidden');
+          } else {
+            if (switchBtn) switchBtn.classList.add('hidden');
+            if (sidebarBtn) sidebarBtn.classList.add('hidden');
+          }
+        } catch (e) { }
       },
 
       async startStream() {
         try {
-          if (this.stream) this.stream.getTracks().forEach(t => t.stop());
+          if (this.stream) {
+            this.stream.getTracks().forEach(t => t.stop());
+            this.stream = null;
+          }
           const constraints = {
             video: {
               facingMode: this.facingMode,
@@ -1444,19 +1151,14 @@
           this.stream = await navigator.mediaDevices.getUserMedia(constraints);
           const video = document.getElementById('live-video');
           video.srcObject = this.stream;
-          video.play();
+          await video.play();
           document.getElementById('camera-fallback-msg').classList.add('hidden');
-
-          if (this.facingMode === 'user') {
-            video.classList.add('scale-x-[-1]');
-          } else {
-            video.classList.remove('scale-x-[-1]');
-          }
 
           this.applyVideoTransform();
           this.updateTelemetry();
+          this.updateFacingLabels();
         } catch (err) {
-          console.warn('Camera error', err);
+          console.warn('Camera access error:', err);
           document.getElementById('camera-fallback-msg').classList.remove('hidden');
         }
       },
@@ -1468,31 +1170,67 @@
         }
       },
 
-      flipCamera() {
+      toggleMirror() {
+        this.isMirrored = !this.isMirrored;
+        this.applyVideoTransform();
+        this.updateMirrorLabels();
+      },
+
+      updateMirrorLabels() {
+        const topText = document.getElementById('mirror-status-text');
+        const sidebarText = document.getElementById('sidebar-mirror-text');
+        const topBtn = document.getElementById('cam-mirror-btn');
+        const sidebarBtn = document.getElementById('sidebar-mirror-btn');
+
+        const label = this.isMirrored ? 'Mirror ON' : 'Mirror OFF';
+        if (topText) topText.textContent = label;
+        if (sidebarText) sidebarText.textContent = label;
+
+        if (this.isMirrored) {
+          if (topBtn) topBtn.className = 'px-3 py-1.5 rounded-full bg-pozia-coral text-white text-xs font-bold shadow-md flex items-center gap-1.5 transition-all';
+          if (sidebarBtn) sidebarBtn.className = 'py-2 px-3 rounded-xl bg-pozia-coral text-white font-bold flex items-center justify-center gap-1.5 transition-all';
+        } else {
+          if (topBtn) topBtn.className = 'px-3 py-1.5 rounded-full bg-white/20 text-gray-200 text-xs font-bold shadow-sm flex items-center gap-1.5 transition-all';
+          if (sidebarBtn) sidebarBtn.className = 'py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-gray-300 font-bold flex items-center justify-center gap-1.5 transition-all';
+        }
+      },
+
+      async switchFacingMode() {
         this.facingMode = this.facingMode === 'user' ? 'environment' : 'user';
-        this.startStream();
+        if (this.facingMode === 'environment') {
+          this.isMirrored = false;
+        } else {
+          this.isMirrored = true;
+        }
+        this.updateMirrorLabels();
+        await this.startStream();
       },
 
-      setPoseTarget(count) {
-        State.targetPoseCount = count;
-        [1, 3, 4, 6].forEach(c => {
-          const btn = document.getElementById(`target-pose-${c}`);
-          if (btn) {
-            btn.className = c === count
-              ? 'py-2 rounded-xl bg-pozia-coral text-white font-bold transition-all shadow-md'
-              : 'py-2 rounded-xl bg-white/10 text-gray-300 font-bold hover:bg-white/20 transition-all';
+      updateFacingLabels() {
+        const sideText = document.getElementById('sidebar-facing-text');
+        if (sideText) {
+          sideText.textContent = this.facingMode === 'user' ? 'Kamera Depan' : 'Kamera Belakang';
+        }
+      },
+
+      handleBack() {
+        if (State.photos.length > 0) {
+          if (confirm('Sesi foto saat ini belum selesai. Apakah Anda yakin ingin kembali ke pemilihan layout? Foto yang sudah diambil akan direset.')) {
+            App.resetAndNew();
           }
-        });
-        this.updatePoseCounter();
+        } else {
+          this.stopStream();
+          App.navigate('home');
+        }
       },
 
-      setTimer(dur) {
-        this.timerDuration = dur;
-        [0, 3, 5, 10].forEach(d => {
-          const btn = document.getElementById(`cam-timer-${d}`);
+      setTimer(sec) {
+        this.timerDuration = sec;
+        [0, 3, 5, 10].forEach(s => {
+          const btn = document.getElementById(`cam-timer-${s}`);
           if (btn) {
-            btn.className = d === dur
-              ? 'py-2 rounded-xl bg-pozia-coral text-white font-bold'
+            btn.className = s === sec
+              ? 'py-2 rounded-xl bg-pozia-coral text-white font-bold shadow-sm'
               : 'py-2 rounded-xl bg-white/10 text-gray-300 font-bold';
           }
         });
@@ -1504,7 +1242,7 @@
           const btn = document.getElementById(`flash-color-${cl}`);
           if (btn) {
             btn.className = cl === color
-              ? 'py-2 rounded-xl bg-pozia-coral text-white font-bold'
+              ? 'py-2 rounded-xl bg-pozia-coral text-white font-bold shadow-sm'
               : 'py-2 rounded-xl bg-white/10 text-gray-300 font-bold';
           }
         });
@@ -1525,31 +1263,32 @@
       applyVideoTransform() {
         const video = document.getElementById('live-video');
         if (!video) return;
-        const scaleX = this.facingMode === 'user' ? -this.zoomLevel : this.zoomLevel;
+        const scaleX = this.isMirrored ? -this.zoomLevel : this.zoomLevel;
         video.style.transform = `scale(${scaleX}, ${this.zoomLevel})`;
         const expBrightness = 1 + (this.exposureVal / 100);
-        video.style.filter = `${State.currentFilter.css} brightness(${expBrightness})`;
+        const filterCss = State.currentFilter.css === 'none' ? '' : State.currentFilter.css;
+        video.style.filter = `${filterCss} brightness(${expBrightness})`;
       },
 
       updatePoseCounter() {
-        const text = `POSE ${State.currentPoseIndex + 1} / ${State.targetPoseCount}`;
-        document.getElementById('pose-counter-text').textContent = text;
+        const current = Math.min(State.currentPoseIndex + 1, State.targetPoseCount);
+        const isId = I18N.current === 'id';
+        const text = isId
+          ? `Foto ${current} dari ${State.targetPoseCount}`
+          : `Photo ${current} of ${State.targetPoseCount}`;
+        const el = document.getElementById('pose-counter-text');
+        if (el) el.textContent = text;
       },
 
       renderFilterDock() {
         const dock = document.getElementById('camera-filter-dock');
+        if (!dock) return;
         dock.innerHTML = '';
-        const allPresets = [
-          ...FilterPresets.beauty,
-          ...FilterPresets.film,
-          ...FilterPresets.vintage,
-          ...FilterPresets.aesthetic,
-          ...FilterPresets.artistic
-        ];
-        allPresets.forEach(preset => {
+        FilterPresets.forEach(preset => {
           const btn = document.createElement('button');
-          btn.className = `px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${State.currentFilter.id === preset.id
-            ? 'bg-pozia-coral text-white shadow-lg'
+          const isSelected = State.currentFilter.id === preset.id;
+          btn.className = `px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${isSelected
+            ? 'bg-pozia-coral text-white shadow-lg ring-2 ring-white/30'
             : 'bg-white/10 text-gray-300 hover:bg-white/20'
             }`;
           btn.textContent = preset.name;
@@ -1613,7 +1352,7 @@
             if (State.currentPoseIndex < State.targetPoseCount) {
               this.updatePoseCounter();
               this.isCapturingSequence = false;
-              setTimeout(() => this.startCaptureSequence(), 1000);
+              setTimeout(() => this.startCaptureSequence(), 1200);
             } else {
               this.isCapturingSequence = false;
               this.stopStream();
@@ -1625,13 +1364,13 @@
 
       captureHDBurstFrame(burstArray) {
         const video = document.getElementById('live-video');
-        if (!video.videoWidth) return;
+        if (!video || !video.videoWidth) return;
         const canvas = document.createElement('canvas');
         canvas.width = 720;
         canvas.height = 960;
         const ctx = canvas.getContext('2d');
 
-        if (this.facingMode === 'user') {
+        if (this.isMirrored) {
           ctx.translate(canvas.width, 0);
           ctx.scale(-1, 1);
         }
@@ -1642,7 +1381,7 @@
         const x = (canvas.width - vW * ratio) / 2;
         const y = (canvas.height - vH * ratio) / 2;
 
-        if (ctx.filter !== undefined && State.currentFilter) {
+        if (ctx.filter !== undefined && State.currentFilter && State.currentFilter.css !== 'none') {
           ctx.filter = State.currentFilter.css;
         }
         ctx.drawImage(video, x, y, vW * ratio, vH * ratio);
@@ -1656,7 +1395,7 @@
         canvas.height = 1200;
         const ctx = canvas.getContext('2d');
 
-        if (this.facingMode === 'user') {
+        if (this.isMirrored) {
           ctx.translate(canvas.width, 0);
           ctx.scale(-1, 1);
         }
@@ -1669,12 +1408,8 @@
         ctx.drawImage(video, x, y, vW * ratio, vH * ratio);
 
         const img = new Image();
-        img.onload = () => {
-          if (State.stage === 'editor') EditorStudio.renderCanvas();
-        };
         img.src = canvas.toDataURL('image/jpeg', 0.98);
 
-        // Await full image decode so it is guaranteed ready before navigation
         try {
           if ('decode' in img) {
             await img.decode();
@@ -1694,15 +1429,18 @@
         const track = this.stream.getVideoTracks()[0];
         if (track) {
           const settings = track.getSettings();
-          document.getElementById('diag-cam-label').textContent = track.label || 'Default Camera Device';
-          document.getElementById('diag-cam-facing').textContent = this.facingMode === 'user' ? 'Depan (user)' : 'Belakang (environment)';
-          document.getElementById('diag-cam-resolution').textContent = `Resolution: ${settings.width || 1920} × ${settings.height || 1080} px @ ${settings.frameRate || 30} FPS`;
+          const camLabel = document.getElementById('diag-cam-label');
+          const camFacing = document.getElementById('diag-cam-facing');
+          const camRes = document.getElementById('diag-cam-resolution');
+          if (camLabel) camLabel.textContent = track.label || 'Default Camera Device';
+          if (camFacing) camFacing.textContent = this.facingMode === 'user' ? 'Depan (user)' : 'Belakang (environment)';
+          if (camRes) camRes.textContent = `${settings.width || 1920} × ${settings.height || 1080} px @ ${settings.frameRate || 30} FPS`;
         }
       }
     };
 
     /* ===================================================
-       8. RICH DESIGNER EDITOR WORKSTATION CONTROLLER
+       7. REFINED EDITOR STUDIO CONTROLLER (FRAME & FILTER)
        =================================================== */
     const EditorStudio = {
       activeTab: 'frame',
@@ -1715,30 +1453,24 @@
           this.denimFrameImage.src = './assets/denim-star-frame.png';
         }
         this.renderDesignerFramesGrid();
-        this.renderCategoryPresets();
+        this.renderFilterPresets();
         this.renderCanvas();
         this.setupSlotInteraction();
-        DoodleEngine.init();
       },
 
       switchTab(tab) {
         this.activeTab = tab;
-        ['frame', 'filter', 'sticker', 'doodle', 'caption'].forEach(t => {
+        ['frame', 'filter'].forEach(t => {
           const btn = document.getElementById(`tab-btn-${t}`);
           const content = document.getElementById(`tab-content-${t}`);
           if (t === tab) {
-            btn.className = 'px-3 py-2 text-xs font-bold text-pozia-coral border-b-2 border-pozia-coral transition-colors flex items-center gap-1 whitespace-nowrap';
+            btn.className = 'px-4 py-1.5 text-xs font-bold text-white bg-pozia-coral rounded-lg transition-all shadow-sm';
             content.classList.remove('hidden');
           } else {
-            btn.className = 'px-3 py-2 text-xs font-semibold text-gray-400 border-b-2 border-transparent transition-colors flex items-center gap-1 whitespace-nowrap';
+            btn.className = 'px-4 py-1.5 text-xs font-semibold text-gray-600 rounded-lg transition-all hover:text-pozia-coral';
             content.classList.add('hidden');
           }
         });
-
-        const doodleCanvas = document.getElementById('doodle-canvas');
-        if (doodleCanvas) {
-          doodleCanvas.style.pointerEvents = tab === 'doodle' ? 'auto' : 'none';
-        }
       },
 
       setFrameCategory(cat) {
@@ -1756,6 +1488,7 @@
 
       renderDesignerFramesGrid() {
         const grid = document.getElementById('designer-frames-grid');
+        if (!grid) return;
         grid.innerHTML = '';
         const list = State.frameCategory === 'all'
           ? FrameThemes
@@ -1808,7 +1541,6 @@
           grid.appendChild(card);
         });
 
-        // Show/hide solid color section
         const colorSection = document.getElementById('classic-color-section');
         if (colorSection) {
           colorSection.style.display = (State.frameTheme === 'classic') ? 'flex' : 'none';
@@ -1817,40 +1549,35 @@
 
       setFrameColor(c) {
         State.frameColor = c;
-        State.frameTheme = 'classic';
-        this.renderDesignerFramesGrid();
         this.renderCanvas();
       },
 
-      setFilterCategory(cat) {
-        State.filterCategory = cat;
-        ['beauty', 'film', 'vintage', 'aesthetic', 'artistic'].forEach(c => {
-          const btn = document.getElementById(`fcat-${c}`);
-          if (c === cat) {
-            btn.className = 'flex-1 py-1 text-[11px] font-bold rounded-lg bg-white text-pozia-charcoal shadow-sm';
-          } else {
-            btn.className = 'flex-1 py-1 text-[11px] font-medium rounded-lg text-gray-500';
-          }
-        });
-        this.renderCategoryPresets();
-      },
-
-      renderCategoryPresets() {
+      renderFilterPresets() {
         const grid = document.getElementById('filter-presets-grid');
+        if (!grid) return;
         grid.innerHTML = '';
-        const presets = FilterPresets[State.filterCategory] || FilterPresets.beauty;
-        presets.forEach(p => {
+        FilterPresets.forEach(p => {
           const card = document.createElement('button');
           const isSelected = State.currentFilter.id === p.id;
-          card.className = `p-2 rounded-xl text-center text-xs flex flex-col items-center gap-1.5 border transition-all ${isSelected ? 'border-pozia-coral bg-pink-50 font-bold text-pozia-coral shadow-sm' : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
-            }`;
+          card.className = `p-2 rounded-xl text-left text-xs flex items-center gap-2 border transition-all ${
+            isSelected
+              ? 'border-pozia-coral bg-pink-50 font-bold text-pozia-coral shadow-sm ring-2 ring-pozia-coral/20'
+              : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300 hover:bg-gray-100'
+          }`;
+          const filterStyle = p.css === 'none' ? '' : `filter: ${p.css};`;
           card.innerHTML = `
-            <div class="w-8 h-8 rounded-lg bg-gray-300 overflow-hidden shadow-inner flex items-center justify-center text-xs" style="filter: ${p.css}">🌸</div>
-            <span class="truncate w-full text-[10px] font-semibold">${p.name}</span>
+            <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-amber-200 to-rose-300 overflow-hidden shadow-inner shrink-0 flex items-center justify-center text-[10px] font-bold text-white/80" style="${filterStyle}">
+              PZ
+            </div>
+            <div class="flex flex-col truncate">
+              <span class="truncate font-bold text-xs">${p.name}</span>
+              <span class="truncate text-[10px] text-gray-400">${p.desc}</span>
+            </div>
           `;
           card.onclick = () => {
             State.currentFilter = p;
-            this.renderCategoryPresets();
+            document.getElementById('active-filter-badge').textContent = p.name;
+            this.renderFilterPresets();
             this.renderCanvas();
           };
           grid.appendChild(card);
@@ -1863,146 +1590,32 @@
         this.renderCanvas();
       },
 
-      setManualAdjust(prop, val) {
-        State.manualAdjust[prop] = parseInt(val, 10);
-        document.getElementById(`${prop}-val-text`).textContent = val > 0 ? `+${val}` : `${val}`;
-        this.renderCanvas();
-      },
-
-      toggleOverlay(type) {
-        State.lensOverlays[type] = !State.lensOverlays[type];
-        const btn = document.getElementById(`ovl-${type}`);
-        if (btn) {
-          btn.classList.toggle('bg-pink-100', State.lensOverlays[type]);
-          btn.classList.toggle('text-pozia-coral', State.lensOverlays[type]);
-        }
+      setManualAdjust(type, val) {
+        State.manualAdjust[type] = parseInt(val, 10);
+        document.getElementById(`${type}-val-text`).textContent = val;
         this.renderCanvas();
       },
 
       randomVibe() {
-        const allFilters = [
-          ...FilterPresets.beauty, ...FilterPresets.film, ...FilterPresets.vintage, ...FilterPresets.aesthetic, ...FilterPresets.artistic
-        ];
-        State.currentFilter = allFilters[Math.floor(Math.random() * allFilters.length)];
-        const cuteThemes = FrameThemes.filter(t => t.id !== 'custom-png');
-        State.frameTheme = cuteThemes[Math.floor(Math.random() * cuteThemes.length)].id;
+        // Randomize theme and filter
+        const themes = FrameThemes.filter(t => t.id !== 'custom-png');
+        State.frameTheme = themes[Math.floor(Math.random() * themes.length)].id;
+        State.currentFilter = FilterPresets[Math.floor(Math.random() * FilterPresets.length)];
 
+        document.getElementById('active-filter-badge').textContent = State.currentFilter.name;
         this.renderDesignerFramesGrid();
-        this.renderCategoryPresets();
-        this.renderCanvas();
-      },
-
-      addSticker(icon) {
-        State.stickers.push({
-          id: 'stk_' + Date.now(),
-          icon,
-          x: 120 + Math.random() * 50,
-          y: 120 + Math.random() * 50,
-          scale: 1,
-          rotation: 0
-        });
-        this.renderInteractiveStickers();
-      },
-
-      addStickerText(text) {
-        State.stickers.push({
-          id: 'stk_' + Date.now(),
-          text,
-          x: 120 + Math.random() * 50,
-          y: 120 + Math.random() * 50,
-          scale: 1,
-          rotation: 0
-        });
-        this.renderInteractiveStickers();
-      },
-
-      clearStickers() {
-        State.stickers = [];
-        this.renderInteractiveStickers();
-      },
-
-      renderInteractiveStickers() {
-        const layer = document.getElementById('sticker-interactive-layer');
-        layer.innerHTML = '';
-        State.stickers.forEach(s => {
-          const el = document.createElement('div');
-          el.className = 'absolute cursor-move select-none p-1 rounded';
-          el.style.left = `${s.x}px`;
-          el.style.top = `${s.y}px`;
-          el.style.transform = `scale(${s.scale}) rotate(${s.rotation}deg)`;
-
-          if (s.icon) {
-            el.innerHTML = `<span class="text-3xl">${s.icon}</span>`;
-          } else {
-            el.innerHTML = `<span class="px-2.5 py-1 rounded-full bg-white/95 text-pozia-coral font-extrabold text-xs shadow-md border border-pink-200">${s.text}</span>`;
-          }
-
-          let isDragging = false;
-          let startX, startY;
-
-          const onStart = (e) => {
-            isDragging = true;
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            startX = clientX - s.x;
-            startY = clientY - s.y;
-            el.classList.add('sticker-selected');
-          };
-
-          const onMove = (e) => {
-            if (!isDragging) return;
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            s.x = clientX - startX;
-            s.y = clientY - startY;
-            el.style.left = `${s.x}px`;
-            el.style.top = `${s.y}px`;
-          };
-
-          const onEnd = () => {
-            isDragging = false;
-            el.classList.remove('sticker-selected');
-          };
-
-          el.addEventListener('mousedown', onStart);
-          window.addEventListener('mousemove', onMove);
-          window.addEventListener('mouseup', onEnd);
-          el.addEventListener('touchstart', onStart, { passive: true });
-          window.addEventListener('touchmove', onMove, { passive: true });
-          window.addEventListener('touchend', onEnd);
-
-          layer.appendChild(el);
-        });
-      },
-
-      setCaption(val) {
-        State.caption = val;
-        this.renderCanvas();
-      },
-
-      setFont(f) {
-        State.fontStyle = f;
-        ['sans', 'mono', 'handwriting', 'serif'].forEach(ft => {
-          const btn = document.getElementById(`font-${ft}`);
-          if (btn) {
-            btn.className = ft === f
-              ? 'py-2 rounded-xl text-xs font-bold bg-pink-50 text-pozia-coral border border-pozia-coral'
-              : 'py-2 rounded-xl text-xs bg-gray-100 text-gray-700';
-          }
-        });
-        this.renderCanvas();
-      },
-
-      setDateFormat(val) {
-        State.dateFormat = val;
+        this.renderFilterPresets();
         this.renderCanvas();
       },
 
       setupSlotInteraction() {
         const canvas = document.getElementById('editor-preview-canvas');
+        if (!canvas) return;
         canvas.onclick = (e) => {
           const rect = canvas.getBoundingClientRect();
+          const scaleX = canvas.width / rect.width;
           const scaleY = canvas.height / rect.height;
+          const x = (e.clientX - rect.left) * scaleX;
           const y = (e.clientY - rect.top) * scaleY;
 
           if (State.frameTheme === 'denim-stars') {
@@ -2014,20 +1627,45 @@
             return;
           }
 
-          const count = State.photos.length;
-          if (count === 0) return;
-          const slotHeight = (canvas.height - 180) / count;
-          const clickedSlot = Math.floor(y / slotHeight);
-          if (clickedSlot >= 0 && clickedSlot < count) {
-            State.activeSlotToReplace = clickedSlot;
+          if (State.layout === 'polaroid') {
+            State.activeSlotToReplace = 0;
             App.triggerGalleryUpload();
+            return;
           }
+
+          if (State.layout === '2x2') {
+            const isRight = x > canvas.width / 2;
+            const isBottom = y > (canvas.height - (canvas.width * 0.22)) / 2;
+            let slot = 0;
+            if (!isBottom && !isRight) slot = 0;
+            else if (!isBottom && isRight) slot = 1;
+            else if (isBottom && !isRight) slot = 2;
+            else slot = 3;
+            State.activeSlotToReplace = slot;
+            App.triggerGalleryUpload();
+            return;
+          }
+
+          // Strip 1x4 and 1x3
+          const poses = State.layout === '1x3' ? 3 : 4;
+          const topMargin = (State.frameTheme === 'newspaper' || State.frameTheme === 'korean-milk') ? canvas.width * 0.17 : canvas.width * 0.08;
+          const bottomMargin = canvas.width * 0.22;
+          const availableH = canvas.height - topMargin - bottomMargin;
+          const gap = canvas.width * 0.035;
+          const slotH = (availableH - gap * (poses - 1)) / poses;
+
+          let clickedSlot = Math.floor((y - topMargin) / (slotH + gap));
+          if (clickedSlot < 0) clickedSlot = 0;
+          if (clickedSlot >= poses) clickedSlot = poses - 1;
+          State.activeSlotToReplace = clickedSlot;
+          App.triggerGalleryUpload();
         };
       },
 
       /* Render the complete photo strip on canvas */
       renderToCanvas(canvas, isHighRes = false) {
         const ctx = canvas.getContext('2d');
+        const activeLayout = State.layout;
 
         // Custom Scrapbook Denim & Stars Frame
         if (State.frameTheme === 'denim-stars') {
@@ -2058,7 +1696,7 @@
               ctx.translate(slot.cx, slot.cy);
               ctx.rotate(slot.rot);
 
-              if (ctx.filter !== undefined && State.currentFilter) {
+              if (ctx.filter !== undefined && State.currentFilter && State.currentFilter.css !== 'none') {
                 ctx.filter = State.currentFilter.css;
               }
 
@@ -2091,44 +1729,16 @@
               this.denimFrameImage.src = './assets/denim-star-frame.png';
             }
           }
-
-          // 4. Render stickers & doodles if on high-res export
-          if (isHighRes) {
-            const previewCanvas = document.getElementById('editor-preview-canvas');
-            const scale = width / previewCanvas.width;
-            State.stickers.forEach(stk => {
-              ctx.save();
-              ctx.translate(stk.x * scale, stk.y * scale);
-              ctx.rotate((stk.rotation * Math.PI) / 180);
-              ctx.scale(stk.scale * scale, stk.scale * scale);
-              if (stk.icon) {
-                ctx.font = '28px sans-serif';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(stk.icon, 0, 0);
-              }
-              ctx.restore();
-            });
-            const doodleCanvas = document.getElementById('doodle-canvas');
-            if (doodleCanvas) {
-              ctx.drawImage(doodleCanvas, 0, 0, width, height);
-            }
-          }
           return;
         }
 
+        // Standard Designer Frames: Dimensions based strictly on layout
         let width = isHighRes ? 1400 : 440;
         let height;
 
-        // If there is only 1 photo, adapt to single-photo frame layout automatically!
-        let activeLayout = State.layout;
-        if (State.photos.length === 1 && (activeLayout === '1x3' || activeLayout === '1x4')) {
-          activeLayout = 'polaroid';
-        }
-
         if (activeLayout === '1x4') height = width * 3.2;
         else if (activeLayout === '1x3') height = width * 2.5;
-        else if (activeLayout === '2x2') { width = isHighRes ? 1500 : 480; height = width * 1.15; }
+        else if (activeLayout === '2x2') { width = isHighRes ? 1500 : 480; height = width * 1.18; }
         else { width = isHighRes ? 1300 : 420; height = width * 1.25; }
 
         canvas.width = width;
@@ -2140,7 +1750,7 @@
         // 2. Compute Slots Coordinates
         const marginX = State.frameTheme === 'film-roll' ? width * 0.11 : width * 0.08;
         const topMargin = (State.frameTheme === 'newspaper' || State.frameTheme === 'korean-milk') ? width * 0.17 : width * 0.08;
-        const bottomMargin = width * 0.23;
+        const bottomMargin = width * 0.22;
         const availableW = width - marginX * 2;
         const availableH = height - topMargin - bottomMargin;
 
@@ -2156,11 +1766,13 @@
         } else if (activeLayout === '2x2') {
           const gap = width * 0.04;
           const cellW = (availableW - gap) / 2;
-          slotRects.push({ x: marginX, y: topMargin, w: cellW, h: cellW });
-          slotRects.push({ x: marginX + cellW + gap, y: topMargin, w: cellW, h: cellW });
-          slotRects.push({ x: marginX, y: topMargin + cellW + gap, w: cellW, h: cellW });
-          slotRects.push({ x: marginX + cellW + gap, y: topMargin + cellW + gap, w: cellW, h: cellW });
+          const cellH = (availableH - gap) / 2;
+          slotRects.push({ x: marginX, y: topMargin, w: cellW, h: cellH });
+          slotRects.push({ x: marginX + cellW + gap, y: topMargin, w: cellW, h: cellH });
+          slotRects.push({ x: marginX, y: topMargin + cellH + gap, w: cellW, h: cellH });
+          slotRects.push({ x: marginX + cellW + gap, y: topMargin + cellH + gap, w: cellW, h: cellH });
         } else {
+          // Polaroid single slot
           slotRects.push({ x: marginX, y: topMargin, w: availableW, h: availableW * 1.05 });
         }
 
@@ -2173,123 +1785,60 @@
           ctx.roundRect(rect.x, rect.y, rect.w, rect.h, width * 0.02);
           ctx.clip();
 
-          const photo = State.photos[idx];
+          const photo = State.photos[idx] !== undefined ? State.photos[idx] : State.photos[0];
           if (photo) {
             if (photo instanceof HTMLImageElement && !photo.complete) {
               photo.onload = () => EditorStudio.renderCanvas();
             }
 
-            if (ctx.filter !== undefined && State.currentFilter) {
-              const expB = 1 + (State.manualAdjust.brightness / 100);
-              const expC = 1 + (State.manualAdjust.contrast / 100);
-              ctx.filter = `${State.currentFilter.css} brightness(${expB}) contrast(${expC})`;
+            if (ctx.filter !== undefined && State.currentFilter && State.currentFilter.css !== 'none') {
+              ctx.filter = State.currentFilter.css;
             }
 
-            const pW = photo.naturalWidth || photo.width || 800;
-            const pH = photo.naturalHeight || photo.height || 600;
-            const ratio = Math.max(rect.w / pW, rect.h / pH);
-            const drawX = rect.x + (rect.w - pW * ratio) / 2;
-            const drawY = rect.y + (rect.h - pH * ratio) / 2;
-            ctx.drawImage(photo, drawX, drawY, pW * ratio, pH * ratio);
-            ctx.filter = 'none';
-
-            // Overlays
-            if (State.lensOverlays.leak) {
-              const grad = ctx.createRadialGradient(rect.x, rect.y, 10, rect.x, rect.y, rect.w);
-              grad.addColorStop(0, 'rgba(255, 90, 30, 0.45)');
-              grad.addColorStop(0.6, 'rgba(255, 140, 0, 0.15)');
-              grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-              ctx.fillStyle = grad;
-              ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
-            }
-            if (State.lensOverlays.vignette) {
-              const grad = ctx.createRadialGradient(
-                rect.x + rect.w / 2, rect.y + rect.h / 2, rect.w * 0.3,
-                rect.x + rect.w / 2, rect.y + rect.h / 2, rect.w * 0.7
-              );
-              grad.addColorStop(0, 'rgba(0,0,0,0)');
-              grad.addColorStop(1, 'rgba(0,0,0,0.5)');
-              ctx.fillStyle = grad;
-              ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
-            }
-            if (State.lensOverlays.sparkle) {
-              ctx.fillStyle = '#FFFFFF';
-              ctx.font = `${width * 0.04}px sans-serif`;
-              ctx.fillText('✦', rect.x + rect.w * 0.85, rect.y + rect.h * 0.2);
-              ctx.fillText('✧', rect.x + rect.w * 0.1, rect.y + rect.h * 0.85);
+            const pW = photo.videoWidth || photo.naturalWidth || photo.width;
+            const pH = photo.videoHeight || photo.naturalHeight || photo.height;
+            if (pW && pH) {
+              const imgRatio = pW / pH;
+              const slotRatio = rect.w / rect.h;
+              let sW, sH, sX, sY;
+              if (imgRatio > slotRatio) {
+                sH = pH; sW = pH * slotRatio;
+                sX = (pW - sW) / 2; sY = 0;
+              } else {
+                sW = pW; sH = pW / slotRatio;
+                sX = 0; sY = (pH - sH) / 2;
+              }
+              ctx.drawImage(photo, sX, sY, sW, sH, rect.x, rect.y, rect.w, rect.h);
             }
           } else {
-            ctx.fillStyle = '#F3F0EA';
+            // Placeholder slot
+            ctx.fillStyle = '#E5E7EB';
             ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
-            ctx.fillStyle = '#B5B1A8';
-            ctx.font = `bold ${width * 0.04}px sans-serif`;
+            ctx.fillStyle = '#9CA3AF';
+            ctx.font = `600 ${width * 0.035}px "Plus Jakarta Sans", sans-serif`;
             ctx.textAlign = 'center';
-            ctx.fillText(`+ Pose ${idx + 1}`, rect.x + rect.w / 2, rect.y + rect.h / 2);
+            ctx.fillText(`+ Foto ${idx + 1}`, rect.x + rect.w / 2, rect.y + rect.h / 2);
           }
-
           ctx.restore();
 
-          // 4. Draw slot-specific cute border decorations
+          // 4. Draw slot accents (washi tape, film sprocket tags)
           this.drawSlotAccents(ctx, rect, idx, width, isHighRes);
         });
 
-        // 5. Custom PNG Overlay
+        // 5. Draw Custom PNG Frame if uploaded
         if (State.frameTheme === 'custom-png' && State.customFrameImage) {
           ctx.drawImage(State.customFrameImage, 0, 0, width, height);
         }
 
-        // 6. Bottom Caption
-        if (State.caption) {
-          const capY = height - bottomMargin * 0.42;
-          ctx.fillStyle = (State.frameTheme === 'film-roll' || State.frameColor === '#111113') ? '#FFFFFF' : '#1E1E24';
-          if (State.fontStyle === 'handwriting') ctx.font = `600 ${width * 0.075}px "Caveat", cursive`;
-          else if (State.fontStyle === 'mono') ctx.font = `bold ${width * 0.038}px "Courier Prime", monospace`;
-          else if (State.fontStyle === 'serif') ctx.font = `bold ${width * 0.045}px "Playfair Display", serif`;
-          else ctx.font = `bold ${width * 0.045}px "Plus Jakarta Sans", sans-serif`;
-          ctx.textAlign = 'center';
-          ctx.fillText(State.caption, width / 2, capY);
-        }
-
-        // 7. Date Stamp
-        const dateY = height - bottomMargin * 0.16;
-        if (State.dateFormat !== 'none') {
-          ctx.fillStyle = '#FF7A00';
-          ctx.font = `bold ${width * 0.03}px "Share Tech Mono", monospace`;
-          ctx.textAlign = 'left';
-          const dtText = State.dateFormat === 'format1' ? "'26.11.17" : State.dateFormat === 'format2' ? "17 NOV 2026" : "2026/11/17";
-          ctx.fillText(dtText, marginX, dateY);
-        }
-
-        // 8. Render Stickers & Purikura Doodle onto High-Res Export Canvas
-        if (isHighRes) {
-          const previewCanvas = document.getElementById('editor-preview-canvas');
-          const scale = width / previewCanvas.width;
-
-          State.stickers.forEach(s => {
-            ctx.save();
-            ctx.translate(s.x * scale, s.y * scale);
-            ctx.rotate((s.rotation * Math.PI) / 180);
-            ctx.scale(s.scale * scale, s.scale * scale);
-            if (s.icon) {
-              ctx.font = '36px sans-serif';
-              ctx.textAlign = 'center';
-              ctx.textBaseline = 'middle';
-              ctx.fillText(s.icon, 0, 0);
-            } else if (s.text) {
-              ctx.fillStyle = '#FF5A79';
-              ctx.font = 'bold 16px "Plus Jakarta Sans", sans-serif';
-              ctx.textAlign = 'center';
-              ctx.textBaseline = 'middle';
-              ctx.fillText(s.text, 0, 0);
-            }
-            ctx.restore();
-          });
-
-          DoodleEngine.redraw(ctx, scale);
-        }
+        // 6. PERMANENT BRANDING "Pozia Studio" IN EDITORIAL SERIF FONT
+        const brandY = height - bottomMargin * 0.42;
+        const brandSize = Math.round(width * 0.048);
+        ctx.fillStyle = (State.frameTheme === 'film-roll' || State.frameColor === '#111113') ? '#FFFFFF' : '#1E1E24';
+        ctx.font = `600 ${brandSize}px "Playfair Display", serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText('Pozia Studio', width / 2, brandY);
       },
 
-      /* Draw rich, super cute patterns programmatically */
       drawCuteFramePattern(ctx, width, height, isHighRes) {
         const th = State.frameTheme;
 
@@ -2298,7 +1847,6 @@
           ctx.fillStyle = '#FFE8EC';
           ctx.fillRect(0, 0, width, height);
 
-          // Scalloped lace border
           ctx.fillStyle = '#FFFFFF';
           const r = width * 0.022;
           for (let x = r; x < width; x += r * 2) {
@@ -2310,21 +1858,23 @@
             ctx.fill();
           }
 
-          // Scattered cute strawberries and bows
-          ctx.font = `${width * 0.045}px sans-serif`;
-          ctx.fillText('🎀', width * 0.03, width * 0.065);
-          ctx.fillText('🎀', width * 0.88, width * 0.065);
-          ctx.fillText('🍓', width * 0.03, height * 0.45);
-          ctx.fillText('🍓', width * 0.88, height * 0.45);
-          ctx.fillText('💖', width * 0.03, height * 0.8);
-          ctx.fillText('💖', width * 0.88, height * 0.8);
+          ctx.save();
+          ctx.strokeStyle = 'rgba(255, 90, 121, 0.4)';
+          ctx.lineWidth = isHighRes ? 3 : 1.5;
+          ctx.setLineDash([8, 6]);
+          ctx.strokeRect(width * 0.035, width * 0.035, width * 0.93, height - width * 0.07);
+          ctx.restore();
+
+          ctx.fillStyle = '#FF5A79';
+          ctx.font = `600 ${width * 0.034}px "Caveat", cursive`;
+          ctx.textAlign = 'center';
+          ctx.fillText("sweet memory  •  coquette studio", width / 2, width * 0.055);
         }
-        // 2. Kotak Susu Korea (Strawberry Milk)
+        // 2. Kotak Susu Korea
         else if (th === 'korean-milk') {
           ctx.fillStyle = '#FFFDF5';
           ctx.fillRect(0, 0, width, height);
 
-          // Pink milk wave bottom
           ctx.fillStyle = '#FFD1DC';
           ctx.beginPath();
           ctx.moveTo(0, height - width * 0.35);
@@ -2333,7 +1883,6 @@
           ctx.lineTo(0, height);
           ctx.fill();
 
-          // Cute Milk Header
           ctx.fillStyle = '#FF5A79';
           ctx.font = `bold ${width * 0.038}px "Plus Jakarta Sans", sans-serif`;
           ctx.textAlign = 'center';
@@ -2343,7 +1892,7 @@
           ctx.fillStyle = '#7E66DE';
           ctx.fillText('100% FRESH & SWEET MEMORIES', width / 2, width * 0.12);
         }
-        // 3. Idol Photocard Deco (Toploader Deco)
+        // 3. Idol Photocard Deco
         else if (th === 'toploader-deco') {
           const grad = ctx.createLinearGradient(0, 0, width, height);
           grad.addColorStop(0, '#F3E8FF');
@@ -2352,72 +1901,73 @@
           ctx.fillStyle = grad;
           ctx.fillRect(0, 0, width, height);
 
-          // Wavy holographic ribbon stickers along border
-          ctx.strokeStyle = 'rgba(255, 90, 121, 0.45)';
-          ctx.lineWidth = width * 0.015;
-          ctx.beginPath();
-          for (let y = 0; y < height; y += 40) {
-            ctx.lineTo(width * 0.03 + Math.sin(y * 0.05) * 8, y);
-          }
-          ctx.stroke();
-
-          ctx.strokeStyle = 'rgba(155, 135, 245, 0.45)';
-          ctx.beginPath();
-          for (let y = 0; y < height; y += 40) {
-            ctx.lineTo(width * 0.97 - Math.sin(y * 0.05) * 8, y);
-          }
-          ctx.stroke();
-
-          // Deco stickers
-          ctx.font = `${width * 0.042}px sans-serif`;
-          ctx.fillText('✦', width * 0.02, width * 0.06);
-          ctx.fillText('✨', width * 0.88, width * 0.06);
-          ctx.fillText('💖', width * 0.88, height * 0.4);
-          ctx.fillText('🐰', width * 0.02, height * 0.4);
+          ctx.fillStyle = '#9B87F5';
+          ctx.font = `bold ${width * 0.026}px "Share Tech Mono", monospace`;
+          ctx.fillText('MY BIAS', width * 0.08, width * 0.05);
+          ctx.textAlign = 'right';
+          ctx.fillText('SPECIAL EDITION', width * 0.92, width * 0.05);
+          ctx.textAlign = 'left';
         }
         // 4. Kelinci & Daisy
         else if (th === 'kawaii-bunny') {
           ctx.fillStyle = '#F0F3FA';
           ctx.fillRect(0, 0, width, height);
 
-          ctx.font = `${width * 0.046}px sans-serif`;
-          ctx.fillText('🐰', width * 0.03, width * 0.07);
-          ctx.fillText('🐰', width * 0.88, width * 0.07);
-          ctx.fillText('🌼', width * 0.03, height * 0.35);
-          ctx.fillText('🌼', width * 0.88, height * 0.35);
-          ctx.fillText('🥕', width * 0.03, height * 0.7);
-          ctx.fillText('🥕', width * 0.88, height * 0.7);
+          const drawDaisy = (cx, cy, r) => {
+            ctx.fillStyle = '#FFFFFF';
+            for (let i = 0; i < 6; i++) {
+              const ang = (i * Math.PI) / 3;
+              ctx.beginPath();
+              ctx.arc(cx + Math.cos(ang) * r * 0.7, cy + Math.sin(ang) * r * 0.7, r * 0.45, 0, Math.PI * 2);
+              ctx.fill();
+            }
+            ctx.fillStyle = '#FFD166';
+            ctx.beginPath();
+            ctx.arc(cx, cy, r * 0.4, 0, Math.PI * 2);
+            ctx.fill();
+          };
+
+          drawDaisy(width * 0.05, width * 0.05, width * 0.025);
+          drawDaisy(width * 0.95, width * 0.05, width * 0.025);
+          drawDaisy(width * 0.05, height * 0.45, width * 0.025);
+          drawDaisy(width * 0.95, height * 0.45, width * 0.025);
         }
         // 5. Kucing & Pink Paw
         else if (th === 'meow-cat') {
           ctx.fillStyle = '#FFF9E6';
           ctx.fillRect(0, 0, width, height);
 
-          ctx.font = `${width * 0.046}px sans-serif`;
-          ctx.fillText('🐱', width * 0.03, width * 0.07);
-          ctx.fillText('🐱', width * 0.88, width * 0.07);
-          ctx.fillText('🐾', width * 0.03, height * 0.3);
-          ctx.fillText('🐾', width * 0.88, height * 0.3);
-          ctx.fillText('🐾', width * 0.03, height * 0.6);
-          ctx.fillText('🐾', width * 0.88, height * 0.6);
+          const drawPaw = (cx, cy, size) => {
+            ctx.fillStyle = '#FFAAA6';
+            ctx.beginPath();
+            ctx.arc(cx, cy, size * 0.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(cx - size * 0.45, cy - size * 0.5, size * 0.22, 0, Math.PI * 2);
+            ctx.arc(cx - size * 0.16, cy - size * 0.7, size * 0.22, 0, Math.PI * 2);
+            ctx.arc(cx + size * 0.16, cy - size * 0.7, size * 0.22, 0, Math.PI * 2);
+            ctx.arc(cx + size * 0.45, cy - size * 0.5, size * 0.22, 0, Math.PI * 2);
+            ctx.fill();
+          };
+
+          drawPaw(width * 0.05, width * 0.05, width * 0.025);
+          drawPaw(width * 0.95, width * 0.05, width * 0.025);
+          drawPaw(width * 0.05, height * 0.35, width * 0.022);
+          drawPaw(width * 0.95, height * 0.35, width * 0.022);
         }
         // 6. Teddy Bear Bakery
         else if (th === 'teddy-bakery') {
           ctx.fillStyle = '#F7EFE5';
           ctx.fillRect(0, 0, width, height);
-
-          ctx.font = `${width * 0.046}px sans-serif`;
-          ctx.fillText('🧸', width * 0.03, width * 0.07);
-          ctx.fillText('🥐', width * 0.88, width * 0.07);
-          ctx.fillText('☕', width * 0.03, height * 0.5);
-          ctx.fillText('🧸', width * 0.88, height * 0.5);
+          ctx.fillStyle = '#8D6E63';
+          ctx.font = `bold ${width * 0.028}px "Plus Jakarta Sans", sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.fillText("• POZIA BAKERY & CAFE •", width / 2, width * 0.055);
         }
         // 7. Cherry Pop Polka
         else if (th === 'cherry-pop') {
           ctx.fillStyle = '#FFFDF9';
           ctx.fillRect(0, 0, width, height);
-
-          // Red polka dots
           ctx.fillStyle = '#FFCCD5';
           const dotSpacing = width * 0.08;
           for (let y = dotSpacing / 2; y < height; y += dotSpacing) {
@@ -2427,10 +1977,6 @@
               ctx.fill();
             }
           }
-
-          ctx.font = `${width * 0.046}px sans-serif`;
-          ctx.fillText('🍒', width * 0.03, width * 0.07);
-          ctx.fillText('🍒', width * 0.88, width * 0.07);
         }
         // 8. Awan & Sayap Malaikat
         else if (th === 'dreamy-clouds') {
@@ -2439,38 +1985,42 @@
           grad.addColorStop(1, '#FCE7F3');
           ctx.fillStyle = grad;
           ctx.fillRect(0, 0, width, height);
-
-          ctx.font = `${width * 0.046}px sans-serif`;
-          ctx.fillText('☁️', width * 0.03, width * 0.07);
-          ctx.fillText('✨', width * 0.88, width * 0.07);
-          ctx.fillText('☁️', width * 0.88, height * 0.5);
-          ctx.fillText('✨', width * 0.03, height * 0.5);
         }
         // 9. Y2K Cyber Chrome
         else if (th === 'y2k-cyber') {
-          ctx.fillStyle = '#E2E8F0';
+          const grad = ctx.createLinearGradient(0, 0, width, height);
+          grad.addColorStop(0, '#E2E8F0');
+          grad.addColorStop(0.5, '#BAE6FD');
+          grad.addColorStop(1, '#E0E7FF');
+          ctx.fillStyle = grad;
           ctx.fillRect(0, 0, width, height);
-          ctx.fillStyle = '#0284C7';
-          ctx.font = `bold ${width * 0.03}px "Share Tech Mono", monospace`;
-          ctx.textAlign = 'center';
-          ctx.fillText('★ 2000s CYBER ARCHIVE ★', width / 2, width * 0.05);
 
-          ctx.font = `${width * 0.04}px sans-serif`;
-          ctx.fillText('✦', width * 0.03, height * 0.4);
-          ctx.fillText('🦋', width * 0.88, height * 0.4);
+          ctx.fillStyle = '#0284C7';
+          ctx.font = `bold ${width * 0.026}px "Share Tech Mono", monospace`;
+          ctx.textAlign = 'center';
+          ctx.fillText('2000s CYBER ARCHIVE', width / 2, width * 0.05);
         }
-        // 10. Checker Pink & Lavender
-        else if (th === 'checker-pink' || th === 'checker-lavender') {
-          const checkSize = width * 0.045;
-          const c1 = th === 'checker-pink' ? '#FFD1DC' : '#E2D4F0';
-          for (let y = 0; y < height; y += checkSize) {
-            for (let x = 0; x < width; x += checkSize) {
-              ctx.fillStyle = ((x / checkSize + y / checkSize) % 2 === 0) ? c1 : '#FFFFFF';
-              ctx.fillRect(x, y, checkSize, checkSize);
+        // 10. Checker Pink
+        else if (th === 'checker-pink') {
+          const sz = width * 0.05;
+          for (let y = 0; y < height; y += sz) {
+            for (let x = 0; x < width; x += sz) {
+              ctx.fillStyle = ((Math.floor(x / sz) + Math.floor(y / sz)) % 2 === 0) ? '#FFD1DC' : '#FFFFFF';
+              ctx.fillRect(x, y, sz, sz);
             }
           }
         }
-        // 11. Sunset Aura
+        // 11. Checker Lavender
+        else if (th === 'checker-lavender') {
+          const sz = width * 0.05;
+          for (let y = 0; y < height; y += sz) {
+            for (let x = 0; x < width; x += sz) {
+              ctx.fillStyle = ((Math.floor(x / sz) + Math.floor(y / sz)) % 2 === 0) ? '#E2D4F0' : '#FFFFFF';
+              ctx.fillRect(x, y, sz, sz);
+            }
+          }
+        }
+        // 12. Sunset Aura
         else if (th === 'sunset-aura') {
           const grad = ctx.createLinearGradient(0, 0, width, height);
           grad.addColorStop(0, '#FF9A8B');
@@ -2479,29 +2029,30 @@
           ctx.fillStyle = grad;
           ctx.fillRect(0, 0, width, height);
         }
-        // 12. Scrapbook Washi
+        // 13. Scrapbook Washi
         else if (th === 'scrapbook-washi') {
           ctx.fillStyle = '#FAF6F0';
           ctx.fillRect(0, 0, width, height);
         }
-        // 13. Film Roll
+        // 14. Film Roll
         else if (th === 'film-roll') {
           ctx.fillStyle = '#111113';
           ctx.fillRect(0, 0, width, height);
-          const holeW = width * 0.04;
-          const holeH = holeW * 1.3;
-          const holeSpacing = holeH * 1.8;
+
           ctx.fillStyle = '#FFFFFF';
-          for (let y = holeSpacing / 2; y < height; y += holeSpacing) {
+          const holeW = width * 0.045;
+          const holeH = width * 0.032;
+          const holeSpacing = width * 0.07;
+          for (let y = width * 0.04; y < height - width * 0.04; y += holeSpacing) {
             ctx.beginPath();
-            ctx.roundRect(width * 0.02, y, holeW, holeH, 3);
+            ctx.roundRect(width * 0.03, y, holeW, holeH, 2);
             ctx.fill();
             ctx.beginPath();
-            ctx.roundRect(width - width * 0.02 - holeW, y, holeW, holeH, 3);
+            ctx.roundRect(width * 0.97 - holeW, y, holeW, holeH, 2);
             ctx.fill();
           }
         }
-        // 14. Newspaper
+        // 15. The Pozia Times Newspaper
         else if (th === 'newspaper') {
           ctx.fillStyle = '#F4ECD8';
           ctx.fillRect(0, 0, width, height);
@@ -2518,47 +2069,37 @@
           ctx.lineTo(width * 0.94, width * 0.14);
           ctx.stroke();
         }
-        // 15. Classic Solid
+        // 16. Classic Solid
         else {
           ctx.fillStyle = State.frameColor || '#FFFFFF';
           ctx.fillRect(0, 0, width, height);
         }
       },
 
-      /* Draw cute accents around each slot */
       drawSlotAccents(ctx, rect, idx, width, isHighRes) {
         const th = State.frameTheme;
-
-        // Washi tape corners for Scrapbook
         if (th === 'scrapbook-washi') {
           const tapeColors = ['rgba(255, 90, 121, 0.65)', 'rgba(255, 214, 10, 0.75)', 'rgba(6, 214, 160, 0.7)'];
           ctx.fillStyle = tapeColors[idx % tapeColors.length];
           ctx.fillRect(rect.x - 8, rect.y - 6, width * 0.12, width * 0.038);
-        }
-        // Film roll frame number
-        else if (th === 'film-roll') {
+        } else if (th === 'film-roll') {
           ctx.fillStyle = '#FFA500';
           ctx.font = `bold ${width * 0.026}px "Share Tech Mono", monospace`;
           ctx.textAlign = 'left';
-          ctx.fillText(`0${idx + 1}A  ▸`, rect.x + 8, rect.y + rect.h - 8);
-        }
-        // Toploader ribbon bow at top of first slot
-        else if (th === 'toploader-deco' && idx === 0) {
-          ctx.font = `${width * 0.05}px sans-serif`;
-          ctx.textAlign = 'center';
-          ctx.fillText('🎀', rect.x + rect.w / 2, rect.y + 6);
+          ctx.fillText(`0${idx + 1}A ▸`, rect.x + 8, rect.y + rect.h - 8);
         }
       },
 
       renderCanvas() {
         const previewCanvas = document.getElementById('editor-preview-canvas');
-        this.renderToCanvas(previewCanvas, false);
-        DoodleEngine.syncSize(previewCanvas.width, previewCanvas.height);
+        if (previewCanvas) {
+          this.renderToCanvas(previewCanvas, false);
+        }
       }
     };
 
     /* ===================================================
-       9. CONFETTI CELEBRATION ENGINE
+       8. CONFETTI CELEBRATION ENGINE
        =================================================== */
     const ConfettiEngine = {
       canvas: null,
@@ -2616,7 +2157,7 @@
     };
 
     /* ===================================================
-       10. HISTORY & LOCAL STORAGE MANAGER
+       9. HISTORY & LOCAL STORAGE MANAGER
        =================================================== */
     const HistoryManager = {
       KEY: 'pozia_saved_history_v2',
@@ -2641,7 +2182,7 @@
     };
 
     /* ===================================================
-       11. MAIN APPLICATION ORCHESTRATOR
+       10. MAIN APPLICATION ORCHESTRATOR
        =================================================== */
     const App = {
       btsInterval: null,
@@ -2670,33 +2211,36 @@
           }
         });
 
-        // Gallery File Input
-        document.getElementById('gallery-file-input').addEventListener('change', (e) => {
-          const file = e.target.files[0];
-          if (!file) return;
-          const reader = new FileReader();
-          reader.onload = (event) => {
-            const img = new Image();
-            img.onload = () => {
-              if (State.activeSlotToReplace !== null) {
-                State.photos[State.activeSlotToReplace] = img;
-                State.activeSlotToReplace = null;
-              } else {
-                State.photos.push(img);
-              }
+        // Gallery File Input (supports multiple photo selection)
+        document.getElementById('gallery-file-input').addEventListener('change', async (e) => {
+          const files = Array.from(e.target.files);
+          if (files.length === 0) return;
 
-              if (State.stage === 'editor') {
-                EditorStudio.renderCanvas();
-              } else if (State.photos.length >= State.targetPoseCount) {
-                App.navigate('editor');
-              } else {
-                State.currentPoseIndex = State.photos.length;
-                CameraStudio.updatePoseCounter();
-              }
-            };
-            img.src = event.target.result;
-          };
-          reader.readAsDataURL(file);
+          // If replacing a specific clicked slot
+          if (State.activeSlotToReplace !== null && files.length > 0) {
+            const img = await App.loadImageFromFile(files[0]);
+            State.photos[State.activeSlotToReplace] = img;
+            State.activeSlotToReplace = null;
+            if (State.stage === 'editor') EditorStudio.renderCanvas();
+            e.target.value = '';
+            return;
+          }
+
+          // Otherwise adding new photos to slots sequentially
+          for (let file of files) {
+            if (State.photos.length >= State.targetPoseCount) break;
+            const img = await App.loadImageFromFile(file);
+            State.photos.push(img);
+          }
+
+          if (State.stage === 'editor') {
+            EditorStudio.renderCanvas();
+          } else if (State.photos.length >= State.targetPoseCount) {
+            App.navigate('editor');
+          } else {
+            State.currentPoseIndex = State.photos.length;
+            CameraStudio.updatePoseCounter();
+          }
           e.target.value = '';
         });
 
@@ -2722,18 +2266,24 @@
         I18N.apply('id');
       },
 
-      forceRefresh() {
-        if ('caches' in window) {
-          caches.keys().then((names) => {
-            for (let name of names) caches.delete(name);
-          });
-        }
-        window.location.reload(true);
+      loadImageFromFile(file) {
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.src = event.target.result;
+          };
+          reader.readAsDataURL(file);
+        });
       },
 
       toggleLanguage() {
         const next = I18N.current === 'id' ? 'en' : 'id';
         I18N.apply(next);
+        const btn = document.getElementById('lang-btn');
+        if (btn) btn.textContent = next === 'id' ? 'ID | EN' : 'EN | ID';
+        CameraStudio.updatePoseCounter();
       },
 
       setLayout(layout) {
@@ -2743,14 +2293,106 @@
         else if (layout === '2x2') State.targetPoseCount = 4;
         else if (layout === 'polaroid') State.targetPoseCount = 1;
 
+        // Update Home layout selector cards
         ['1x4', '1x3', '2x2', 'polaroid'].forEach(l => {
           const card = document.getElementById(`home-card-${l}`);
           if (card) {
             card.className = l === layout
-              ? 'p-3 rounded-2xl bg-white border-2 border-pozia-coral shadow-sm cursor-pointer hover:shadow-md transition-all flex flex-col items-center text-center gap-1.5'
+              ? 'p-3 rounded-2xl bg-white border-2 border-pozia-coral shadow-sm cursor-pointer hover:shadow-md transition-all flex flex-col items-center text-center gap-1.5 ring-2 ring-pozia-coral/20'
               : 'p-3 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col items-center text-center gap-1.5';
           }
+          const fBtn = document.getElementById(`frame-layout-${l}`);
+          if (fBtn) {
+            fBtn.className = l === layout
+              ? 'px-2.5 py-1 text-xs font-bold rounded-lg bg-pink-50 text-pozia-coral border border-pozia-coral transition-all'
+              : 'px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 transition-all';
+          }
+          const cBtn = document.getElementById(`cam-layout-${l}`);
+          if (cBtn) {
+            cBtn.className = l === layout
+              ? 'py-2 rounded-xl bg-pozia-coral text-white font-bold transition-all shadow-md'
+              : 'py-2 rounded-xl bg-white/10 text-gray-300 font-bold hover:bg-white/20 transition-all';
+          }
         });
+
+        // Update Camera Studio active layout badge
+        const camLabel = document.getElementById('cam-active-layout-label');
+        if (camLabel) {
+          const names = { '1x4': 'Strip 4 Pose', '1x3': 'Strip 3 Pose', '2x2': 'Grid 2x2', 'polaroid': 'Polaroid' };
+          camLabel.textContent = names[layout] || layout;
+        }
+
+        // Update Home layout badge
+        const badge = document.getElementById('home-layout-badge');
+        if (badge) {
+          const descriptions = {
+            '1x4': '4 Foto Vertikal',
+            '1x3': '3 Foto Vertikal',
+            '2x2': '4 Foto Kolase 2x2',
+            'polaroid': '1 Foto Tunggal'
+          };
+          badge.textContent = descriptions[layout] || '';
+        }
+
+        // Live preview updates immediately on Home screen
+        this.updateHomeLayoutPreview();
+      },
+
+      updateHomeLayoutPreview() {
+        const container = document.getElementById('home-preview-wrapper');
+        if (!container) return;
+
+        const layout = State.layout;
+        let html = '';
+
+        if (layout === '1x4') {
+          html = `
+            <div class="relative w-40 bg-[#FFE8EC] p-3 rounded-2xl shadow-2xl border-2 border-pink-200 flex flex-col gap-2 transition-all duration-300 transform hover:scale-105">
+              <div class="absolute -top-3 left-4 w-12 h-5 washi-tape-pink -rotate-12 rounded-sm pointer-events-none"></div>
+              <div class="h-14 bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">1</div>
+              <div class="h-14 bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">2</div>
+              <div class="h-14 bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">3</div>
+              <div class="h-14 bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">4</div>
+              <div class="text-center font-serif text-[11px] text-pozia-charcoal font-bold pt-1 tracking-wide">Pozia Studio</div>
+            </div>
+          `;
+        } else if (layout === '1x3') {
+          html = `
+            <div class="relative w-44 bg-[#F3E8FF] p-3.5 rounded-2xl shadow-2xl border-2 border-purple-200 flex flex-col gap-2.5 transition-all duration-300 transform hover:scale-105">
+              <div class="absolute -top-3 right-4 w-12 h-5 washi-tape-yellow rotate-12 rounded-sm pointer-events-none"></div>
+              <div class="h-20 bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-purple-300 font-bold">1</div>
+              <div class="h-20 bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-purple-300 font-bold">2</div>
+              <div class="h-20 bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-purple-300 font-bold">3</div>
+              <div class="text-center font-serif text-xs text-pozia-charcoal font-bold pt-1 tracking-wide">Pozia Studio</div>
+            </div>
+          `;
+        } else if (layout === '2x2') {
+          html = `
+            <div class="relative w-56 bg-[#FFF9E6] p-4 rounded-3xl shadow-2xl border-2 border-amber-200 flex flex-col gap-2.5 transition-all duration-300 transform hover:scale-105">
+              <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-5 washi-tape-mint -rotate-3 rounded-sm pointer-events-none"></div>
+              <div class="grid grid-cols-2 gap-2">
+                <div class="aspect-square bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-amber-300 font-bold">1</div>
+                <div class="aspect-square bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-amber-300 font-bold">2</div>
+                <div class="aspect-square bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-amber-300 font-bold">3</div>
+                <div class="aspect-square bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-amber-300 font-bold">4</div>
+              </div>
+              <div class="text-center font-serif text-xs text-pozia-charcoal font-bold pt-1 tracking-wide">Pozia Studio</div>
+            </div>
+          `;
+        } else {
+          // Polaroid single
+          html = `
+            <div class="relative w-52 bg-white p-4 pb-8 rounded-2xl shadow-2xl border border-gray-200 flex flex-col gap-3 transition-all duration-300 transform hover:scale-105">
+              <div class="absolute -top-3 left-6 w-14 h-5 washi-tape-pink -rotate-6 rounded-sm pointer-events-none"></div>
+              <div class="w-full aspect-[4/4.2] bg-gradient-to-b from-rose-50 to-pink-100 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">
+                1 Pose
+              </div>
+              <div class="text-center font-serif text-sm text-pozia-charcoal font-bold tracking-wider pt-2">Pozia Studio</div>
+            </div>
+          `;
+        }
+
+        container.innerHTML = html;
       },
 
       navigate(stage) {
@@ -2792,6 +2434,11 @@
         State.btsBurstGroups = [];
         State.currentPoseIndex = 0;
         State.activeSlotToReplace = null;
+        if (State.layout === '1x4') State.targetPoseCount = 4;
+        else if (State.layout === '1x3') State.targetPoseCount = 3;
+        else if (State.layout === '2x2') State.targetPoseCount = 4;
+        else if (State.layout === 'polaroid') State.targetPoseCount = 1;
+
         if (mode === 'camera') this.navigate('camera');
         else this.triggerGalleryUpload();
       },
@@ -2800,7 +2447,10 @@
         document.getElementById('gallery-file-input').click();
       },
 
-      exportFinalImage() {
+      async exportFinalImage() {
+        if (document.fonts && document.fonts.ready) {
+          try { await document.fonts.ready; } catch(e) {}
+        }
         const t0 = performance.now();
         const exportCanvas = document.createElement('canvas');
         EditorStudio.renderToCanvas(exportCanvas, true);
@@ -2815,7 +2465,7 @@
       downloadFinalImage() {
         const img = document.getElementById('final-export-img');
         const link = document.createElement('a');
-        link.download = `Pozia_Cute_${Date.now()}.png`;
+        link.download = `Pozia_Studio_${State.layout}_${Date.now()}.png`;
         link.href = img.src;
         document.body.appendChild(link);
         link.click();
@@ -2908,9 +2558,8 @@
       resetAndNew() {
         State.photos = [];
         State.btsBurstGroups = [];
-        State.stickers = [];
-        DoodleEngine.clear();
         State.currentPoseIndex = 0;
+        State.activeSlotToReplace = null;
         this.navigate('home');
       },
 
