@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pozia-v2.9.0';
+const CACHE_NAME = 'pozia-v3.0.0';
 const ASSETS_TO_CACHE = [
   './manifest.json',
   './assets/denim-star-frame.png'
