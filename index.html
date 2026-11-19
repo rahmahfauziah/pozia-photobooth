@@ -137,7 +137,7 @@
   <!-- GLOBAL HEADER (SOFT EDITORIAL WORKSTATION NAVBAR)        -->
   <!-- ======================================================== -->
   <header id="main-header"
-    class="w-full z-40 bg-white/95 backdrop-blur-md px-4 md:px-8 py-3 flex items-center justify-between border-b border-pozia-charcoal/5 shadow-sm sticky top-0 transition-colors">
+    class="w-full z-40 bg-white/95 backdrop-blur-md px-4 md:px-8 py-3.5 flex items-center justify-between border-b border-pozia-charcoal/5 shadow-sm sticky top-0 transition-colors">
     <!-- Brand Logo: Soft Editorial Typography -->
     <div class="flex items-center gap-3 cursor-pointer select-none" onclick="App.navigate('home')">
       <div
@@ -151,50 +151,43 @@
       </div>
     </div>
 
-    <!-- Center Navigation Links (Editorial Studio Sections) -->
-    <nav class="hidden md:flex items-center gap-6 text-xs font-semibold text-gray-500">
+    <!-- Center Navigation Links -->
+    <nav class="hidden md:flex items-center gap-8 text-xs font-semibold text-gray-500">
       <button onclick="App.navigate('home')" class="hover:text-pozia-coral transition-colors"
         data-i18n="nav_home">Beranda</button>
       <button onclick="App.scrollToSection('home-frame-showcase')" class="hover:text-pozia-coral transition-colors"
         data-i18n="nav_frames">Koleksi Bingkai</button>
-      <button onclick="App.scrollToSection('home-ethos-section')" class="hover:text-pozia-coral transition-colors"
+      <button onclick="App.scrollToSection('home-features-section')" class="hover:text-pozia-coral transition-colors"
         data-i18n="nav_features">Fitur Studio</button>
     </nav>
 
-    <!-- Navigation Status & Actions -->
-    <div class="flex items-center gap-2 md:gap-3">
+    <!-- Navigation Actions -->
+    <div class="flex items-center gap-3">
       <!-- Bilingual Switcher Pill -->
       <button id="lang-btn" onclick="App.toggleLanguage()"
         class="px-3 py-1.5 text-xs font-bold rounded-full bg-pozia-softgray text-pozia-charcoal hover:bg-pozia-coral hover:text-white transition-all shadow-sm">
         ID | EN
       </button>
 
-      <!-- System Diagnostics Modal Button -->
-      <button onclick="App.openDiagnosticsModal()" title="Diagnostik Sistem & Telemetry"
-        class="w-9 h-9 rounded-full bg-pozia-softgray flex items-center justify-center text-pozia-charcoal hover:bg-pozia-lilac hover:text-white transition-colors shadow-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-        </svg>
-      </button>
-
-      <!-- Saved History Gallery Button -->
+      <!-- Saved History Button -->
       <button onclick="App.openHistoryModal()" title="Galeri Hasil Tersimpan"
-        class="w-9 h-9 rounded-full bg-pozia-softgray flex items-center justify-center text-pozia-charcoal hover:bg-pozia-coral hover:text-white transition-colors shadow-sm">
+        class="w-8 h-8 rounded-full bg-pozia-softgray flex items-center justify-center text-pozia-charcoal hover:bg-pozia-coral hover:text-white transition-colors shadow-sm">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
         </svg>
       </button>
 
-      <!-- Quick Start Studio CTA Pill -->
-      <button onclick="App.startStudio('camera')"
-        class="hidden sm:flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-pozia-coral text-white text-xs font-bold shadow-md shadow-pozia-coral/25 hover:bg-pozia-coral-hover active:scale-95 transition-all">
+      <!-- Primary CTA: Mulai Studio -->
+      <button onclick="App.navigate('setup')"
+        class="px-4 py-2 rounded-full bg-pozia-coral text-white text-xs font-bold shadow-md shadow-pozia-coral/25 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center gap-1.5">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
-        <span data-i18n="cta_start_mini">Mulai Studio</span>
+        <span data-i18n="cta_start">Mulai Studio</span>
       </button>
     </div>
   </header>
@@ -202,420 +195,458 @@
   <!-- ======================================================== -->
   <!-- MAIN WORKSTATION WRAPPER                                 -->
   <!-- ======================================================== -->
-  <main id="app-container" class="flex-1 w-full flex flex-col md:h-[calc(100vh-61px)] overflow-hidden">
+  <main id="app-container" class="flex-1 w-full flex flex-col md:h-[calc(100vh-65px)] overflow-hidden">
 
     <!-- ====================================================== -->
     <!-- STAGE 1: SOFT EDITORIAL HOMEPAGE (BERANDA)             -->
     <!-- ====================================================== -->
     <section id="stage-home" class="flex-1 w-full overflow-y-auto no-scrollbar studio-editorial-bg">
       
-      <!-- HERO WORKSTATION (DESKTOP 2-COL / MOBILE STACKED) -->
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 md:py-16 flex flex-col md:flex-row items-center gap-10 md:gap-14">
+      <!-- HERO SECTION: VISUAL FIRST, MINIMALIST & ARTISTIC -->
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 md:px-12 py-10 md:py-20 flex flex-col md:flex-row items-center gap-10 md:gap-16">
         
-        <!-- Left Hero Column: Editorial Typography & Actions -->
+        <!-- Left Hero Column: Concise Typography & Main CTA -->
         <div class="w-full md:w-1/2 flex flex-col gap-6 text-left">
           <div class="flex items-center gap-2">
-            <span class="text-xs px-3 py-1 rounded-full bg-pozia-coral/10 text-pozia-coral font-bold tracking-wide uppercase flex items-center gap-1.5 shadow-sm">
+            <span class="text-xs px-3.5 py-1.5 rounded-full bg-pozia-coral/10 text-pozia-coral font-bold tracking-wider uppercase flex items-center gap-2 shadow-sm">
               <span class="w-2 h-2 rounded-full bg-pozia-coral animate-pulse"></span>
-              <span data-i18n="hero_badge">Your Moments, Your Little Studio</span>
+              <span>Digital Creative Photobooth</span>
             </span>
           </div>
 
           <div>
-            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-pozia-charcoal leading-[1.15] font-serif tracking-tight">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-pozia-charcoal leading-[1.12] font-serif tracking-tight">
               Your Moments,<br>
               <span class="text-pozia-coral italic font-normal">Your Little Studio.</span>
             </h1>
-            <p class="mt-4 text-sm sm:text-base text-gray-600 leading-relaxed max-w-lg" data-i18n="hero_desc">
-              Pozia Studio menghadirkan pengalaman digital photobooth artistik dengan format strip klasik, grid modern, 20+ bingkai tematik original, dan 14 filter analog estetik — 100% diproses privat langsung di browsermu.
+            <p class="mt-4 text-base sm:text-lg text-gray-600 leading-relaxed max-w-md" data-i18n="hero_desc">
+              Abadikan senyum dan kebersamaan dalam format photo strip klasik & grid artistik. Hadir dengan 20+ bingkai tematik original dan 14 filter warna analog estetik.
             </p>
           </div>
 
-          <!-- Primary & Secondary CTA Action Buttons -->
-          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
-            <button onclick="App.startStudio('camera')"
-              class="px-8 py-4 rounded-2xl bg-pozia-coral text-white font-bold text-sm shadow-xl shadow-pozia-coral/30 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center justify-center gap-2.5">
+          <!-- Main CTA Buttons (Proceeds to Setup Stage) -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
+            <button onclick="App.navigate('setup')"
+              class="px-8 py-4 rounded-2xl bg-pozia-coral text-white font-bold text-base shadow-xl shadow-pozia-coral/30 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center justify-center gap-3">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              <span data-i18n="cta_camera">Mulai Photobooth</span>
+              <span data-i18n="cta_start">Mulai Photobooth</span> &rarr;
             </button>
 
-            <button onclick="App.startStudio('upload')"
+            <button onclick="App.triggerGalleryUpload()"
               class="px-6 py-4 rounded-2xl bg-white border border-gray-200 text-pozia-charcoal font-semibold text-sm hover:bg-gray-50 active:scale-95 transition-all shadow-sm flex items-center justify-center gap-2">
-              <svg class="w-5 h-5 text-pozia-lilac" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-4 h-4 text-pozia-lilac" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
               </svg>
-              <span data-i18n="cta_upload">Pilih dari Galeri</span>
+              <span>Upload dari Galeri</span>
             </button>
           </div>
 
-          <!-- Interactive Layout Selector Cards Grid -->
-          <div class="pt-3 flex flex-col gap-2.5">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold uppercase tracking-wider text-gray-500" data-i18n="choose_layout">
-                Pilih Format Layout
-              </span>
-              <span class="text-[11px] font-semibold text-pozia-coral bg-pozia-coral-light px-2.5 py-0.5 rounded-full" id="home-layout-badge">
-                4 Foto Vertikal
-              </span>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-              <!-- 1x4 Strip -->
-              <div onclick="App.setLayout('1x4')" id="home-card-1x4"
-                class="p-3 rounded-2xl bg-white border-2 border-pozia-coral shadow-sm cursor-pointer hover:shadow-md transition-all flex flex-col items-center text-center gap-1 ring-2 ring-pozia-coral/20">
-                <span class="font-extrabold text-xs text-pozia-charcoal">Strip 4 Pose</span>
-                <span class="text-[10px] text-gray-400">1x4 Photobox</span>
-              </div>
-              <!-- 1x3 Strip -->
-              <div onclick="App.setLayout('1x3')" id="home-card-1x3"
-                class="p-3 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col items-center text-center gap-1">
-                <span class="font-extrabold text-xs text-pozia-charcoal">Strip 3 Pose</span>
-                <span class="text-[10px] text-gray-400">1x3 Vertical</span>
-              </div>
-              <!-- 2x2 Grid -->
-              <div onclick="App.setLayout('2x2')" id="home-card-2x2"
-                class="p-3 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col items-center text-center gap-1">
-                <span class="font-extrabold text-xs text-pozia-charcoal">Grid 2x2</span>
-                <span class="text-[10px] text-gray-400">Square Collage</span>
-              </div>
-              <!-- Polaroid -->
-              <div onclick="App.setLayout('polaroid')" id="home-card-polaroid"
-                class="p-3 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col items-center text-center gap-1">
-                <span class="font-extrabold text-xs text-pozia-charcoal">Polaroid</span>
-                <span class="text-[10px] text-gray-400">Single Classic</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Studio Feature Badges -->
-          <div class="pt-2 flex flex-wrap items-center gap-4 text-[11px] text-gray-500 font-medium">
+          <!-- Quick Trust Badges -->
+          <div class="pt-2 flex flex-wrap items-center gap-4 text-xs text-gray-500 font-medium">
             <span class="flex items-center gap-1.5">
-              <span class="text-amber-500">⚡</span> 100% Client-Side Privacy
+              <span class="text-amber-500 font-bold">⚡</span> 100% Client-Side Privacy
             </span>
             <span class="flex items-center gap-1.5">
-              <span class="text-pozia-coral">✦</span> 20+ Bingkai Tematik Original
+              <span class="text-pozia-coral font-bold">✦</span> 20+ Bingkai Original
             </span>
             <span class="flex items-center gap-1.5">
-              <span class="text-emerald-500">✔</span> Ultra HD Studio Render
+              <span class="text-emerald-500 font-bold">✔</span> Ultra HD 300DPI
             </span>
           </div>
         </div>
 
-        <!-- Right Hero Column: Interactive Live Studio Workstation Apparatus Preview -->
-        <div class="w-full md:w-1/2 flex flex-col items-center justify-center relative">
-          <!-- Ambient Studio Glow -->
-          <div class="absolute w-80 h-80 rounded-full bg-pozia-coral/15 blur-3xl pointer-events-none"></div>
-          <div class="absolute -bottom-10 -right-10 w-64 h-64 rounded-full bg-pozia-lilac/15 blur-3xl pointer-events-none"></div>
+        <!-- Right Hero Column: Artistic Photo Strip Showcase -->
+        <div class="w-full md:w-1/2 flex items-center justify-center relative select-none py-6">
+          <!-- Soft Ambient Backlight -->
+          <div class="absolute w-72 h-72 rounded-full bg-pink-200/40 blur-3xl pointer-events-none"></div>
+          <div class="absolute -bottom-6 -right-6 w-64 h-64 rounded-full bg-purple-200/30 blur-3xl pointer-events-none"></div>
 
-          <!-- Sleek Studio Apparatus Card -->
-          <div class="relative w-full max-w-md bg-white/90 backdrop-blur-xl p-5 md:p-6 rounded-3xl border border-white/60 shadow-2xl flex flex-col items-center gap-4 transition-all">
-            <!-- Apparatus Header / Viewfinder Status -->
-            <div class="w-full flex items-center justify-between border-b border-gray-100 pb-3 text-xs">
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span class="font-mono text-[11px] font-bold text-gray-600 tracking-wider">LIVE STUDIO VIEW</span>
+          <!-- Composition of Artistic Photo Strips -->
+          <div class="relative flex items-center justify-center gap-4 sm:gap-6">
+            
+            <!-- Strip 1: Soft Editorial Newsprint (Rotated Left) -->
+            <div class="w-36 sm:w-44 bg-[#F4ECD8] p-3 rounded-2xl shadow-2xl border border-stone-300/80 transform -rotate-6 hover:rotate-0 transition-transform duration-300 flex flex-col gap-2">
+              <div class="w-12 h-5 washi-tape-pink -top-3 left-3 absolute -rotate-12 rounded-sm pointer-events-none"></div>
+              <div class="text-center font-serif text-[10px] text-stone-800 font-extrabold tracking-wider border-b border-stone-400/40 pb-1">THE POZIA TIMES</div>
+              <div class="w-full h-16 sm:h-20 bg-stone-100 rounded-lg overflow-hidden shadow-inner flex items-center justify-center text-[10px] text-stone-400 font-bold bg-cover bg-center"
+                style="background-image: linear-gradient(135deg, #FFE8EC, #FCE7F3);">
+                <span>Pose 1</span>
               </div>
-              <span id="preview-ratio-badge" class="px-2.5 py-0.5 rounded-full bg-gray-100 font-mono text-[10px] text-gray-500 font-bold">
-                FORMAT 1:3.2
-              </span>
+              <div class="w-full h-16 sm:h-20 bg-stone-100 rounded-lg overflow-hidden shadow-inner flex items-center justify-center text-[10px] text-stone-400 font-bold bg-cover bg-center"
+                style="background-image: linear-gradient(135deg, #F3E8FF, #EDE9FE);">
+                <span>Pose 2</span>
+              </div>
+              <div class="w-full h-16 sm:h-20 bg-stone-100 rounded-lg overflow-hidden shadow-inner flex items-center justify-center text-[10px] text-stone-400 font-bold bg-cover bg-center"
+                style="background-image: linear-gradient(135deg, #E0F2FE, #BAE6FD);">
+                <span>Pose 3</span>
+              </div>
+              <div class="text-center font-serif text-[11px] text-stone-900 font-bold pt-1">Pozia Studio</div>
             </div>
 
-            <!-- Dynamic Inner Live Layout Preview -->
-            <div id="home-preview-wrapper"
-              class="w-full transition-all duration-300 flex items-center justify-center min-h-[380px] sm:min-h-[420px]">
-              <!-- Dynamically populated by App.updateHomeLayoutPreview() -->
-            </div>
-
-            <!-- Apparatus Quick Controls Footer -->
-            <div class="w-full flex items-center justify-between pt-2 border-t border-gray-100 text-xs">
-              <div class="flex items-center gap-1.5 text-gray-400 text-[11px]">
-                <span class="font-serif italic font-bold text-pozia-charcoal">Pozia</span>
-                <span>• Permanent Branding</span>
+            <!-- Strip 2: Scrapbook Denim & Stars (Rotated Right) -->
+            <div class="w-36 sm:w-44 bg-[#1E2436] p-3 rounded-2xl shadow-2xl border border-slate-700 transform rotate-6 hover:rotate-0 transition-transform duration-300 flex flex-col gap-2">
+              <div class="w-12 h-5 washi-tape-yellow -top-3 right-3 absolute rotate-12 rounded-sm pointer-events-none"></div>
+              <div class="text-center font-serif text-[10px] text-amber-200 font-bold tracking-widest pt-0.5">★ SCRAPBOOK ★</div>
+              <div class="w-full h-16 sm:h-20 bg-slate-900 rounded-lg overflow-hidden shadow-inner flex items-center justify-center text-[10px] text-slate-400 font-bold"
+                style="background-image: linear-gradient(135deg, #FFF9E6, #FEF08A);">
+                <span class="text-amber-800">Pose 1</span>
               </div>
-              <button onclick="App.simulateHeroFlash()"
-                class="px-3 py-1 rounded-xl bg-pozia-softgray text-pozia-charcoal font-semibold text-[11px] hover:bg-pozia-coral hover:text-white transition-all flex items-center gap-1">
-                <span>📸</span>
-                <span>Uji Shutter</span>
-              </button>
+              <div class="w-full h-16 sm:h-20 bg-slate-900 rounded-lg overflow-hidden shadow-inner flex items-center justify-center text-[10px] text-slate-400 font-bold"
+                style="background-image: linear-gradient(135deg, #FFE8EE, #FFD0DD);">
+                <span class="text-pink-800">Pose 2</span>
+              </div>
+              <div class="w-full h-16 sm:h-20 bg-slate-900 rounded-lg overflow-hidden shadow-inner flex items-center justify-center text-[10px] text-slate-400 font-bold"
+                style="background-image: linear-gradient(135deg, #E0E7FF, #C7D2FE);">
+                <span class="text-indigo-800">Pose 3</span>
+              </div>
+              <div class="text-center font-serif text-[11px] text-white font-bold pt-1">Pozia Studio</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- SECTION 1: THE POZIA STUDIO ETHOS (3 CORE PILLARS) -->
-      <section id="home-ethos-section" class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-12 md:py-20 border-t border-gray-200/60">
-        <div class="text-center max-w-2xl mx-auto mb-12">
-          <span class="text-xs font-bold text-pozia-coral uppercase tracking-widest" data-i18n="ethos_tag">Studio Philosophy</span>
-          <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-pozia-charcoal font-serif mt-2" data-i18n="ethos_title">
-            Sentuhan Artistik, Privasi Penuh
-          </h2>
-          <p class="text-xs sm:text-sm text-gray-500 mt-3" data-i18n="ethos_desc">
-            Dibangun dari nol dengan arsitektur modern yang menjunjung tinggi kebebasan berekspresi dan rasa aman setiap pengguna.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <!-- Pillar 1 -->
-          <div class="p-6 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-pozia-coral/10 text-pozia-coral flex items-center justify-center text-xl font-bold">
-              📸
-            </div>
-            <h3 class="font-bold text-base text-pozia-charcoal font-serif" data-i18n="pillar1_title">Studio Shutter & Flash</h3>
-            <p class="text-xs text-gray-500 leading-relaxed" data-i18n="pillar1_desc">
-              Dilengkapi hitungan mundur presisi, screen flash lembut aneka warna, digital zoom, dan mirror camera untuk hasil potret yang memikat.
-            </p>
-          </div>
-
-          <!-- Pillar 2 -->
-          <div class="p-6 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl font-bold">
-              🔒
-            </div>
-            <h3 class="font-bold text-base text-pozia-charcoal font-serif" data-i18n="pillar2_title">100% Client-Side Privacy</h3>
-            <p class="text-xs text-gray-500 leading-relaxed" data-i18n="pillar2_desc">
-              Semua gambar, penggabungan layer, dan komposit canvas diproses murni di perangkat Anda. Foto tidak pernah diunggah ke server luar.
-            </p>
-          </div>
-
-          <!-- Pillar 3 -->
-          <div class="p-6 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-pozia-lilac/10 text-pozia-lilac flex items-center justify-center text-xl font-bold">
-              🎨
-            </div>
-            <h3 class="font-bold text-base text-pozia-charcoal font-serif" data-i18n="pillar3_title">20+ Thematic Designer Frames</h3>
-            <p class="text-xs text-gray-500 leading-relaxed" data-i18n="pillar3_desc">
-              Dari 8-Bit Arcade, Y2K Liquid Chrome, Pop Art Comic, 90s Mixtape hingga The Pozia Times Newsprint — setiap bingkai memiliki konsep orisinal.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- SECTION 2: CURATED FRAME SHOWCASE -->
-      <section id="home-frame-showcase" class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-12 md:py-20 border-t border-gray-200/60">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+      <!-- SECTION: CURATED FRAME SHOWCASE -->
+      <section id="home-frame-showcase" class="max-w-6xl mx-auto px-4 sm:px-6 md:px-12 py-12 md:py-16 border-t border-gray-200/60">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
           <div>
-            <span class="text-xs font-bold text-pozia-coral uppercase tracking-widest" data-i18n="frames_tag">Curated Collection</span>
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-pozia-charcoal font-serif mt-2" data-i18n="frames_title">
+            <span class="text-xs font-bold text-pozia-coral uppercase tracking-widest">Koleksi Kreatif</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-pozia-charcoal font-serif mt-1">
               Koleksi Bingkai Tematik Original
             </h2>
-            <p class="text-xs sm:text-sm text-gray-500 mt-2 max-w-xl" data-i18n="frames_desc">
-              Pilih dari beragam tema visual kaya detail yang dirancang khusus untuk memadukan keceriaan dan estetika editorial.
+            <p class="text-xs sm:text-sm text-gray-500 mt-1 max-w-lg">
+              Setiap bingkai memiliki karakter, palet warna, dan detail artistik orisinal dari Pozia Studio.
             </p>
           </div>
-          <button onclick="App.startStudio('camera')"
-            class="self-start md:self-auto px-5 py-2.5 rounded-2xl bg-pozia-charcoal text-white text-xs font-bold hover:bg-black transition-all flex items-center gap-2">
-            <span data-i18n="cta_explore_all">Buka Semua di Editor</span> &rarr;
+          <button onclick="App.navigate('setup')"
+            class="self-start sm:self-auto px-4 py-2 rounded-xl bg-pozia-charcoal text-white text-xs font-bold hover:bg-black transition-all flex items-center gap-1.5 shadow-sm">
+            <span>Lihat Semua Bingkai</span> &rarr;
           </button>
         </div>
 
         <!-- Frame Cards Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          <!-- Frame 1: 8-Bit Arcade -->
-          <div onclick="App.startStudioWithFrame('pixel-arcade')"
-            class="group p-4 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col gap-3">
-            <div class="w-full h-36 rounded-2xl flex items-center justify-center text-white font-mono text-xs font-bold shadow-inner relative overflow-hidden"
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <!-- 8-Bit Arcade -->
+          <div onclick="App.startSetupWithFrame('pixel-arcade')"
+            class="group p-3.5 rounded-2xl bg-white border border-gray-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer flex flex-col gap-2.5">
+            <div class="w-full h-28 rounded-xl flex items-center justify-center text-white font-mono text-xs font-bold shadow-inner relative overflow-hidden"
               style="background: linear-gradient(135deg, #100C2A, #281B4B);">
-              <div class="absolute top-2 left-3 text-[9px] text-pink-400 font-bold">ARCADE 1984</div>
-              <div class="text-center font-digital text-sm text-cyan-300">HIGH SCORE<br>99990</div>
-              <div class="absolute bottom-2 right-3 text-[9px] text-yellow-300">♥ ♥ ♥</div>
+              <div class="text-center font-digital text-cyan-300 text-xs">ARCADE 1984<br><span class="text-[10px] text-pink-400">HI-99990</span></div>
             </div>
             <div>
-              <span class="text-[10px] font-bold text-pozia-coral uppercase tracking-wider">Gaming & Arcade</span>
-              <h4 class="font-extrabold text-sm text-pozia-charcoal group-hover:text-pozia-coral transition-colors">8-Bit Arcade 1984</h4>
-              <p class="text-[11px] text-gray-400 mt-0.5">CRT Neon & Pixel Score</p>
+              <span class="text-[9px] font-bold text-pozia-coral uppercase tracking-wider">Gaming</span>
+              <h4 class="font-extrabold text-xs text-pozia-charcoal group-hover:text-pozia-coral transition-colors">8-Bit Arcade 1984</h4>
             </div>
           </div>
 
-          <!-- Frame 2: Scrapbook Denim & Stars -->
-          <div onclick="App.startStudioWithFrame('denim-stars')"
-            class="group p-4 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col gap-3">
-            <div class="w-full h-36 rounded-2xl flex items-center justify-center text-white text-xs font-bold shadow-inner relative overflow-hidden"
+          <!-- Denim & Stars -->
+          <div onclick="App.startSetupWithFrame('denim-stars')"
+            class="group p-3.5 rounded-2xl bg-white border border-gray-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer flex flex-col gap-2.5">
+            <div class="w-full h-28 rounded-xl flex items-center justify-center text-white text-xs font-bold shadow-inner relative overflow-hidden"
               style="background: #1E2436;">
-              <div class="text-center font-serif text-sm text-amber-200">★ ★ ★<br>Scrapbook</div>
-              <div class="absolute bottom-2 font-mono text-[9px] text-gray-400">CHROME POZIA</div>
+              <div class="text-center font-serif text-amber-200 text-xs">★ ★ ★<br>Scrapbook</div>
             </div>
             <div>
-              <span class="text-[10px] font-bold text-indigo-500 uppercase tracking-wider">Scrapbook & Sticker</span>
-              <h4 class="font-extrabold text-sm text-pozia-charcoal group-hover:text-pozia-coral transition-colors">Scrapbook Denim & Stars</h4>
-              <p class="text-[11px] text-gray-400 mt-0.5">Navy Corduroy & Metallic Clips</p>
+              <span class="text-[9px] font-bold text-indigo-500 uppercase tracking-wider">Scrapbook</span>
+              <h4 class="font-extrabold text-xs text-pozia-charcoal group-hover:text-pozia-coral transition-colors">Denim & Stars</h4>
             </div>
           </div>
 
-          <!-- Frame 3: Y2K Liquid Chrome -->
-          <div onclick="App.startStudioWithFrame('cyber-liquid-chrome')"
-            class="group p-4 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col gap-3">
-            <div class="w-full h-36 rounded-2xl flex items-center justify-center text-white text-xs font-bold shadow-inner relative overflow-hidden"
+          <!-- Y2K Liquid Chrome -->
+          <div onclick="App.startSetupWithFrame('cyber-liquid-chrome')"
+            class="group p-3.5 rounded-2xl bg-white border border-gray-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer flex flex-col gap-2.5">
+            <div class="w-full h-28 rounded-xl flex items-center justify-center text-slate-800 text-xs font-bold shadow-inner relative overflow-hidden"
               style="background: linear-gradient(135deg, #E2E8F0, #94A3B8);">
-              <div class="text-center font-mono text-sm text-slate-800 font-extrabold">✦ LIQUID CHROME ✦<br>2000s CYBER</div>
+              <div class="text-center font-mono text-xs font-extrabold">✦ LIQUID CHROME ✦</div>
             </div>
             <div>
-              <span class="text-[10px] font-bold text-cyan-600 uppercase tracking-wider">Y2K & Cyber</span>
-              <h4 class="font-extrabold text-sm text-pozia-charcoal group-hover:text-pozia-coral transition-colors">Y2K Liquid Chrome</h4>
-              <p class="text-[11px] text-gray-400 mt-0.5">Mercury Drips & Cyber Star</p>
+              <span class="text-[9px] font-bold text-cyan-600 uppercase tracking-wider">Y2K Cyber</span>
+              <h4 class="font-extrabold text-xs text-pozia-charcoal group-hover:text-pozia-coral transition-colors">Liquid Chrome</h4>
             </div>
           </div>
 
-          <!-- Frame 4: Pop Art Comic -->
-          <div onclick="App.startStudioWithFrame('pop-art-comic')"
-            class="group p-4 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col gap-3">
-            <div class="w-full h-36 rounded-2xl flex items-center justify-center text-black text-xs font-bold shadow-inner relative overflow-hidden"
+          <!-- Pop Art Comic -->
+          <div onclick="App.startSetupWithFrame('pop-art-comic')"
+            class="group p-3.5 rounded-2xl bg-white border border-gray-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer flex flex-col gap-2.5">
+            <div class="w-full h-28 rounded-xl flex items-center justify-center text-white text-xs font-bold shadow-inner relative overflow-hidden"
               style="background: linear-gradient(135deg, #FFF9D2, #FDE047);">
-              <div class="px-3 py-1 rounded bg-red-500 text-white font-extrabold tracking-wider transform -rotate-6 shadow">POW!</div>
+              <div class="px-2.5 py-1 rounded bg-red-600 text-white font-extrabold -rotate-6 text-xs shadow">POW!</div>
             </div>
             <div>
-              <span class="text-[10px] font-bold text-amber-600 uppercase tracking-wider">Comic & Cartoon</span>
-              <h4 class="font-extrabold text-sm text-pozia-charcoal group-hover:text-pozia-coral transition-colors">Pop Art Comic</h4>
-              <p class="text-[11px] text-gray-400 mt-0.5">Halftone Dots & Explosive Burst</p>
-            </div>
-          </div>
-
-          <!-- Frame 5: 90s Mixtape -->
-          <div onclick="App.startStudioWithFrame('mixtape-cassette')"
-            class="group p-4 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col gap-3">
-            <div class="w-full h-36 rounded-2xl flex items-center justify-center text-white text-xs font-bold shadow-inner relative overflow-hidden"
-              style="background: linear-gradient(135deg, #2D3748, #1A202C);">
-              <div class="text-center font-mono text-[11px] text-pink-400">SIDE A: BEST MEMORIES<br>📼 STEREO TAPE</div>
-            </div>
-            <div>
-              <span class="text-[10px] font-bold text-purple-600 uppercase tracking-wider">Music & Concert</span>
-              <h4 class="font-extrabold text-sm text-pozia-charcoal group-hover:text-pozia-coral transition-colors">90s Retro Mixtape</h4>
-              <p class="text-[11px] text-gray-400 mt-0.5">Cassette Spools & Audio Waves</p>
-            </div>
-          </div>
-
-          <!-- Frame 6: Amalfi Lemon -->
-          <div onclick="App.startStudioWithFrame('amalfi-lemon')"
-            class="group p-4 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col gap-3">
-            <div class="w-full h-36 rounded-2xl flex items-center justify-center text-yellow-900 text-xs font-bold shadow-inner relative overflow-hidden"
-              style="background: linear-gradient(135deg, #FFFDEB, #FEF08A);">
-              <div class="text-center font-serif text-sm">🍋 Amalfi Lemon 🍋<br><span class="text-[10px] italic">Dolce Vita</span></div>
-            </div>
-            <div>
-              <span class="text-[10px] font-bold text-yellow-600 uppercase tracking-wider">Summer & Holiday</span>
-              <h4 class="font-extrabold text-sm text-pozia-charcoal group-hover:text-pozia-coral transition-colors">Amalfi Lemon</h4>
-              <p class="text-[11px] text-gray-400 mt-0.5">Citrus Blossoms & Azure Trim</p>
-            </div>
-          </div>
-
-          <!-- Frame 7: The Pozia Times -->
-          <div onclick="App.startStudioWithFrame('the-pozia-times')"
-            class="group p-4 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col gap-3">
-            <div class="w-full h-36 rounded-2xl flex items-center justify-center text-stone-900 text-xs font-bold shadow-inner relative overflow-hidden"
-              style="background: #F4ECD8;">
-              <div class="text-center font-serif font-extrabold text-sm tracking-tight">THE POZIA TIMES<br><span class="text-[9px] font-normal italic">Special Edition • Newsprint</span></div>
-            </div>
-            <div>
-              <span class="text-[10px] font-bold text-stone-600 uppercase tracking-wider">Retro & Vintage</span>
-              <h4 class="font-extrabold text-sm text-pozia-charcoal group-hover:text-pozia-coral transition-colors">The Pozia Times</h4>
-              <p class="text-[11px] text-gray-400 mt-0.5">Vintage Editorial Newsprint</p>
-            </div>
-          </div>
-
-          <!-- Frame 8: Celestial Tarot -->
-          <div onclick="App.startStudioWithFrame('celestial-tarot')"
-            class="group p-4 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col gap-3">
-            <div class="w-full h-36 rounded-2xl flex items-center justify-center text-amber-200 text-xs font-bold shadow-inner relative overflow-hidden"
-              style="background: linear-gradient(135deg, #0F172A, #1E1B4B);">
-              <div class="text-center font-serif text-sm">🌙 THE TAROT ☀️<br><span class="text-[9px]">Gold Foil Constellation</span></div>
-            </div>
-            <div>
-              <span class="text-[10px] font-bold text-amber-500 uppercase tracking-wider">Fantasy & Magical</span>
-              <h4 class="font-extrabold text-sm text-pozia-charcoal group-hover:text-pozia-coral transition-colors">Celestial Tarot</h4>
-              <p class="text-[11px] text-gray-400 mt-0.5">Midnight Gold Foil & Moon</p>
+              <span class="text-[9px] font-bold text-amber-600 uppercase tracking-wider">Comic</span>
+              <h4 class="font-extrabold text-xs text-pozia-charcoal group-hover:text-pozia-coral transition-colors">Pop Art Comic</h4>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- SECTION 3: SIMPLE 3-STEP GUIDE -->
-      <section class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-12 md:py-20 border-t border-gray-200/60">
-        <div class="text-center max-w-xl mx-auto mb-12">
-          <span class="text-xs font-bold text-pozia-coral uppercase tracking-widest" data-i18n="steps_tag">How It Works</span>
-          <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-pozia-charcoal font-serif mt-2" data-i18n="steps_title">
-            3 Langkah Mudah Menikmati Studio
-          </h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="flex flex-col items-center text-center gap-3">
-            <div class="w-14 h-14 rounded-full bg-pozia-coral/15 text-pozia-coral flex items-center justify-center text-xl font-extrabold font-serif shadow-sm">
-              1
+      <!-- SECTION: BRIEF STUDIO FEATURES -->
+      <section id="home-features-section" class="max-w-6xl mx-auto px-4 sm:px-6 md:px-12 py-10 md:py-14 border-t border-gray-200/60">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-start gap-3.5">
+            <div class="w-10 h-10 rounded-xl bg-pozia-coral/10 text-pozia-coral flex items-center justify-center text-lg font-bold shrink-0">
+              📸
             </div>
-            <h4 class="font-bold text-base text-pozia-charcoal font-serif" data-i18n="step1_title">Pilih Format & Bingkai</h4>
-            <p class="text-xs text-gray-500 leading-relaxed max-w-xs" data-i18n="step1_desc">
-              Pilih format Strip 4, Strip 3, Grid 2x2, atau Polaroid dengan preview real-time sebelum memulai sesi kamera.
-            </p>
+            <div>
+              <h4 class="font-bold text-sm text-pozia-charcoal font-serif">Pencahayaan & Shutter Studio</h4>
+              <p class="text-xs text-gray-500 mt-1">Countdown otomatis, screen flash lembut, mirror flip, dan pergantian lensa depan/belakang.</p>
+            </div>
           </div>
 
-          <div class="flex flex-col items-center text-center gap-3">
-            <div class="w-14 h-14 rounded-full bg-pozia-lilac/15 text-pozia-lilac flex items-center justify-center text-xl font-extrabold font-serif shadow-sm">
-              2
+          <div class="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-start gap-3.5">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg font-bold shrink-0">
+              🔒
             </div>
-            <h4 class="font-bold text-base text-pozia-charcoal font-serif" data-i18n="step2_title">Pose & Cekrek</h4>
-            <p class="text-xs text-gray-500 leading-relaxed max-w-xs" data-i18n="step2_desc">
-              Ambil pose dengan timer otomatis, ganti lensa depan/belakang, atur mirror, dan pratinjau semua foto sebelum lanjut ke editor.
-            </p>
+            <div>
+              <h4 class="font-bold text-sm text-pozia-charcoal font-serif">100% Privasi di Browser</h4>
+              <p class="text-xs text-gray-500 mt-1">Seluruh foto diproses langsung di peramban Anda tanpa pernah dikirim ke server pihak ketiga.</p>
+            </div>
           </div>
 
-          <div class="flex flex-col items-center text-center gap-3">
-            <div class="w-14 h-14 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-extrabold font-serif shadow-sm">
-              3
+          <div class="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-start gap-3.5">
+            <div class="w-10 h-10 rounded-xl bg-pozia-lilac/10 text-pozia-lilac flex items-center justify-center text-lg font-bold shrink-0">
+              🎨
             </div>
-            <h4 class="font-bold text-base text-pozia-charcoal font-serif" data-i18n="step3_title">Sentuhan Filter & Unduh HD</h4>
-            <p class="text-xs text-gray-500 leading-relaxed max-w-xs" data-i18n="step3_desc">
-              Eksplorasi 20+ bingkai tematik dan 14 filter analog, lalu unduh hasilnya dalam format PNG komposit resolusi tinggi.
-            </p>
+            <div>
+              <h4 class="font-bold text-sm text-pozia-charcoal font-serif">20+ Bingkai Tematik & 14 Filter</h4>
+              <p class="text-xs text-gray-500 mt-1">Eksplorasi koleksi bingkai tematik dan filter analog nyata yang konsisten dari kamera hingga unduhan.</p>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- SECTION 4: EDITORIAL BRAND FOOTER -->
-      <footer class="w-full bg-white border-t border-gray-200/80 px-4 sm:px-6 md:px-12 py-10 mt-8">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-pozia-coral to-pozia-lilac flex items-center justify-center text-white font-serif font-bold text-lg">
-              P
-            </div>
-            <div>
-              <span class="font-serif font-extrabold text-lg text-pozia-charcoal">Pozia Studio</span>
-              <p class="text-[10px] text-gray-400">Digital Photobooth & Creative Photo Strip Platform</p>
-            </div>
+      <!-- MINIMALIST FOOTER -->
+      <footer class="w-full bg-white border-t border-gray-200/80 px-4 sm:px-6 md:px-12 py-8 mt-6">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
+          <div class="flex items-center gap-2">
+            <span class="font-serif font-bold text-pozia-charcoal text-sm">Pozia Studio</span>
+            <span>&copy; 2026. All rights reserved.</span>
           </div>
-
-          <div class="text-xs text-gray-400 font-medium text-center">
-            &copy; 2026 Pozia Studio. All rights reserved. 100% Client-Side Privacy.
-          </div>
-
-          <div class="flex items-center gap-4 text-xs font-semibold text-gray-500">
-            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-pozia-coral transition-colors">
-              Kembali ke Atas &uarr;
-            </button>
-          </div>
+          <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-pozia-coral transition-colors font-medium">
+            Kembali ke Atas &uarr;
+          </button>
         </div>
       </footer>
     </section>
 
     <!-- ====================================================== -->
-    <!-- STAGE 2: UPGRADED CAMERA STUDIO (STUDIO KAMERA)        -->
+    <!-- STAGE 2 (SETUP): PENGATURAN SESI PHOTOBOOTH            -->
+    <!-- ====================================================== -->
+    <section id="stage-setup" class="hidden flex-1 w-full overflow-y-auto no-scrollbar studio-editorial-bg">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 md:px-12 py-8 md:py-12 flex flex-col gap-8">
+        
+        <!-- Setup Header with Back Button -->
+        <div class="flex items-center justify-between pb-4 border-b border-gray-200/80">
+          <button onclick="App.navigate('home')"
+            class="px-3.5 py-1.5 rounded-full bg-white border border-gray-200 text-pozia-charcoal text-xs font-bold hover:bg-gray-50 transition-all flex items-center gap-1.5 shadow-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span>Kembali ke Beranda</span>
+          </button>
+
+          <span class="text-xs font-mono font-bold text-gray-400 uppercase tracking-widest">LANGKAH 1 DARI 3</span>
+        </div>
+
+        <div>
+          <span class="text-xs font-bold text-pozia-coral uppercase tracking-wider">Session Setup</span>
+          <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-pozia-charcoal font-serif mt-1">
+            Pengaturan Sesi Photobooth
+          </h2>
+          <p class="text-xs sm:text-sm text-gray-500 mt-1 max-w-lg">
+            Pilih format layout dan tema bingkai yang ingin digunakan sebelum masuk ke studio kamera.
+          </p>
+        </div>
+
+        <!-- Setup Main Grid: Options on Left, Real-Time Preview on Right -->
+        <div class="flex flex-col md:flex-row items-start gap-8 md:gap-12">
+          
+          <!-- Left Column: Step-by-Step Options -->
+          <div class="w-full md:w-[58%] flex flex-col gap-6">
+            
+            <!-- Step 1: Format Layout & Pose Count -->
+            <div class="flex flex-col gap-3">
+              <div class="flex items-center justify-between">
+                <label class="text-xs font-bold text-pozia-charcoal uppercase tracking-wider flex items-center gap-1.5">
+                  <span class="w-5 h-5 rounded-full bg-pozia-coral text-white text-[11px] font-bold flex items-center justify-center">1</span>
+                  <span>Pilih Format Layout & Jumlah Pose:</span>
+                </label>
+                <span id="setup-active-badge" class="px-2.5 py-0.5 rounded-full bg-pozia-coral-light text-pozia-coral font-bold text-[11px]">
+                  Strip 4 Pose
+                </span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <!-- 1x4 Strip -->
+                <div onclick="App.setSetupLayout('1x4')" id="setup-card-1x4"
+                  class="p-4 rounded-2xl bg-white border-2 border-pozia-coral shadow-sm cursor-pointer hover:shadow-md transition-all flex flex-col gap-1.5 ring-2 ring-pozia-coral/20">
+                  <div class="flex items-center justify-between">
+                    <span class="font-extrabold text-sm text-pozia-charcoal">Strip 4 Pose</span>
+                    <span class="w-2 h-2 rounded-full bg-pozia-coral"></span>
+                  </div>
+                  <span class="text-[11px] text-gray-400">4 kali cekrek berturut-turut vertikal</span>
+                  <span class="text-[10px] font-mono text-pozia-coral font-bold mt-1">Format 1:3.2</span>
+                </div>
+
+                <!-- 1x3 Strip -->
+                <div onclick="App.setSetupLayout('1x3')" id="setup-card-1x3"
+                  class="p-4 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col gap-1.5">
+                  <div class="flex items-center justify-between">
+                    <span class="font-extrabold text-sm text-pozia-charcoal">Strip 3 Pose</span>
+                    <span class="w-2 h-2 rounded-full bg-gray-200"></span>
+                  </div>
+                  <span class="text-[11px] text-gray-400">3 kali cekrek pose lapang</span>
+                  <span class="text-[10px] font-mono text-gray-400 font-bold mt-1">Format 1:2.5</span>
+                </div>
+
+                <!-- 2x2 Grid -->
+                <div onclick="App.setSetupLayout('2x2')" id="setup-card-2x2"
+                  class="p-4 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col gap-1.5">
+                  <div class="flex items-center justify-between">
+                    <span class="font-extrabold text-sm text-pozia-charcoal">Grid 2x2</span>
+                    <span class="w-2 h-2 rounded-full bg-gray-200"></span>
+                  </div>
+                  <span class="text-[11px] text-gray-400">4 foto dalam kolase persegi modern</span>
+                  <span class="text-[10px] font-mono text-gray-400 font-bold mt-1">Format 1:1.18</span>
+                </div>
+
+                <!-- Polaroid -->
+                <div onclick="App.setSetupLayout('polaroid')" id="setup-card-polaroid"
+                  class="p-4 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col gap-1.5">
+                  <div class="flex items-center justify-between">
+                    <span class="font-extrabold text-sm text-pozia-charcoal">Polaroid</span>
+                    <span class="w-2 h-2 rounded-full bg-gray-200"></span>
+                  </div>
+                  <span class="text-[11px] text-gray-400">1 pose klasik dengan ruang branding</span>
+                  <span class="text-[10px] font-mono text-gray-400 font-bold mt-1">Format 4:4.2</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: Pilih Tema Bingkai Awal -->
+            <div class="flex flex-col gap-3 pt-2">
+              <label class="text-xs font-bold text-pozia-charcoal uppercase tracking-wider flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-full bg-pozia-lilac text-white text-[11px] font-bold flex items-center justify-center">2</span>
+                <span>Pilih Tema Bingkai Awal:</span>
+              </label>
+
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-h-52 overflow-y-auto no-scrollbar p-1">
+                <!-- Theme Pills with real thumbnail styling -->
+                <button onclick="App.setSetupTheme('pixel-arcade')" id="setup-theme-pixel-arcade"
+                  class="p-2 rounded-xl border border-pozia-coral bg-pink-50/50 text-left text-xs flex flex-col gap-1 ring-1 ring-pozia-coral shadow-sm">
+                  <span class="h-8 rounded-lg flex items-center justify-center text-cyan-300 font-mono font-bold text-[10px]" style="background: #100C2A;">8-Bit</span>
+                  <span class="font-bold text-pozia-charcoal text-[11px] truncate">8-Bit Arcade</span>
+                </button>
+
+                <button onclick="App.setSetupTheme('denim-stars')" id="setup-theme-denim-stars"
+                  class="p-2 rounded-xl border border-gray-200 bg-white hover:border-gray-300 text-left text-xs flex flex-col gap-1">
+                  <span class="h-8 rounded-lg flex items-center justify-center text-amber-200 font-serif font-bold text-[10px]" style="background: #1E2436;">Denim</span>
+                  <span class="font-bold text-pozia-charcoal text-[11px] truncate">Denim Stars</span>
+                </button>
+
+                <button onclick="App.setSetupTheme('cyber-liquid-chrome')" id="setup-theme-cyber-liquid-chrome"
+                  class="p-2 rounded-xl border border-gray-200 bg-white hover:border-gray-300 text-left text-xs flex flex-col gap-1">
+                  <span class="h-8 rounded-lg flex items-center justify-center text-slate-800 font-mono font-bold text-[10px]" style="background: linear-gradient(135deg, #E2E8F0, #94A3B8);">Chrome</span>
+                  <span class="font-bold text-pozia-charcoal text-[11px] truncate">Liquid Chrome</span>
+                </button>
+
+                <button onclick="App.setSetupTheme('pop-art-comic')" id="setup-theme-pop-art-comic"
+                  class="p-2 rounded-xl border border-gray-200 bg-white hover:border-gray-300 text-left text-xs flex flex-col gap-1">
+                  <span class="h-8 rounded-lg flex items-center justify-center text-red-600 font-sans font-bold text-[10px]" style="background: #FFF9D2;">POW!</span>
+                  <span class="font-bold text-pozia-charcoal text-[11px] truncate">Pop Art Comic</span>
+                </button>
+
+                <button onclick="App.setSetupTheme('mixtape-cassette')" id="setup-theme-mixtape-cassette"
+                  class="p-2 rounded-xl border border-gray-200 bg-white hover:border-gray-300 text-left text-xs flex flex-col gap-1">
+                  <span class="h-8 rounded-lg flex items-center justify-center text-pink-400 font-mono font-bold text-[10px]" style="background: #1E2430;">Tape</span>
+                  <span class="font-bold text-pozia-charcoal text-[11px] truncate">90s Mixtape</span>
+                </button>
+
+                <button onclick="App.setSetupTheme('amalfi-lemon')" id="setup-theme-amalfi-lemon"
+                  class="p-2 rounded-xl border border-gray-200 bg-white hover:border-gray-300 text-left text-xs flex flex-col gap-1">
+                  <span class="h-8 rounded-lg flex items-center justify-center text-yellow-800 font-serif font-bold text-[10px]" style="background: #FFFDEB;">Lemon</span>
+                  <span class="font-bold text-pozia-charcoal text-[11px] truncate">Amalfi Lemon</span>
+                </button>
+
+                <button onclick="App.setSetupTheme('the-pozia-times')" id="setup-theme-the-pozia-times"
+                  class="p-2 rounded-xl border border-gray-200 bg-white hover:border-gray-300 text-left text-xs flex flex-col gap-1">
+                  <span class="h-8 rounded-lg flex items-center justify-center text-stone-900 font-serif font-bold text-[10px]" style="background: #F4ECD8;">Times</span>
+                  <span class="font-bold text-pozia-charcoal text-[11px] truncate">The Pozia Times</span>
+                </button>
+
+                <button onclick="App.setSetupTheme('celestial-tarot')" id="setup-theme-celestial-tarot"
+                  class="p-2 rounded-xl border border-gray-200 bg-white hover:border-gray-300 text-left text-xs flex flex-col gap-1">
+                  <span class="h-8 rounded-lg flex items-center justify-center text-amber-300 font-serif font-bold text-[10px]" style="background: #0B1120;">Tarot</span>
+                  <span class="font-bold text-pozia-charcoal text-[11px] truncate">Celestial Tarot</span>
+                </button>
+              </div>
+              <p class="text-[10px] text-gray-400 italic">Anda juga dapat mengganti tema bingkai kapan saja di editor.</p>
+            </div>
+
+            <!-- Primary Action Buttons -->
+            <div class="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <button onclick="App.startCameraFromSetup()" id="setup-start-cam-btn"
+                class="flex-1 py-4 px-6 rounded-2xl bg-pozia-coral text-white font-bold text-sm shadow-xl shadow-pozia-coral/30 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span id="setup-btn-text">Buka Kamera (4 Pose)</span> &rarr;
+              </button>
+
+              <button onclick="App.triggerGalleryUpload()"
+                class="py-4 px-5 rounded-2xl bg-white border border-gray-200 text-pozia-charcoal font-semibold text-xs hover:bg-gray-50 active:scale-95 transition-all shadow-sm flex items-center justify-center gap-2">
+                <svg class="w-4 h-4 text-pozia-lilac" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                </svg>
+                <span>Pilih Foto Galeri</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Column: Real-Time Visual Representation -->
+          <div class="w-full md:w-[42%] flex flex-col items-center justify-center p-6 rounded-3xl bg-white border border-gray-200/80 shadow-md">
+            <div class="w-full flex items-center justify-between pb-3 border-b border-gray-100 text-xs">
+              <span class="font-bold text-gray-500 uppercase tracking-wider text-[11px]">Pratinjau Format</span>
+              <span id="setup-ratio-label" class="px-2 py-0.5 rounded-full bg-gray-100 font-mono text-[10px] text-gray-500 font-bold">1:3.2</span>
+            </div>
+
+            <div id="setup-preview-wrapper" class="w-full min-h-[380px] flex items-center justify-center py-4">
+              <!-- Dynamically populated by App.updateSetupPreview() -->
+            </div>
+
+            <p class="text-[11px] text-gray-400 text-center pt-2 border-t border-gray-100 w-full">
+              Jumlah pose dan posisi frame otomatis disesuaikan dengan format yang Anda pilih.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================== -->
+    <!-- STAGE 3 (CAMERA): STUDIO KAMERA                        -->
     <!-- ====================================================== -->
     <section id="stage-camera"
       class="hidden flex-1 w-full flex flex-col md:flex-row bg-pozia-dark text-white overflow-hidden">
       
-      <!-- Left / Center Main Stage: Viewfinder -->
+      <!-- Left / Main Stage: Viewfinder -->
       <div
-        class="w-full md:w-[58%] h-[55vh] md:h-full flex flex-col relative bg-black/50 justify-between p-4 md:p-6 overflow-hidden">
+        class="w-full md:w-[62%] h-[60vh] md:h-full flex flex-col relative bg-black/60 justify-between p-4 md:p-6 overflow-hidden">
         
         <!-- Viewfinder Top Bar -->
         <div class="flex items-center justify-between z-20 gap-2">
-          <!-- Back to Home Button -->
+          <!-- Back to Setup Button -->
           <button onclick="CameraStudio.handleBack()"
             class="px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-xs font-bold hover:bg-white/20 transition-all flex items-center gap-1.5 text-white"
-            title="Kembali ke Beranda">
+            title="Kembali ke Pengaturan">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
@@ -629,12 +660,12 @@
             <span id="pose-counter-text">Foto 1 dari 4</span>
           </div>
 
-          <!-- Camera Controls (Switch Camera & Mirror) -->
+          <!-- Camera Lens Switch & Mirror Controls -->
           <div class="flex items-center gap-2">
-            <!-- Switch Camera Button (Front / Back on Mobile) -->
+            <!-- Switch Camera Lens (Front/Back) -->
             <button id="cam-switch-btn" onclick="CameraStudio.switchFacingMode()"
               class="hidden px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-xs font-bold hover:bg-white/20 transition-all flex items-center gap-1.5 text-white"
-              title="Ganti Kamera Depan / Belakang">
+              title="Ganti Lensa Kamera">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -642,7 +673,7 @@
               <span class="hidden sm:inline">Ganti Lensa</span>
             </button>
 
-            <!-- Mirror Horizontal Flip Toggle Button -->
+            <!-- Mirror Horizontal Flip Toggle -->
             <button id="cam-mirror-btn" onclick="CameraStudio.toggleMirror()"
               class="px-3 py-1.5 rounded-full bg-pozia-coral text-white text-xs font-bold shadow-md flex items-center gap-1.5 transition-all"
               title="Mirror Kamera ON / OFF">
@@ -659,7 +690,7 @@
         <div class="absolute inset-0 flex items-center justify-center overflow-hidden">
           <div id="screen-flash"></div>
 
-          <!-- Countdown Number Overlay -->
+          <!-- Countdown Overlay -->
           <div id="countdown-overlay"
             class="absolute z-30 opacity-0 pointer-events-none transition-opacity duration-200 flex flex-col items-center">
             <span id="countdown-num"
@@ -669,18 +700,18 @@
             <span class="text-sm font-bold tracking-widest uppercase text-white/80 mt-2">Get Ready!</span>
           </div>
 
-          <!-- Retake Single Pose Notification Banner -->
+          <!-- Retake Notification Banner -->
           <div id="retake-banner"
-            class="hidden absolute top-16 z-30 px-4 py-1.5 rounded-full bg-amber-500/90 text-white text-xs font-bold shadow-lg flex items-center gap-2 animate-bounce">
+            class="hidden absolute top-16 z-30 px-4 py-1.5 rounded-full bg-amber-500/95 text-white text-xs font-bold shadow-xl flex items-center gap-2">
             <span>📷</span>
             <span id="retake-banner-text">Mengambil Ulang Pose 1</span>
           </div>
 
-          <!-- Video Element (Transformed with scaleX for Mirror) -->
+          <!-- Live Video Stream with Real-time CSS Filter & Mirror Transform -->
           <video id="live-video" autoplay playsinline muted
             class="w-full h-full object-cover transition-transform duration-200 select-none"></video>
 
-          <!-- Fallback Camera Error / Permission Blocked Message -->
+          <!-- Fallback Camera Message -->
           <div id="camera-fallback-msg"
             class="hidden absolute inset-0 z-20 flex flex-col items-center justify-center p-6 text-center bg-gray-900/90 backdrop-blur-md">
             <div class="w-14 h-14 rounded-full bg-pozia-coral/20 flex items-center justify-center text-pozia-coral mb-3">
@@ -698,43 +729,9 @@
               Upload Foto dari Galeri
             </button>
           </div>
-
-          <!-- POSE REVIEW DOCK (PRATINJAU SEMUA FOTO & RETAKE INDIVIDUAL) -->
-          <div id="camera-review-dock"
-            class="hidden absolute inset-0 z-35 bg-black/90 backdrop-blur-lg p-4 sm:p-6 flex flex-col justify-between items-center overflow-y-auto no-scrollbar">
-            <div class="text-center pt-2">
-              <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xs uppercase tracking-wider">
-                ✔ Sesi Pengambilan Selesai
-              </span>
-              <h3 class="text-xl sm:text-2xl font-bold font-serif text-white mt-1.5" data-i18n="review_title">
-                Pratinjau Seluruh Foto
-              </h3>
-              <p class="text-xs text-gray-400 mt-0.5" data-i18n="review_desc">
-                Periksa setiap pose. Anda dapat mengambil ulang foto tertentu atau langsung lanjut ke editor.
-              </p>
-            </div>
-
-            <!-- Thumbnails List Container -->
-            <div id="review-thumbnails-grid"
-              class="w-full max-w-2xl py-4 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-              <!-- Dynamically populated by CameraStudio.renderReviewThumbnails() -->
-            </div>
-
-            <!-- Review Actions Bottom Row -->
-            <div class="w-full max-w-md flex flex-col sm:flex-row items-center gap-2.5 pb-2">
-              <button onclick="CameraStudio.confirmRetakeAll()"
-                class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white/10 text-gray-300 hover:text-white hover:bg-white/20 text-xs font-bold transition-all">
-                Mulai Ulang Semua
-              </button>
-              <button onclick="App.navigate('editor')"
-                class="w-full flex-1 py-3 px-6 rounded-xl bg-pozia-coral text-white text-xs font-bold shadow-lg shadow-pozia-coral/30 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center justify-center gap-1.5">
-                <span data-i18n="continue_editor">Lanjut ke Editor</span> &rarr;
-              </button>
-            </div>
-          </div>
         </div>
 
-        <!-- Viewfinder Live Filter Bar (All 14 Filters) -->
+        <!-- Viewfinder Live Filter Dock (14 Real-Time Filters) -->
         <div class="z-20">
           <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1" id="camera-filter-dock">
             <!-- Dynamically populated with 14 filter buttons -->
@@ -742,36 +739,18 @@
         </div>
       </div>
 
-      <!-- Right Control Panel: Settings, Shutter & Controls -->
+      <!-- Right Control Panel: Settings & Shutter -->
       <div
-        class="w-full md:w-[42%] h-[45vh] md:h-full bg-pozia-dark border-t md:border-t-0 md:border-l border-white/10 p-5 md:p-8 flex flex-col justify-between overflow-y-auto no-scrollbar">
+        class="w-full md:w-[38%] h-[40vh] md:h-full bg-pozia-dark border-t md:border-t-0 md:border-l border-white/10 p-5 md:p-8 flex flex-col justify-between overflow-y-auto no-scrollbar">
         
         <div>
           <div class="flex items-center justify-between pb-3 border-b border-white/10">
-            <h3 class="font-serif font-bold text-base text-white" data-i18n="camera_settings">Pengaturan Studio Kamera</h3>
-            <span class="text-[11px] text-gray-400 font-mono">30 FPS HD</span>
+            <h3 class="font-serif font-bold text-base text-white" data-i18n="camera_settings">Kontrol Kamera</h3>
+            <span class="text-[11px] text-gray-400 font-mono">HD VIEW</span>
           </div>
 
-          <!-- Studio Parameter Controls -->
-          <div class="py-3 flex flex-col gap-3 text-xs">
-            <!-- Mirror Camera Setting -->
-            <div class="flex items-center justify-between">
-              <span class="text-gray-400 font-semibold">Mirror View (Horizontal Flip):</span>
-              <button onclick="CameraStudio.toggleMirror()" id="sidebar-mirror-btn"
-                class="py-1 px-3 rounded-lg bg-pozia-coral text-white font-bold text-xs transition-all">
-                <span id="sidebar-mirror-text">Mirror ON</span>
-              </button>
-            </div>
-
-            <!-- Switch Camera Setting -->
-            <div id="sidebar-switch-cam-row" class="hidden flex items-center justify-between">
-              <span class="text-gray-400 font-semibold">Pilih Lensa Kamera:</span>
-              <button id="sidebar-switch-cam-btn" onclick="CameraStudio.switchFacingMode()"
-                class="py-1 px-3 rounded-lg bg-white/10 text-white font-bold text-xs hover:bg-white/20 transition-all">
-                <span id="sidebar-facing-text">Kamera Depan</span>
-              </button>
-            </div>
-
+          <!-- Camera Parameters -->
+          <div class="py-3 flex flex-col gap-3.5 text-xs">
             <!-- Timer Countdown -->
             <div>
               <label class="block text-gray-400 font-semibold mb-1.5" data-i18n="timer_label">Timer Countdown:</label>
@@ -792,7 +771,7 @@
               <label class="block text-gray-400 font-semibold mb-1.5" data-i18n="flash_color">Screen Flash Warna:</label>
               <div class="grid grid-cols-4 gap-1.5">
                 <button onclick="CameraStudio.setFlashColor('white')" id="flash-color-white"
-                  class="py-2 rounded-xl bg-pozia-coral text-white font-bold">White</button>
+                  class="py-2 rounded-xl bg-pozia-coral text-white font-bold shadow-sm">White</button>
                 <button onclick="CameraStudio.setFlashColor('peach')" id="flash-color-peach"
                   class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Peach</button>
                 <button onclick="CameraStudio.setFlashColor('pink')" id="flash-color-pink"
@@ -812,7 +791,7 @@
                 oninput="CameraStudio.setZoom(this.value)" class="w-full accent-pozia-coral">
 
               <div class="flex items-center justify-between pt-1">
-                <span class="text-gray-400 font-semibold">Exposure / Brightness:</span>
+                <span class="text-gray-400 font-semibold">Exposure / Kecerahan:</span>
                 <span id="exposure-val-label" class="font-bold text-white">0</span>
               </div>
               <input type="range" id="exposure-slider" min="-30" max="30" step="5" value="0"
@@ -821,14 +800,14 @@
           </div>
         </div>
 
-        <!-- Camera Bottom Action Dock: Upload, Shutter Hero, Go to Editor -->
+        <!-- Camera Bottom Action Row -->
         <div class="flex items-center justify-between pt-4 border-t border-white/10">
           <button onclick="App.triggerGalleryUpload()"
             class="p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-all flex flex-col items-center gap-1"
             title="Upload dari galeri">
             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
             </svg>
             <span class="text-[10px] text-gray-400">Upload</span>
           </button>
@@ -839,48 +818,115 @@
             <div class="w-14 h-14 rounded-full bg-white/25"></div>
           </button>
 
-          <!-- Go directly to Editor -->
-          <button onclick="App.navigate('editor')"
+          <!-- Review Button (Enabled if photos taken) -->
+          <button onclick="ReviewStudio.openReview()"
             class="p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-all flex flex-col items-center gap-1"
-            title="Lanjut ke Editor">
+            title="Lihat Hasil Foto">
             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
-            <span class="text-[10px] text-gray-400">Editor</span>
+            <span class="text-[10px] text-gray-400">Review</span>
           </button>
         </div>
       </div>
     </section>
 
     <!-- ====================================================== -->
-    <!-- STAGE 3: RICH DESIGNER EDITOR WORKSTATION (STUDIO EDIT)-->
+    <!-- STAGE 4 (REVIEW): PRATINJAU HASIL FOTO & RETAKE        -->
+    <!-- ====================================================== -->
+    <section id="stage-review"
+      class="hidden flex-1 w-full overflow-y-auto no-scrollbar studio-editorial-bg flex flex-col justify-between p-4 sm:p-6 md:p-8">
+      
+      <!-- A. REVIEW HEADER -->
+      <div class="max-w-5xl mx-auto w-full flex items-center justify-between pb-4 border-b border-gray-200/80 gap-3">
+        <button onclick="App.navigate('camera')"
+          class="px-3.5 py-1.5 rounded-full bg-white border border-gray-200 text-pozia-charcoal text-xs font-bold hover:bg-gray-50 transition-all flex items-center gap-1.5 shadow-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <span>Kembali ke Kamera</span>
+        </button>
+
+        <div class="text-center">
+          <h2 class="text-lg sm:text-xl font-bold font-serif text-pozia-charcoal">
+            Pratinjau Hasil Pemotretan
+          </h2>
+          <p class="text-[11px] text-gray-500 hidden sm:block">
+            Periksa foto Anda, terapkan filter analog, atau ambil ulang pose tertentu.
+          </p>
+        </div>
+
+        <span id="review-pose-badge" class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 font-bold text-xs">
+          4 Pose Lengkap
+        </span>
+      </div>
+
+      <!-- B. MAIN PHOTO PREVIEW AREA (LARGE & PROMINENT) -->
+      <div class="max-w-5xl mx-auto w-full flex-1 flex items-center justify-center py-6">
+        <div id="review-photos-display"
+          class="w-full flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+          <!-- Dynamically populated by ReviewStudio.render() -->
+        </div>
+      </div>
+
+      <!-- C. DEDICATED FILTER SECTION (HORIZONTAL SCROLLING DOCK) -->
+      <div class="max-w-5xl mx-auto w-full py-3 bg-white/80 backdrop-blur-md rounded-2xl border border-gray-200/80 p-3 shadow-sm flex flex-col gap-2">
+        <div class="flex items-center justify-between text-xs px-1">
+          <span class="font-bold text-gray-600">Pilih Filter Analog:</span>
+          <span id="review-active-filter-name" class="font-bold text-pozia-coral">Original</span>
+        </div>
+
+        <div id="review-filters-dock" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+          <!-- Dynamically populated with 14 filter cards with live swatches -->
+        </div>
+      </div>
+
+      <!-- D. BOTTOM BUTTONS ROW: RETAKE ALL & PROCEED TO EDITOR -->
+      <div class="max-w-5xl mx-auto w-full pt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <button onclick="CameraStudio.confirmRetakeAll()"
+          class="w-full sm:w-auto px-5 py-3 rounded-xl bg-white border border-gray-200 text-gray-600 hover:text-red-600 hover:border-red-200 text-xs font-bold transition-all shadow-sm">
+          Foto Ulang Semua
+        </button>
+
+        <button onclick="App.navigate('editor')"
+          class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-pozia-coral text-white font-bold text-sm shadow-xl shadow-pozia-coral/30 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center justify-center gap-2">
+          <span>Lanjut ke Editor</span> &rarr;
+        </button>
+      </div>
+    </section>
+
+    <!-- ====================================================== -->
+    <!-- STAGE 5 (EDITOR): STUDIO EDITOR & FRAME WORKSTATION    -->
     <!-- ====================================================== -->
     <section id="stage-editor" class="hidden flex-1 w-full flex flex-col md:flex-row overflow-hidden bg-pozia-bg">
       
-      <!-- Left / Center Main Stage: Soft Editorial Studio Artboard Workstation -->
+      <!-- Left / Center: Soft Editorial Studio Artboard (Well-Proportioned: 48% Width, Whole Frame Visible) -->
       <div
-        class="w-full md:w-[58%] h-[50vh] md:h-full studio-artboard-bg p-4 md:p-8 flex flex-col items-center justify-center relative overflow-hidden select-none">
+        class="w-full md:w-[48%] h-[50vh] md:h-full studio-artboard-bg p-4 md:p-6 flex flex-col items-center justify-center relative overflow-hidden select-none">
         
-        <!-- Subtle Artboard Alignment Corner Marks -->
+        <!-- Artboard Alignment Marks -->
         <div class="absolute top-4 left-4 text-white/20 font-mono text-sm pointer-events-none">+</div>
         <div class="absolute top-4 right-4 text-white/20 font-mono text-sm pointer-events-none">+</div>
         <div class="absolute bottom-4 left-4 text-white/20 font-mono text-sm pointer-events-none">+</div>
         <div class="absolute bottom-4 right-4 text-white/20 font-mono text-sm pointer-events-none">+</div>
 
-        <!-- Ambient Center Spotlight Behind Canvas -->
-        <div class="absolute w-96 h-96 rounded-full bg-pozia-coral/10 blur-3xl pointer-events-none"></div>
+        <!-- Ambient Center Spotlight -->
+        <div class="absolute w-80 h-80 rounded-full bg-pozia-coral/10 blur-3xl pointer-events-none"></div>
 
-        <!-- Interactive Canvas Viewport with Studio Elevation Shadow -->
+        <!-- Interactive Canvas Viewport (100% Whole Frame Visible from Top to Bottom) -->
         <div id="interactive-preview-container"
-          class="relative transition-all duration-300 studio-elevation rounded-2xl overflow-hidden bg-white max-h-[86%] flex items-center justify-center border border-white/20">
-          <canvas id="editor-preview-canvas" class="max-h-[72vh] w-auto h-auto block select-none cursor-pointer"></canvas>
+          class="relative transition-all duration-300 studio-elevation rounded-2xl overflow-hidden bg-white max-h-[82vh] max-w-full flex items-center justify-center border border-white/20">
+          <canvas id="editor-preview-canvas" class="max-h-[74vh] max-w-full w-auto h-auto block select-none cursor-pointer object-contain"></canvas>
         </div>
 
         <!-- Artboard Floating Status Badges -->
         <div class="mt-3 flex items-center gap-2">
           <div class="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-[11px] text-gray-300 font-medium flex items-center gap-1.5 shadow-sm">
             <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-            <span>Pozia Live Artboard • Real-Time Render</span>
+            <span>Pozia Live Studio Canvas</span>
           </div>
           <div class="hidden sm:flex px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[10px] text-gray-400">
             <span>Klik slot foto untuk mengganti</span>
@@ -888,21 +934,21 @@
         </div>
       </div>
 
-      <!-- Right Control Panel: 4-Action Studio Dock & Settings -->
+      <!-- Right Control Panel: Spacious Workstation (52% Width, Independent Scrolling) -->
       <div
-        class="w-full md:w-[42%] h-[50vh] md:h-full bg-white border-t md:border-t-0 md:border-l border-gray-200/80 flex flex-col justify-between overflow-hidden shadow-sm">
+        class="w-full md:w-[52%] h-[50vh] md:h-full bg-white border-t md:border-t-0 md:border-l border-gray-200/80 flex flex-col justify-between overflow-hidden shadow-sm">
 
-        <!-- Top Navigation Bar: Back + Undo/Redo/Reset + Frame/Filter Tabs + CTAs -->
-        <div class="border-b border-gray-100 px-3 py-2.5 flex items-center justify-between bg-white z-10 gap-2 overflow-x-auto no-scrollbar">
+        <!-- Top Navigation Bar: Back + Undo/Redo/Reset + Tabs + Finish -->
+        <div class="border-b border-gray-100 px-4 py-3 flex items-center justify-between bg-white z-10 gap-2 overflow-x-auto no-scrollbar">
           
-          <!-- Back to Camera Button -->
-          <button onclick="App.navigate('camera')"
+          <!-- Back to Review Button -->
+          <button onclick="App.navigate('review')"
             class="shrink-0 px-3 py-1.5 rounded-xl bg-gray-100 text-pozia-charcoal text-xs font-bold hover:bg-gray-200 transition-all flex items-center gap-1.5 shadow-sm"
-            title="Kembali ke Kamera">
+            title="Kembali ke Review">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            <span data-i18n="back_btn">Kembali</span>
+            <span>Review</span>
           </button>
 
           <!-- History Controls: Undo, Redo, Reset -->
@@ -926,7 +972,7 @@
             <!-- Reset -->
             <button id="editor-reset-btn" onclick="EditorStudio.reset()"
               class="px-2 h-7 rounded-lg text-gray-600 hover:text-pozia-coral hover:bg-white text-[11px] font-bold flex items-center gap-1 transition-all"
-              title="Reset Filter & Bingkai">
+              title="Reset Pengaturan">
               <span>Reset</span>
             </button>
           </div>
@@ -961,14 +1007,14 @@
         </div>
 
         <!-- Scrollable Tab Content Area -->
-        <div class="flex-1 overflow-y-auto no-scrollbar p-5">
+        <div class="flex-1 overflow-y-auto no-scrollbar p-5 md:p-6">
 
-          <!-- TAB 1: BINGKAI (FRAMES & LAYOUT FORMAT SWITCHER) -->
+          <!-- TAB 1: BINGKAI (FRAMES & FORMAT SWITCHER) -->
           <div id="tab-content-frame" class="flex flex-col gap-4">
             
             <!-- Format Layout Switcher -->
             <div class="flex items-center justify-between pb-3 border-b border-gray-100">
-              <span class="text-xs text-gray-500 font-bold">Pilih Layout:</span>
+              <span class="text-xs text-gray-500 font-bold">Format Layout:</span>
               <div class="flex items-center gap-1.5">
                 <button onclick="App.setLayout('1x4'); EditorStudio.renderCanvas();" id="frame-layout-1x4"
                   class="px-2.5 py-1 text-xs font-bold rounded-lg bg-pink-50 text-pozia-coral border border-pozia-coral transition-all">Strip 4</button>
@@ -1007,7 +1053,7 @@
               </div>
             </div>
 
-            <!-- Designer Frames Grid (Populated dynamically) -->
+            <!-- Designer Frames Grid (Populated with REAL THEME MINIATURE ARTWORK) -->
             <div class="grid grid-cols-2 gap-3" id="designer-frames-grid">
               <!-- Dynamically populated with 20 rich designer frame cards -->
             </div>
@@ -1326,16 +1372,11 @@
           nav_home: 'Beranda',
           nav_frames: 'Koleksi Bingkai',
           nav_features: 'Fitur Studio',
-          cta_start_mini: 'Mulai Studio',
-          hero_badge: 'Your Moments, Your Little Studio',
-          hero_desc: 'Pozia Studio menghadirkan pengalaman digital photobooth artistik dengan format strip klasik, grid modern, 20+ bingkai tematik original, dan 14 filter analog estetik — 100% diproses privat langsung di browsermu.',
-          cta_camera: 'Mulai Photobooth',
-          cta_upload: 'Pilih dari Galeri',
-          choose_layout: 'Pilih Format Layout',
+          cta_start: 'Mulai Studio',
+          hero_desc: 'Abadikan senyum dan kebersamaan dalam format photo strip klasik & grid artistik. Hadir dengan 20+ bingkai tematik original dan 14 filter warna analog estetik.',
           back_btn: 'Kembali',
           cam_error: 'Kamera tidak dapat diakses atau diblokir. Anda tetap bisa upload foto dari galeri!',
-          camera_settings: 'Pengaturan Studio Kamera',
-          pose_count: 'Jumlah Pose:',
+          camera_settings: 'Kontrol Kamera',
           timer_label: 'Timer Countdown:',
           flash_color: 'Screen Flash Warna:',
           tab_frame: 'Bingkai',
@@ -1352,46 +1393,17 @@
           new_session: 'Buat Foto Baru',
           diag_title: 'Diagnostik Sistem & Arsitektur',
           history_title: 'Galeri Hasil Tersimpan',
-          clear_history: 'Hapus Riwayat',
-          review_title: 'Pratinjau Seluruh Foto',
-          review_desc: 'Periksa setiap pose. Anda dapat mengambil ulang foto tertentu atau langsung lanjut ke editor.',
-          continue_editor: 'Lanjut ke Editor',
-          ethos_tag: 'Studio Philosophy',
-          ethos_title: 'Sentuhan Artistik, Privasi Penuh',
-          ethos_desc: 'Dibangun dari nol dengan arsitektur modern yang menjunjung tinggi kebebasan berekspresi dan rasa aman setiap pengguna.',
-          pillar1_title: 'Studio Shutter & Flash',
-          pillar1_desc: 'Dilengkapi hitungan mundur presisi, screen flash lembut aneka warna, digital zoom, dan mirror camera untuk hasil potret yang memikat.',
-          pillar2_title: '100% Client-Side Privacy',
-          pillar2_desc: 'Semua gambar, penggabungan layer, dan komposit canvas diproses murni di perangkat Anda. Foto tidak pernah diunggah ke server luar.',
-          pillar3_title: '20+ Thematic Designer Frames',
-          pillar3_desc: 'Dari 8-Bit Arcade, Y2K Liquid Chrome, Pop Art Comic, 90s Mixtape hingga The Pozia Times Newsprint — setiap bingkai memiliki konsep orisinal.',
-          frames_tag: 'Curated Collection',
-          frames_title: 'Koleksi Bingkai Tematik Original',
-          frames_desc: 'Pilih dari beragam tema visual kaya detail yang dirancang khusus untuk memadukan keceriaan dan estetika editorial.',
-          cta_explore_all: 'Buka Semua di Editor',
-          steps_tag: 'How It Works',
-          steps_title: '3 Langkah Mudah Menikmati Studio',
-          step1_title: 'Pilih Format & Bingkai',
-          step1_desc: 'Pilih format Strip 4, Strip 3, Grid 2x2, atau Polaroid dengan preview real-time sebelum memulai sesi kamera.',
-          step2_title: 'Pose & Cekrek',
-          step2_desc: 'Ambil pose dengan timer otomatis, ganti lensa depan/belakang, atur mirror, dan pratinjau semua foto sebelum lanjut ke editor.',
-          step3_title: 'Sentuhan Filter & Unduh HD',
-          step3_desc: 'Eksplorasi 20+ bingkai tematik dan 14 filter analog, lalu unduh hasilnya dalam format PNG komposit resolusi tinggi.'
+          clear_history: 'Hapus Riwayat'
         },
         en: {
           nav_home: 'Home',
           nav_frames: 'Frames Collection',
           nav_features: 'Studio Features',
-          cta_start_mini: 'Start Studio',
-          hero_badge: 'Your Moments, Your Little Studio',
-          hero_desc: 'Pozia Studio delivers an artistic digital photobooth experience with classic strips, modern grid, 20+ original thematic frames, and 14 analog film filters — 100% privately processed right inside your browser.',
-          cta_camera: 'Start Photobooth',
-          cta_upload: 'Pick from Gallery',
-          choose_layout: 'Choose Layout Format',
+          cta_start: 'Start Studio',
+          hero_desc: 'Capture smiles and togetherness in classic photo strip & artistic grid formats. Features 20+ original thematic frames and 14 aesthetic analog film filters.',
           back_btn: 'Back',
           cam_error: 'Camera access denied or unavailable. You can still upload photos from gallery!',
-          camera_settings: 'Camera Studio Settings',
-          pose_count: 'Pose Count:',
+          camera_settings: 'Camera Controls',
           timer_label: 'Countdown Timer:',
           flash_color: 'Screen Flash Color:',
           tab_frame: 'Frame',
@@ -1408,31 +1420,7 @@
           new_session: 'New Session',
           diag_title: 'System & Architecture Diagnostics',
           history_title: 'Saved History Gallery',
-          clear_history: 'Clear History',
-          review_title: 'Review All Photos',
-          review_desc: 'Inspect each pose. You can retake individual photos or proceed directly to the editor.',
-          continue_editor: 'Continue to Editor',
-          ethos_tag: 'Studio Philosophy',
-          ethos_title: 'Artistic Craft, Absolute Privacy',
-          ethos_desc: 'Built from the ground up with modern zero-server architecture that values creative expression and personal privacy.',
-          pillar1_title: 'Studio Shutter & Flash',
-          pillar1_desc: 'Equipped with precision countdown timer, gentle colored screen flash, digital zoom, and mirror camera for flattering portraits.',
-          pillar2_title: '100% Client-Side Privacy',
-          pillar2_desc: 'All photo processing, canvas composition, and exports run purely on your device. Nothing is ever uploaded to external servers.',
-          pillar3_title: '20+ Thematic Designer Frames',
-          pillar3_desc: 'From 8-Bit Arcade, Y2K Liquid Chrome, Pop Art Comic to The Pozia Times Newsprint — every frame has an original artistic soul.',
-          frames_tag: 'Curated Collection',
-          frames_title: 'Original Thematic Frames Collection',
-          frames_desc: 'Explore rich, detailed themes designed to blend creative joy with timeless editorial aesthetics.',
-          cta_explore_all: 'Open All in Editor',
-          steps_tag: 'How It Works',
-          steps_title: '3 Simple Steps to Studio Fun',
-          step1_title: 'Choose Layout & Theme',
-          step1_desc: 'Select Strip 4, Strip 3, Grid 2x2, or Polaroid with real-time visual previews before starting the camera.',
-          step2_title: 'Pose & Snap',
-          step2_desc: 'Pose with automatic countdown, switch front/rear lenses, adjust mirror, and review all photos before editing.',
-          step3_title: 'Filters & Save Ultra HD',
-          step3_desc: 'Experiment with 20+ thematic frames and 14 analog filters, then download a high-resolution PNG composite.'
+          clear_history: 'Clear History'
         }
       },
       apply(lang) {
@@ -1446,23 +1434,23 @@
     };
 
     /* ===================================================
-       3. 14 COMPREHENSIVE REAL-TIME FILTERS
+       3. 14 BOLD, DISTINCT, VIBRANT ANALOG FILTERS
        =================================================== */
     const FilterPresets = [
       { id: 'original', name: 'Original', css: 'none', desc: 'Asli tanpa filter' },
-      { id: 'vintage', name: 'Vintage', css: 'sepia(0.38) contrast(1.12) brightness(0.96) saturate(1.15)', desc: 'Klasik & hangat' },
-      { id: 'retro', name: 'Retro', css: 'contrast(1.22) saturate(1.3) hue-rotate(-10deg) sepia(0.12)', desc: 'Analog 90-an' },
-      { id: 'warm', name: 'Warm', css: 'sepia(0.24) saturate(1.22) brightness(1.05) hue-rotate(-6deg)', desc: 'Hangat & lembut' },
-      { id: 'cool', name: 'Cool', css: 'saturate(1.1) hue-rotate(15deg) brightness(1.02) contrast(1.06)', desc: 'Nuansa dingin' },
-      { id: 'soft', name: 'Soft', css: 'contrast(0.92) brightness(1.08) saturate(1.06)', desc: 'Lembut & halus' },
-      { id: 'film', name: 'Film', css: 'contrast(1.16) brightness(0.98) saturate(1.12) sepia(0.18)', desc: 'Film 35mm' },
-      { id: 'bw', name: 'Black & White', css: 'grayscale(1) contrast(1.22) brightness(1.04)', desc: 'Hitam putih klasik' },
-      { id: 'sepia', name: 'Sepia', css: 'sepia(0.85) contrast(1.08) brightness(0.95)', desc: 'Cokelat nostalgia' },
-      { id: 'dreamy', name: 'Dreamy', css: 'brightness(1.14) contrast(0.92) saturate(1.18)', desc: 'Lembut & glowing' },
-      { id: 'bright', name: 'Bright', css: 'brightness(1.2) contrast(1.05) saturate(1.1)', desc: 'Cerah & tajam' },
-      { id: 'moody', name: 'Moody', css: 'brightness(0.9) contrast(1.28) saturate(1.22) sepia(0.14)', desc: 'Karakter kuat & gelap' },
-      { id: 'pastel', name: 'Pastel', css: 'brightness(1.08) contrast(0.94) saturate(0.92) hue-rotate(6deg)', desc: 'Warna pastel manis' },
-      { id: 'faded', name: 'Faded', css: 'contrast(0.86) brightness(1.1) saturate(0.82) sepia(0.08)', desc: 'Efek pudar vintage' }
+      { id: 'vintage', name: 'Vintage', css: 'sepia(0.65) contrast(1.25) brightness(0.92) saturate(1.35)', desc: 'Hangat & bernuansa 70-an' },
+      { id: 'retro', name: 'Retro 90s', css: 'contrast(1.35) saturate(1.6) hue-rotate(-18deg) brightness(1.02)', desc: 'Warna pop kamera analog' },
+      { id: 'warm', name: 'Warm Honey', css: 'sepia(0.4) saturate(1.45) brightness(1.1) hue-rotate(-12deg)', desc: 'Nuansa madu & golden hour' },
+      { id: 'cool', name: 'Cool Mist', css: 'saturate(1.15) hue-rotate(30deg) brightness(1.05) contrast(1.18)', desc: 'Nuansa biru dingin segar' },
+      { id: 'soft', name: 'Soft Velvet', css: 'contrast(0.85) brightness(1.18) saturate(1.15)', desc: 'Lembut, cerah & halus' },
+      { id: 'film', name: 'Film 35mm', css: 'contrast(1.4) brightness(0.9) saturate(1.3) sepia(0.28) hue-rotate(-8deg)', desc: 'Film stock kontras tajam' },
+      { id: 'bw', name: 'B&W Classic', css: 'grayscale(1) contrast(1.5) brightness(1.05)', desc: 'Hitam putih dramatis' },
+      { id: 'sepia', name: 'Sepia Antique', css: 'sepia(1) contrast(1.2) brightness(0.88) hue-rotate(-15deg)', desc: 'Cokelat antik nostalgia' },
+      { id: 'dreamy', name: 'Dreamy Fairy', css: 'brightness(1.22) contrast(0.92) saturate(1.5) hue-rotate(8deg)', desc: 'Glowing & bernuansa fantasi' },
+      { id: 'bright', name: 'Bright Studio', css: 'brightness(1.25) contrast(1.22) saturate(1.4)', desc: 'High-key cerah studio Jepang' },
+      { id: 'moody', name: 'Moody Noir', css: 'brightness(0.75) contrast(1.6) saturate(1.25) sepia(0.2)', desc: 'Sinematik gelap berkarakter' },
+      { id: 'pastel', name: 'Pastel Candy', css: 'brightness(1.15) contrast(0.95) saturate(1.3) hue-rotate(-25deg)', desc: 'Rona pink manis & lembut' },
+      { id: 'faded', name: 'Faded 70s', css: 'contrast(0.78) brightness(1.18) saturate(0.65) sepia(0.4)', desc: 'Warna pudar cetakan lama' }
     ];
 
     /* ===================================================
@@ -1474,12 +1462,12 @@
       { id: 'retro-gameboy', cat: 'gaming', name: 'GameBoy Retro', desc: 'Olive LCD & Matte Body', thumb: 'linear-gradient(135deg, #D4D3C5, #9EA088)' },
 
       // Scrapbook & Sticker
-      { id: 'denim-stars', cat: 'scrapbook', name: 'Scrapbook Denim & Stars', desc: 'Navy Corduroy & Chrome Pozia', thumb: '#1E2436' },
+      { id: 'denim-stars', cat: 'scrapbook', name: 'Denim & Stars', desc: 'Navy Corduroy & Chrome Pozia', thumb: '#1E2436' },
       { id: 'washi-botanical', cat: 'scrapbook', name: 'Botanical Herbarium', desc: 'Pressed Flora & Washi Tape', thumb: 'linear-gradient(135deg, #F5ECE1, #E8DACB)' },
       { id: 'coquette-ribbon', cat: 'scrapbook', name: 'Coquette Ribbon', desc: 'Blush Pink & Satin Bows', thumb: 'linear-gradient(135deg, #FFE8EE, #FFD0DD)' },
 
       // Y2K & Cyber
-      { id: 'cyber-liquid-chrome', cat: 'cyber', name: 'Y2K Liquid Chrome', desc: 'Mercury Drips & Cyber Star', thumb: 'linear-gradient(135deg, #E2E8F0, #94A3B8)' },
+      { id: 'cyber-liquid-chrome', cat: 'cyber', name: 'Liquid Chrome', desc: 'Mercury Drips & Cyber Star', thumb: 'linear-gradient(135deg, #E2E8F0, #94A3B8)' },
       { id: 'hologram-cd', cat: 'cyber', name: '2000s CD Hologram', desc: 'Prismatic Laser CD Flare', thumb: 'linear-gradient(135deg, #C7D2FE, #FBCFE8, #BAE6FD)' },
 
       // Comic & Cartoon
@@ -1491,7 +1479,7 @@
       { id: 'vip-backstage', cat: 'music', name: 'VIP Concert Pass', desc: 'All Access Holographic Laminate', thumb: 'linear-gradient(135deg, #7C3AED, #DB2777)' },
 
       // Summer & Holiday
-      { id: 'amalfi-lemon', cat: 'summer', name: 'Amalfi Lemon', desc: 'Sunny Citrus & Mediterranean Azure', thumb: 'linear-gradient(135deg, #FFFDEB, #FEF08A)' },
+      { id: 'amalfi-lemon', cat: 'summer', name: 'Amalfi Lemon', desc: 'Sunny Citrus & Azure Trim', thumb: 'linear-gradient(135deg, #FFFDEB, #FEF08A)' },
       { id: 'sunset-beach-club', cat: 'summer', name: 'Sunset Beach Club', desc: 'Golden Hour Aura & Palms', thumb: 'linear-gradient(135deg, #FB923C, #F43F5E, #FDE047)' },
 
       // Retro & Vintage
@@ -1512,11 +1500,11 @@
        5. CORE APPLICATION STATE
        =================================================== */
     const State = {
-      stage: 'home',
+      stage: 'home',             // 'home', 'setup', 'camera', 'review', 'editor', 'export'
       layout: '1x4',             // '1x4', '1x3', '2x2', 'polaroid'
       targetPoseCount: 4,        // 4, 3, 4, 1
       currentPoseIndex: 0,
-      photos: [],                // Array of Image elements
+      photos: [],                // Array of raw Image elements
       btsBurstGroups: [],
       currentFilter: FilterPresets[0], // Original default
       filterIntensity: 100,
@@ -1546,7 +1534,6 @@
       async init() {
         this.updatePoseCounter();
         this.renderFilterDock();
-        this.hideReviewDock();
         await this.checkAvailableCameras();
         await this.startStream();
       },
@@ -1557,13 +1544,10 @@
           const devices = await navigator.mediaDevices.enumerateDevices();
           const videoDevices = devices.filter(d => d.kind === 'videoinput');
           const switchBtn = document.getElementById('cam-switch-btn');
-          const sidebarRow = document.getElementById('sidebar-switch-cam-row');
           if (videoDevices.length > 1) {
             if (switchBtn) switchBtn.classList.remove('hidden');
-            if (sidebarRow) sidebarRow.classList.remove('hidden');
           } else {
             if (switchBtn) switchBtn.classList.add('hidden');
-            if (sidebarRow) sidebarRow.classList.add('hidden');
           }
         } catch (e) { }
       },
@@ -1588,8 +1572,6 @@
           document.getElementById('camera-fallback-msg').classList.add('hidden');
 
           this.applyVideoTransform();
-          this.updateTelemetry();
-          this.updateFacingLabels();
         } catch (err) {
           console.warn('Camera access error:', err);
           document.getElementById('camera-fallback-msg').classList.remove('hidden');
@@ -1611,20 +1593,14 @@
 
       updateMirrorLabels() {
         const topText = document.getElementById('mirror-status-text');
-        const sidebarText = document.getElementById('sidebar-mirror-text');
         const topBtn = document.getElementById('cam-mirror-btn');
-        const sidebarBtn = document.getElementById('sidebar-mirror-btn');
-
         const label = this.isMirrored ? 'Mirror ON' : 'Mirror OFF';
         if (topText) topText.textContent = label;
-        if (sidebarText) sidebarText.textContent = label;
 
         if (this.isMirrored) {
           if (topBtn) topBtn.className = 'px-3 py-1.5 rounded-full bg-pozia-coral text-white text-xs font-bold shadow-md flex items-center gap-1.5 transition-all';
-          if (sidebarBtn) sidebarBtn.className = 'py-1 px-3 rounded-lg bg-pozia-coral text-white font-bold text-xs transition-all';
         } else {
           if (topBtn) topBtn.className = 'px-3 py-1.5 rounded-full bg-white/20 text-gray-200 text-xs font-bold shadow-sm flex items-center gap-1.5 transition-all';
-          if (sidebarBtn) sidebarBtn.className = 'py-1 px-3 rounded-lg bg-white/10 hover:bg-white/20 text-gray-300 font-bold text-xs transition-all';
         }
       },
 
@@ -1635,21 +1611,15 @@
         await this.startStream();
       },
 
-      updateFacingLabels() {
-        const sideText = document.getElementById('sidebar-facing-text');
-        if (sideText) {
-          sideText.textContent = this.facingMode === 'user' ? 'Kamera Depan' : 'Kamera Belakang';
-        }
-      },
-
       handleBack() {
         if (State.photos.length > 0) {
-          if (confirm('Sesi foto saat ini belum disimpan. Apakah Anda yakin ingin kembali ke beranda? Foto yang sudah diambil akan direset.')) {
+          if (confirm('Sesi foto saat ini belum disimpan. Apakah Anda yakin ingin kembali ke pengaturan? Foto yang sudah diambil akan direset.')) {
             App.resetAndNew();
+            App.navigate('setup');
           }
         } else {
           this.stopStream();
-          App.navigate('home');
+          App.navigate('setup');
         }
       },
 
@@ -1689,22 +1659,24 @@
         this.applyVideoTransform();
       },
 
+      /* Apply Real-Time CSS Filter, Mirror, and Brightness to Video */
       applyVideoTransform() {
         const video = document.getElementById('live-video');
         if (!video) return;
         const scaleX = this.isMirrored ? -this.zoomLevel : this.zoomLevel;
         video.style.transform = `scale(${scaleX}, ${this.zoomLevel})`;
+
         const expBrightness = 1 + (this.exposureVal / 100);
         const filterCss = State.currentFilter.css === 'none' ? '' : State.currentFilter.css;
-        video.style.filter = `${filterCss} brightness(${expBrightness})`;
+        const fullFilter = `${filterCss} brightness(${expBrightness})`.trim();
+
+        video.style.filter = fullFilter;
+        video.style.webkitFilter = fullFilter;
       },
 
       updatePoseCounter() {
         const current = Math.min(State.currentPoseIndex + 1, State.targetPoseCount);
-        const isId = I18N.current === 'id';
-        const text = isId
-          ? `Foto ${current} dari ${State.targetPoseCount}`
-          : `Photo ${current} of ${State.targetPoseCount}`;
+        const text = `Foto ${current} dari ${State.targetPoseCount}`;
         const el = document.getElementById('pose-counter-text');
         if (el) el.textContent = text;
       },
@@ -1717,8 +1689,8 @@
           const btn = document.createElement('button');
           const isSelected = State.currentFilter.id === preset.id;
           btn.className = `px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${isSelected
-            ? 'bg-pozia-coral text-white shadow-lg ring-2 ring-white/30'
-            : 'bg-white/10 text-gray-300 hover:bg-white/20'
+            ? 'bg-pozia-coral text-white shadow-lg ring-2 ring-white/30 scale-105'
+            : 'bg-white/15 text-gray-200 hover:bg-white/25'
             }`;
           btn.textContent = preset.name;
           btn.onclick = () => {
@@ -1783,7 +1755,7 @@
               State.activeSlotToReplace = null;
               this.isCapturingSequence = false;
               document.getElementById('retake-banner').classList.add('hidden');
-              this.showReviewDock();
+              ReviewStudio.openReview();
               return;
             }
 
@@ -1794,8 +1766,8 @@
               setTimeout(() => this.startCaptureSequence(), 1200);
             } else {
               this.isCapturingSequence = false;
-              // Show review dock instead of jumping abruptly
-              this.showReviewDock();
+              // All poses captured! Proceed to dedicated Review Stage
+              ReviewStudio.openReview();
             }
           }
         }, 1000);
@@ -1858,47 +1830,12 @@
         }
       },
 
-      /* Show Review Dock (G.4 & G.5) */
-      showReviewDock() {
-        const dock = document.getElementById('camera-review-dock');
-        const grid = document.getElementById('review-thumbnails-grid');
-        if (!dock || !grid) return;
-
-        grid.innerHTML = '';
-        State.photos.forEach((img, idx) => {
-          const card = document.createElement('div');
-          card.className = 'relative flex flex-col items-center gap-1.5 p-2 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-md group';
-          card.innerHTML = `
-            <div class="w-24 h-32 sm:w-28 sm:h-36 rounded-xl overflow-hidden bg-black flex items-center justify-center relative shadow-inner">
-              <img src="${img.src}" class="w-full h-full object-cover">
-              <span class="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-md bg-black/70 text-white font-mono text-[10px] font-bold">
-                Pose ${idx + 1}
-              </span>
-            </div>
-            <button onclick="CameraStudio.retakeSinglePose(${idx})"
-              class="w-full py-1 px-2 rounded-lg bg-pozia-coral text-white text-[11px] font-bold hover:bg-pozia-coral-hover transition-all flex items-center justify-center gap-1 shadow-sm">
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              <span>Foto Ulang</span>
-            </button>
-          `;
-          grid.appendChild(card);
-        });
-
-        dock.classList.remove('hidden');
-      },
-
-      hideReviewDock() {
-        const dock = document.getElementById('camera-review-dock');
-        if (dock) dock.classList.add('hidden');
-      },
-
-      /* Retake an Individual Pose (Section G.4) */
+      /* Retake an Individual Pose (Section 5 & 9) */
       retakeSinglePose(index) {
-        this.hideReviewDock();
         State.activeSlotToReplace = index;
         State.isRetakingSingle = true;
+
+        App.navigate('camera');
 
         const banner = document.getElementById('retake-banner');
         const bannerText = document.getElementById('retake-banner-text');
@@ -1915,21 +1852,91 @@
         if (confirm('Ulangi seluruh sesi pengambilan foto dari awal?')) {
           State.photos = [];
           State.currentPoseIndex = 0;
-          this.hideReviewDock();
-          this.updatePoseCounter();
+          State.activeSlotToReplace = null;
+          State.isRetakingSingle = false;
+          App.navigate('camera');
         }
-      },
-
-      updateTelemetry() {
-        const facEl = document.getElementById('diag-cam-facing');
-        if (facEl) facEl.textContent = this.facingMode === 'user' ? 'Kamera Depan (User)' : 'Kamera Belakang (Environment)';
-        const mirEl = document.getElementById('diag-mirror-state');
-        if (mirEl) mirEl.textContent = this.isMirrored ? 'ON (Horizontal Flip)' : 'OFF (Normal)';
       }
     };
 
     /* ===================================================
-       7. EDITOR STUDIO CONTROLLER (UNDO/REDO/FRAMES/CANVAS)
+       7. DEDICATED REVIEW STUDIO CONTROLLER (STAGE 4)
+       =================================================== */
+    const ReviewStudio = {
+      openReview() {
+        App.navigate('review');
+        this.render();
+      },
+
+      render() {
+        const display = document.getElementById('review-photos-display');
+        const badge = document.getElementById('review-pose-badge');
+        const activeFilterName = document.getElementById('review-active-filter-name');
+
+        if (badge) badge.textContent = `${State.photos.length} Pose Lengkap`;
+        if (activeFilterName) activeFilterName.textContent = State.currentFilter.name;
+
+        if (display) {
+          display.innerHTML = '';
+          State.photos.forEach((img, idx) => {
+            const card = document.createElement('div');
+            card.className = 'flex flex-col items-center gap-2 p-3 rounded-2xl bg-white border border-gray-200/80 shadow-md group hover:shadow-xl transition-all';
+
+            const filterStyle = State.currentFilter.css === 'none' ? '' : `filter: ${State.currentFilter.css};`;
+
+            card.innerHTML = `
+              <div class="w-32 h-44 sm:w-40 sm:h-52 rounded-xl overflow-hidden bg-black flex items-center justify-center relative shadow-inner">
+                <img src="${img.src}" style="${filterStyle}" class="w-full h-full object-cover transition-all duration-300">
+                <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-black/70 text-white font-mono text-[10px] font-bold">
+                  Pose ${idx + 1}
+                </span>
+              </div>
+              <button onclick="CameraStudio.retakeSinglePose(${idx})"
+                class="w-full py-1.5 px-3 rounded-xl bg-gray-100 hover:bg-pozia-coral hover:text-white text-gray-700 text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                <span>Foto Ulang</span>
+              </button>
+            `;
+            display.appendChild(card);
+          });
+        }
+
+        this.renderFiltersDock();
+      },
+
+      renderFiltersDock() {
+        const dock = document.getElementById('review-filters-dock');
+        if (!dock) return;
+        dock.innerHTML = '';
+
+        FilterPresets.forEach(preset => {
+          const btn = document.createElement('button');
+          const isSelected = State.currentFilter.id === preset.id;
+          btn.className = `px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2 border ${isSelected
+            ? 'bg-pozia-coral text-white border-pozia-coral shadow-md scale-105'
+            : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'
+            }`;
+
+          const filterStyle = preset.css === 'none' ? '' : `filter: ${preset.css};`;
+          btn.innerHTML = `
+            <span class="w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-amber-300 to-rose-400 inline-block shrink-0 shadow-inner" style="${filterStyle}"></span>
+            <span>${preset.name}</span>
+          `;
+
+          btn.onclick = () => {
+            State.currentFilter = preset;
+            this.render();
+          };
+
+          dock.appendChild(btn);
+        });
+      }
+    };
+
+    /* ===================================================
+       8. EDITOR STUDIO CONTROLLER (UNDO/REDO/FRAMES/CANVAS)
        =================================================== */
     const EditorStudio = {
       activeTab: 'frame',
@@ -2057,17 +2064,17 @@
         filtered.forEach(frame => {
           const card = document.createElement('div');
           const isSelected = State.frameTheme === frame.id;
-          card.className = `p-2.5 rounded-2xl border transition-all cursor-pointer flex flex-col gap-2 ${isSelected
-            ? 'border-pozia-coral bg-pink-50/60 shadow-md ring-2 ring-pozia-coral/25'
+          card.className = `p-3 rounded-2xl border transition-all cursor-pointer flex flex-col gap-2 ${isSelected
+            ? 'border-pozia-coral bg-pink-50/70 shadow-md ring-2 ring-pozia-coral/25'
             : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
             }`;
 
           card.innerHTML = `
-            <div class="w-full h-16 rounded-xl flex items-center justify-center shadow-inner relative overflow-hidden" style="background: ${frame.thumb};">
-              <span class="text-xs font-bold ${frame.thumb.includes('#FFFFFF') || frame.thumb.includes('#FAF') || frame.thumb.includes('#F5') ? 'text-gray-800' : 'text-white/90'} font-serif">
-                ${frame.name.split(' ')[0]}
+            <div class="w-full h-20 rounded-xl flex items-center justify-center shadow-inner relative overflow-hidden" style="background: ${frame.thumb};">
+              <span class="text-xs font-bold ${frame.thumb.includes('#FFFFFF') || frame.thumb.includes('#FAF') || frame.thumb.includes('#F5') ? 'text-gray-800' : 'text-white/95'} font-serif">
+                ${frame.name}
               </span>
-              ${isSelected ? '<span class="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-pozia-coral text-white flex items-center justify-center text-[10px] font-bold shadow">✔</span>' : ''}
+              ${isSelected ? '<span class="absolute top-2 right-2 w-5 h-5 rounded-full bg-pozia-coral text-white flex items-center justify-center text-[10px] font-bold shadow">✔</span>' : ''}
             </div>
             <div class="flex flex-col">
               <span class="font-extrabold text-xs text-pozia-charcoal truncate">${frame.name}</span>
@@ -2093,13 +2100,13 @@
         FilterPresets.forEach(p => {
           const card = document.createElement('button');
           const isSelected = State.currentFilter.id === p.id;
-          card.className = `p-2 rounded-xl text-left text-xs flex items-center gap-2 border transition-all ${isSelected
+          card.className = `p-2.5 rounded-xl text-left text-xs flex items-center gap-2.5 border transition-all ${isSelected
             ? 'border-pozia-coral bg-pink-50 font-bold text-pozia-coral shadow-sm ring-2 ring-pozia-coral/20'
             : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300 hover:bg-gray-100'
             }`;
           const filterStyle = p.css === 'none' ? '' : `filter: ${p.css};`;
           card.innerHTML = `
-            <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-amber-200 to-rose-300 overflow-hidden shadow-inner shrink-0 flex items-center justify-center text-[10px] font-bold text-white/80" style="${filterStyle}">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-amber-200 to-rose-300 overflow-hidden shadow-inner shrink-0 flex items-center justify-center text-[10px] font-bold text-white/80" style="${filterStyle}">
               PZ
             </div>
             <div class="flex flex-col truncate">
@@ -2202,7 +2209,7 @@
         }
       },
 
-      /* Render the complete photo strip on canvas (low-res preview or high-res export) */
+      /* Render complete photo strip on canvas (low-res preview or high-res export) */
       renderToCanvas(canvas, isHighRes = false) {
         const ctx = canvas.getContext('2d');
         const activeLayout = State.layout;
@@ -2464,7 +2471,6 @@
           ctx.fillStyle = '#F6F0E6';
           ctx.fillRect(0, 0, width, height);
 
-          // Subtle organic border
           ctx.strokeStyle = 'rgba(120, 113, 108, 0.25)';
           ctx.lineWidth = isHighRes ? 2 : 1;
           ctx.strokeRect(width * 0.04, width * 0.04, width * 0.92, height - width * 0.08);
@@ -2497,7 +2503,6 @@
             ctx.fill();
           }
 
-          // Top Header Satin Ribbon
           ctx.fillStyle = '#FF5A79';
           ctx.font = `600 ${width * 0.032}px "Caveat", cursive`;
           ctx.textAlign = 'center';
@@ -2596,7 +2601,7 @@
           ctx.fillStyle = grad;
           ctx.fillRect(0, 0, width, height);
 
-          // Oval lanyard punch hole
+          // Oval punch hole
           ctx.fillStyle = '#0F0419';
           ctx.beginPath();
           ctx.ellipse(width / 2, width * 0.035, width * 0.08, width * 0.02, 0, 0, Math.PI * 2);
@@ -2612,7 +2617,6 @@
           ctx.fillStyle = '#FFFDF5';
           ctx.fillRect(0, 0, width, height);
 
-          // Mediterranean Azure Border
           ctx.strokeStyle = '#2563EB';
           ctx.lineWidth = isHighRes ? 3 : 1.5;
           ctx.strokeRect(width * 0.03, width * 0.03, width * 0.94, height - width * 0.06);
@@ -2685,7 +2689,6 @@
           ctx.fillStyle = '#0B1120';
           ctx.fillRect(0, 0, width, height);
 
-          // Gold filigree border
           ctx.strokeStyle = '#F59E0B';
           ctx.lineWidth = isHighRes ? 3 : 1.5;
           ctx.strokeRect(width * 0.03, width * 0.03, width * 0.94, height - width * 0.06);
@@ -2731,7 +2734,6 @@
       drawSlotAccents(ctx, rect, idx, width, isHighRes) {
         const th = State.frameTheme;
         if (th === 'washi-botanical') {
-          // Pastel washi tape over corners
           ctx.save();
           ctx.translate(rect.x + rect.w * 0.1, rect.y);
           ctx.rotate(-0.08);
@@ -2743,7 +2745,7 @@
     };
 
     /* ===================================================
-       8. SAVED HISTORY GALLERY MANAGER
+       9. SAVED HISTORY GALLERY MANAGER
        =================================================== */
     const HistoryManager = {
       KEY: 'pozia_saved_history_v3',
@@ -2792,25 +2794,27 @@
     };
 
     /* ===================================================
-       9. MASTER APPLICATION ORCHESTRATOR (APP)
+       10. MASTER APPLICATION ORCHESTRATOR (APP)
        =================================================== */
     const App = {
       init() {
         this.setLayout('1x4');
         I18N.apply('id');
         this.initPWA();
+        this.updateSetupPreview();
 
         // Gallery File Input (Supports multi-file upload)
         document.getElementById('gallery-file-input').addEventListener('change', async (e) => {
           const files = Array.from(e.target.files);
           if (files.length === 0) return;
 
-          // If replacing a specific clicked slot
+          // If replacing a specific clicked slot in editor
           if (State.activeSlotToReplace !== null && files.length > 0) {
             const img = await App.loadImageFromFile(files[0]);
             State.photos[State.activeSlotToReplace] = img;
             State.activeSlotToReplace = null;
             if (State.stage === 'editor') EditorStudio.renderCanvas();
+            else if (State.stage === 'review') ReviewStudio.render();
             e.target.value = '';
             return;
           }
@@ -2825,7 +2829,7 @@
           if (State.stage === 'editor') {
             EditorStudio.renderCanvas();
           } else if (State.photos.length >= State.targetPoseCount) {
-            this.navigate('editor');
+            ReviewStudio.openReview();
           } else {
             State.currentPoseIndex = State.photos.length;
             CameraStudio.updatePoseCounter();
@@ -2860,55 +2864,65 @@
         CameraStudio.updatePoseCounter();
       },
 
-      setLayout(layout) {
-        State.layout = layout;
-        if (layout === '1x4') State.targetPoseCount = 4;
-        else if (layout === '1x3') State.targetPoseCount = 3;
-        else if (layout === '2x2') State.targetPoseCount = 4;
-        else if (layout === 'polaroid') State.targetPoseCount = 1;
+      /* Setup Stage Controllers */
+      setSetupLayout(layout) {
+        this.setLayout(layout);
+        this.updateSetupUI();
+      },
 
-        // Update Home cards
-        ['1x4', '1x3', '2x2', 'polaroid'].forEach(l => {
-          const card = document.getElementById(`home-card-${l}`);
-          if (card) {
-            card.className = l === layout
-              ? 'p-3 rounded-2xl bg-white border-2 border-pozia-coral shadow-sm cursor-pointer hover:shadow-md transition-all flex flex-col items-center text-center gap-1 ring-2 ring-pozia-coral/20'
-              : 'p-3 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col items-center text-center gap-1';
+      setSetupTheme(themeId) {
+        State.frameTheme = themeId;
+        if (themeId === 'denim-stars') {
+          this.setLayout('1x3');
+        }
+        const themes = ['pixel-arcade', 'denim-stars', 'cyber-liquid-chrome', 'pop-art-comic', 'mixtape-cassette', 'amalfi-lemon', 'the-pozia-times', 'celestial-tarot'];
+        themes.forEach(t => {
+          const btn = document.getElementById(`setup-theme-${t}`);
+          if (btn) {
+            btn.className = t === themeId
+              ? 'p-2 rounded-xl border border-pozia-coral bg-pink-50/50 text-left text-xs flex flex-col gap-1 ring-1 ring-pozia-coral shadow-sm'
+              : 'p-2 rounded-xl border border-gray-200 bg-white hover:border-gray-300 text-left text-xs flex flex-col gap-1';
           }
-          const fBtn = document.getElementById(`frame-layout-${l}`);
-          if (fBtn) {
-            fBtn.className = l === layout
-              ? 'px-2.5 py-1 text-xs font-bold rounded-lg bg-pink-50 text-pozia-coral border border-pozia-coral transition-all'
-              : 'px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 transition-all';
+        });
+        this.updateSetupPreview();
+      },
+
+      updateSetupUI() {
+        ['1x4', '1x3', '2x2', 'polaroid'].forEach(l => {
+          const card = document.getElementById(`setup-card-${l}`);
+          if (card) {
+            card.className = l === State.layout
+              ? 'p-4 rounded-2xl bg-white border-2 border-pozia-coral shadow-sm cursor-pointer hover:shadow-md transition-all flex flex-col gap-1.5 ring-2 ring-pozia-coral/20'
+              : 'p-4 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col gap-1.5';
           }
         });
 
-        const badge = document.getElementById('home-layout-badge');
-        const ratioBadge = document.getElementById('preview-ratio-badge');
-        if (badge) {
-          const descriptions = {
-            '1x4': '4 Foto Vertikal',
-            '1x3': '3 Foto Vertikal',
-            '2x2': 'Square Collage 2x2',
-            'polaroid': 'Polaroid Classic'
-          };
-          badge.textContent = descriptions[layout] || '';
-        }
-        if (ratioBadge) {
-          const ratios = {
-            '1x4': 'FORMAT 1:3.2',
-            '1x3': 'FORMAT 1:2.5',
-            '2x2': 'FORMAT 1:1.18',
-            'polaroid': 'FORMAT 4:4.2'
-          };
-          ratioBadge.textContent = ratios[layout] || 'FORMAT STUDIO';
-        }
+        const activeBadge = document.getElementById('setup-active-badge');
+        const ratioLabel = document.getElementById('setup-ratio-label');
+        const btnText = document.getElementById('setup-btn-text');
 
-        this.updateHomeLayoutPreview();
+        const names = {
+          '1x4': 'Strip 4 Pose',
+          '1x3': 'Strip 3 Pose',
+          '2x2': 'Grid 2x2',
+          'polaroid': 'Polaroid'
+        };
+        const ratios = {
+          '1x4': '1:3.2',
+          '1x3': '1:2.5',
+          '2x2': '1:1.18',
+          'polaroid': '4:4.2'
+        };
+
+        if (activeBadge) activeBadge.textContent = names[State.layout] || '';
+        if (ratioLabel) ratioLabel.textContent = ratios[State.layout] || '';
+        if (btnText) btnText.textContent = `Buka Kamera (${State.targetPoseCount} Pose)`;
+
+        this.updateSetupPreview();
       },
 
-      updateHomeLayoutPreview() {
-        const container = document.getElementById('home-preview-wrapper');
+      updateSetupPreview() {
+        const container = document.getElementById('setup-preview-wrapper');
         if (!container) return;
 
         const layout = State.layout;
@@ -2916,42 +2930,53 @@
 
         if (layout === '1x4') {
           html = `
-            <div class="relative w-36 sm:w-40 bg-[#FFE8EC] p-3 rounded-2xl shadow-xl border-2 border-pink-200 flex flex-col gap-2 transition-all duration-300 transform hover:scale-105">
+            <div class="relative w-36 bg-[#FFE8EC] p-3 rounded-2xl shadow-xl border-2 border-pink-200 flex flex-col gap-2 transition-all">
               <div class="absolute -top-3 left-4 w-12 h-5 washi-tape-pink -rotate-12 rounded-sm pointer-events-none"></div>
-              <div class="h-14 bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">1</div>
-              <div class="h-14 bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">2</div>
-              <div class="h-14 bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">3</div>
-              <div class="h-14 bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">4</div>
-              <div class="text-center font-serif text-[11px] text-pozia-charcoal font-bold pt-1 tracking-wide">Pozia Studio</div>
+              <div class="h-14 bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">1</div>
+              <div class="h-14 bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">2</div>
+              <div class="h-14 bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">3</div>
+              <div class="h-14 bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">4</div>
+              <div class="text-center font-serif text-[11px] text-pozia-charcoal font-bold pt-1">Pozia Studio</div>
             </div>
           `;
         } else if (layout === '1x3') {
-          html = `
-            <div class="relative w-40 sm:w-44 bg-[#F3E8FF] p-3.5 rounded-2xl shadow-xl border-2 border-purple-200 flex flex-col gap-2.5 transition-all duration-300 transform hover:scale-105">
-              <div class="absolute -top-3 right-4 w-12 h-5 washi-tape-yellow rotate-12 rounded-sm pointer-events-none"></div>
-              <div class="h-20 bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-purple-300 font-bold">1</div>
-              <div class="h-20 bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-purple-300 font-bold">2</div>
-              <div class="h-20 bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-purple-300 font-bold">3</div>
-              <div class="text-center font-serif text-xs text-pozia-charcoal font-bold pt-1 tracking-wide">Pozia Studio</div>
-            </div>
-          `;
+          if (State.frameTheme === 'denim-stars') {
+            html = `
+              <div class="relative w-40 bg-[#1E2436] p-3 rounded-2xl shadow-xl border-2 border-slate-700 flex flex-col gap-2 transition-all">
+                <div class="h-16 bg-white/95 rounded-lg border border-[#EADBB6] -rotate-2 flex items-center justify-center text-[10px] text-slate-400 font-bold">1</div>
+                <div class="h-16 bg-white/95 rounded-lg border border-[#EADBB6] rotate-2 flex items-center justify-center text-[10px] text-slate-400 font-bold">2</div>
+                <div class="h-16 bg-white/95 rounded-lg border border-[#EADBB6] -rotate-2 flex items-center justify-center text-[10px] text-slate-400 font-bold">3</div>
+                <div class="text-center font-bold tracking-widest text-[11px] text-slate-200 pt-1">POZIA</div>
+              </div>
+            `;
+          } else {
+            html = `
+              <div class="relative w-40 bg-[#F3E8FF] p-3.5 rounded-2xl shadow-xl border-2 border-purple-200 flex flex-col gap-2.5 transition-all">
+                <div class="absolute -top-3 right-4 w-12 h-5 washi-tape-yellow rotate-12 rounded-sm pointer-events-none"></div>
+                <div class="h-20 bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-purple-300 font-bold">1</div>
+                <div class="h-20 bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-purple-300 font-bold">2</div>
+                <div class="h-20 bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-purple-300 font-bold">3</div>
+                <div class="text-center font-serif text-xs text-pozia-charcoal font-bold pt-1">Pozia Studio</div>
+              </div>
+            `;
+          }
         } else if (layout === '2x2') {
           html = `
-            <div class="relative w-52 sm:w-56 bg-[#FFF9E6] p-4 rounded-3xl shadow-xl border-2 border-amber-200 flex flex-col gap-2.5 transition-all duration-300 transform hover:scale-105">
+            <div class="relative w-48 bg-[#FFF9E6] p-4 rounded-3xl shadow-xl border-2 border-amber-200 flex flex-col gap-2.5 transition-all">
               <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-5 washi-tape-mint -rotate-3 rounded-sm pointer-events-none"></div>
               <div class="grid grid-cols-2 gap-2">
-                <div class="aspect-square bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-amber-300 font-bold">1</div>
-                <div class="aspect-square bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-amber-300 font-bold">2</div>
-                <div class="aspect-square bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-amber-300 font-bold">3</div>
-                <div class="aspect-square bg-white/90 rounded-xl flex items-center justify-center shadow-inner text-xs text-amber-300 font-bold">4</div>
+                <div class="aspect-square bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-amber-300 font-bold">1</div>
+                <div class="aspect-square bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-amber-300 font-bold">2</div>
+                <div class="aspect-square bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-amber-300 font-bold">3</div>
+                <div class="aspect-square bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-amber-300 font-bold">4</div>
               </div>
-              <div class="text-center font-serif text-xs text-pozia-charcoal font-bold pt-1 tracking-wide">Pozia Studio</div>
+              <div class="text-center font-serif text-xs text-pozia-charcoal font-bold pt-1">Pozia Studio</div>
             </div>
           `;
         } else {
           // Polaroid single
           html = `
-            <div class="relative w-48 sm:w-52 bg-white p-4 pb-8 rounded-2xl shadow-xl border border-gray-200 flex flex-col gap-3 transition-all duration-300 transform hover:scale-105">
+            <div class="relative w-44 bg-white p-4 pb-8 rounded-2xl shadow-xl border border-gray-200 flex flex-col gap-3 transition-all">
               <div class="absolute -top-3 left-6 w-14 h-5 washi-tape-pink -rotate-6 rounded-sm pointer-events-none"></div>
               <div class="w-full aspect-[4/4.2] bg-gradient-to-b from-rose-50 to-pink-100 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">
                 1 Pose
@@ -2964,13 +2989,36 @@
         container.innerHTML = html;
       },
 
-      simulateHeroFlash() {
-        SoundEngine.playShutter();
-        const wrapper = document.getElementById('home-preview-wrapper');
-        if (wrapper) {
-          wrapper.style.filter = 'brightness(1.5)';
-          setTimeout(() => { wrapper.style.filter = 'none'; }, 200);
-        }
+      startCameraFromSetup() {
+        State.photos = [];
+        State.currentPoseIndex = 0;
+        State.activeSlotToReplace = null;
+        State.isRetakingSingle = false;
+        this.navigate('camera');
+      },
+
+      startSetupWithFrame(frameId) {
+        State.frameTheme = frameId;
+        this.navigate('setup');
+        this.setSetupTheme(frameId);
+      },
+
+      setLayout(layout) {
+        State.layout = layout;
+        if (layout === '1x4') State.targetPoseCount = 4;
+        else if (layout === '1x3') State.targetPoseCount = 3;
+        else if (layout === '2x2') State.targetPoseCount = 4;
+        else if (layout === 'polaroid') State.targetPoseCount = 1;
+
+        // Update Editor layout buttons
+        ['1x4', '1x3', '2x2', 'polaroid'].forEach(l => {
+          const fBtn = document.getElementById(`frame-layout-${l}`);
+          if (fBtn) {
+            fBtn.className = l === layout
+              ? 'px-2.5 py-1 text-xs font-bold rounded-lg bg-pink-50 text-pozia-coral border border-pozia-coral transition-all'
+              : 'px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 transition-all';
+          }
+        });
       },
 
       scrollToSection(id) {
@@ -2978,21 +3026,9 @@
         if (el) el.scrollIntoView({ behavior: 'smooth' });
       },
 
-      startStudio(mode) {
-        State.photos = [];
-        State.currentPoseIndex = 0;
-        if (mode === 'camera') this.navigate('camera');
-        else this.triggerGalleryUpload();
-      },
-
-      startStudioWithFrame(frameId) {
-        State.frameTheme = frameId;
-        this.startStudio('camera');
-      },
-
       navigate(stage) {
         State.stage = stage;
-        ['home', 'camera', 'editor', 'export'].forEach(s => {
+        ['home', 'setup', 'camera', 'review', 'editor', 'export'].forEach(s => {
           const sec = document.getElementById(`stage-${s}`);
           if (sec) {
             if (s === stage) sec.classList.remove('hidden');
@@ -3009,7 +3045,11 @@
           CameraStudio.stopStream();
         }
 
-        if (stage === 'editor') {
+        if (stage === 'setup') {
+          this.updateSetupUI();
+        } else if (stage === 'review') {
+          ReviewStudio.render();
+        } else if (stage === 'editor') {
           EditorStudio.init();
         }
       },
@@ -3122,6 +3162,7 @@
         State.btsBurstGroups = [];
         State.currentPoseIndex = 0;
         State.activeSlotToReplace = null;
+        State.isRetakingSingle = false;
         State.currentFilter = FilterPresets[0];
         State.frameTheme = 'pixel-arcade';
         this.navigate('home');
@@ -3146,7 +3187,7 @@
           window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js').then(reg => {
               const el = document.getElementById('diag-sw-status');
-              if (el) el.textContent = 'Aktif & Siap Offline (PWA v3.1)';
+              if (el) el.textContent = 'Aktif & Siap Offline (PWA v3.2)';
             }).catch(() => { });
           });
         }
