@@ -2969,59 +2969,139 @@
     <!-- STAGE 3 (CAMERA): STUDIO KAMERA                        -->
     <!-- ====================================================== -->
     <section id="stage-camera"
-      class="hidden flex-1 w-full flex flex-col md:flex-row bg-pozia-dark text-white overflow-hidden">
-      
-      <!-- Left / Main Stage: Viewfinder -->
-      <div
-        class="w-full md:w-[62%] h-[60vh] md:h-full flex flex-col relative bg-black/60 justify-between p-4 md:p-6 overflow-hidden">
-        
-        <!-- Viewfinder Top Bar -->
-        <div class="flex items-center justify-between z-20 gap-2">
-          <!-- Back to Setup Button -->
-          <button onclick="CameraStudio.handleBack()"
-            class="px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-xs font-bold hover:bg-white/20 transition-all flex items-center gap-1.5 text-white"
-            title="Kembali ke Pengaturan">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            <span data-i18n="back_btn">Kembali</span>
-          </button>
+      class="hidden flex-1 w-full flex flex-col justify-between bg-[#131215] text-white overflow-y-auto no-scrollbar relative select-none">
 
-          <!-- Pose Progress Counter -->
-          <div
-            class="px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-xs font-extrabold tracking-wider flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-pozia-coral ring-2 ring-pozia-coral/30"></span>
+      <!-- ========================================== -->
+      <!-- 1. TOP HEADER BAR                          -->
+      <!-- ========================================== -->
+      <div class="w-full px-4 sm:px-8 py-3.5 flex items-center justify-between border-b border-white/10 z-30 relative shrink-0">
+        <!-- Back to Setup Button -->
+        <button onclick="CameraStudio.handleBack()"
+          class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 transition-all text-xs font-bold flex items-center gap-1.5 text-white shadow-xs"
+          title="Kembali ke Pengaturan">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <span data-i18n="back_btn">Kembali</span>
+        </button>
+
+        <!-- Brand Center Title -->
+        <div class="text-sm sm:text-base font-serif font-extrabold tracking-wider text-white">
+          POZIA STUDIO
+        </div>
+
+        <!-- Right: Photo Counter & Settings Gear Toggle -->
+        <div class="flex items-center gap-2.5">
+          <!-- Photo Progress Counter -->
+          <div class="px-3.5 py-1.5 rounded-full bg-white/10 text-xs font-bold tracking-wider text-white flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-pozia-coral animate-pulse"></span>
             <span id="pose-counter-text">Foto 1 dari 4</span>
           </div>
 
-          <!-- Camera Lens Switch & Mirror Controls -->
-          <div class="flex items-center gap-2">
-            <!-- Switch Camera Lens (Front/Back) -->
-            <button id="cam-switch-btn" onclick="CameraStudio.switchFacingMode()"
-              class="hidden px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-xs font-bold hover:bg-white/20 transition-all flex items-center gap-1.5 text-white"
-              title="Ganti Lensa Kamera">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              <span class="hidden sm:inline" data-i18n="cam_switch_text">Ganti Lensa</span>
-            </button>
+          <!-- Settings Gear Toggle Button -->
+          <button id="cam-settings-toggle-btn" onclick="CameraStudio.toggleSettingsDropdown()"
+            class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all focus:outline-none"
+            title="Pengaturan Kamera">
+            <svg class="w-5 h-5 text-gray-200 hover:text-white transition-transform hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </button>
+        </div>
+      </div>
 
-            <!-- Mirror Horizontal Flip Toggle -->
-            <button id="cam-mirror-btn" onclick="CameraStudio.toggleMirror()"
-              class="px-3 py-1.5 rounded-full bg-pozia-coral text-white text-xs font-bold shadow-md flex items-center gap-1.5 transition-all"
-              title="Mirror Kamera ON / OFF">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-              </svg>
-              <span id="mirror-status-text">Mirror ON</span>
-            </button>
+      <!-- ========================================== -->
+      <!-- FLOATING SETTINGS DROPDOWN (OVERLAY)       -->
+      <!-- ========================================== -->
+      <div id="camera-settings-dropdown"
+        class="hidden absolute top-16 right-4 sm:right-8 z-50 w-72 sm:w-80 bg-[#1b191e]/95 backdrop-blur-xl border border-white/15 rounded-2xl shadow-2xl p-4 sm:p-5 flex flex-col gap-4 text-xs text-white">
+        
+        <!-- Timer Countdown -->
+        <div>
+          <label class="block text-gray-300 font-semibold mb-2" data-i18n="timer_label">Timer Countdown:</label>
+          <div class="grid grid-cols-4 gap-1.5">
+            <button onclick="CameraStudio.setTimer(0)" id="cam-timer-0"
+              class="py-1.5 rounded-full bg-white/10 text-gray-300 hover:bg-white/15 font-bold text-center text-xs transition-all">Off</button>
+            <button onclick="CameraStudio.setTimer(3)" id="cam-timer-3"
+              class="py-1.5 rounded-full bg-pozia-coral text-white font-bold text-center text-xs shadow-sm transition-all">3 Detik</button>
+            <button onclick="CameraStudio.setTimer(5)" id="cam-timer-5"
+              class="py-1.5 rounded-full bg-white/10 text-gray-300 hover:bg-white/15 font-bold text-center text-xs transition-all">5 Detik</button>
+            <button onclick="CameraStudio.setTimer(10)" id="cam-timer-10"
+              class="py-1.5 rounded-full bg-white/10 text-gray-300 hover:bg-white/15 font-bold text-center text-xs transition-all">10 Detik</button>
           </div>
         </div>
 
-        <!-- Viewfinder Center Screen -->
-        <div class="absolute inset-0 flex items-center justify-center overflow-hidden">
+        <!-- Screen Flash Color -->
+        <div>
+          <label class="block text-gray-300 font-semibold mb-2" data-i18n="flash_color">Screen Flash Warna:</label>
+          <div class="grid grid-cols-4 gap-1.5">
+            <button onclick="CameraStudio.setFlashColor('white')" id="flash-color-white"
+              class="py-1.5 rounded-full bg-pozia-coral text-white font-bold text-center text-xs shadow-sm transition-all">White</button>
+            <button onclick="CameraStudio.setFlashColor('peach')" id="flash-color-peach"
+              class="py-1.5 rounded-full bg-white/10 text-gray-300 hover:bg-white/15 font-bold text-center text-xs transition-all">Peach</button>
+            <button onclick="CameraStudio.setFlashColor('pink')" id="flash-color-pink"
+              class="py-1.5 rounded-full bg-white/10 text-gray-300 hover:bg-white/15 font-bold text-center text-xs transition-all">Pink</button>
+            <button onclick="CameraStudio.setFlashColor('off')" id="flash-color-off"
+              class="py-1.5 rounded-full bg-white/10 text-gray-300 hover:bg-white/15 font-bold text-center text-xs transition-all">Off</button>
+          </div>
+        </div>
+
+        <!-- Digital Zoom Slider -->
+        <div class="pt-1 flex flex-col gap-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-gray-300 font-semibold" data-i18n="zoom_label">Digital Zoom:</span>
+            <span id="zoom-val-label" class="font-bold text-white font-mono">1.0x</span>
+          </div>
+          <input type="range" id="zoom-slider" min="1.0" max="2.0" step="0.1" value="1.0"
+            oninput="CameraStudio.setZoom(this.value)" class="w-full accent-pozia-coral cursor-pointer">
+        </div>
+
+        <!-- Exposure Slider -->
+        <div class="flex flex-col gap-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-gray-300 font-semibold" data-i18n="exposure_label">Exposure / Kecerahan:</span>
+            <span id="exposure-val-label" class="font-bold text-white font-mono">0</span>
+          </div>
+          <input type="range" id="exposure-slider" min="-30" max="30" step="5" value="0"
+            oninput="CameraStudio.setExposure(this.value)" class="w-full accent-pozia-coral cursor-pointer">
+        </div>
+
+        <!-- Camera Controls: Mirror & Switch Facing Mode -->
+        <div class="pt-3 border-t border-white/10 flex items-center justify-between gap-2">
+          <!-- Mirror Horizontal Flip Toggle -->
+          <button id="cam-mirror-btn" onclick="CameraStudio.toggleMirror()"
+            class="flex-1 py-1.5 px-3 rounded-full bg-pozia-coral text-white text-xs font-bold shadow-md flex items-center justify-center gap-1.5 transition-all"
+            title="Mirror Kamera ON / OFF">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+            </svg>
+            <span id="mirror-status-text">Mirror ON</span>
+          </button>
+
+          <!-- Switch Camera Lens (Front/Back) -->
+          <button id="cam-switch-btn" onclick="CameraStudio.switchFacingMode()"
+            class="flex-1 py-1.5 px-3 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+            title="Ganti Lensa Kamera">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span data-i18n="cam_switch_text">Ganti Lensa</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- 2. CAMERA PREVIEW VIEWPORT (CENTERPIECE)   -->
+      <!-- ========================================== -->
+      <div class="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 py-2 flex flex-col items-center justify-center min-h-0">
+        
+        <!-- Viewfinder Outer Frame (Proportional, Centered, Spacious) -->
+        <div class="w-full h-full max-h-[52vh] sm:max-h-[56vh] md:max-h-[60vh] aspect-[4/3] sm:aspect-[16/10] bg-[#1e1c22] border border-white/10 rounded-3xl shadow-2xl relative overflow-hidden flex items-center justify-center">
+          
+          <!-- Screen Flash Effect Layer -->
           <div id="screen-flash"></div>
 
           <!-- Countdown Overlay -->
@@ -3036,7 +3116,7 @@
 
           <!-- Retake Notification Banner -->
           <div id="retake-banner"
-            class="hidden absolute top-16 z-30 px-4 py-1.5 rounded-full bg-amber-500/95 text-white text-xs font-bold shadow-xl flex items-center gap-2">
+            class="hidden absolute top-6 z-30 px-4 py-1.5 rounded-full bg-amber-500/95 text-white text-xs font-bold shadow-xl flex items-center gap-2">
             <span>📷</span>
             <span id="retake-banner-text">Mengambil Ulang Pose 1</span>
           </div>
@@ -3047,7 +3127,7 @@
 
           <!-- Fallback Camera Message -->
           <div id="camera-fallback-msg"
-            class="hidden absolute inset-0 z-20 flex flex-col items-center justify-center p-6 text-center bg-gray-900/90 backdrop-blur-md">
+            class="hidden absolute inset-0 z-20 flex flex-col items-center justify-center p-6 text-center bg-gray-900/95 backdrop-blur-md">
             <div class="w-14 h-14 rounded-full bg-pozia-coral/20 flex items-center justify-center text-pozia-coral mb-3">
               <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -3066,107 +3146,54 @@
           </div>
         </div>
 
-        <!-- Viewfinder Live Filter Dock (14 Real-Time Filters) -->
-        <div class="z-20">
-          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1" id="camera-filter-dock">
-            <!-- Dynamically populated with 14 filter buttons -->
-          </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- 3. FILTER DOCK (HORIZONTAL SCROLLING)       -->
+      <!-- ========================================== -->
+      <div class="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-1 pb-2 shrink-0">
+        <div class="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-1" id="camera-filter-dock">
+          <!-- Dynamically populated with 14 filter buttons -->
         </div>
       </div>
 
-      <!-- Right Control Panel: Settings & Shutter -->
-      <div
-        class="w-full md:w-[38%] h-[40vh] md:h-full bg-pozia-dark border-t md:border-t-0 md:border-l border-white/10 p-5 md:p-8 flex flex-col justify-between overflow-y-auto no-scrollbar">
+      <!-- ========================================== -->
+      <!-- 4. BOTTOM ACTION CONTROLS (UPLOAD, SHUTTER, REVIEW) -->
+      <!-- ========================================== -->
+      <div class="w-full max-w-md mx-auto px-4 pb-5 pt-2 flex items-center justify-center gap-6 sm:gap-10 shrink-0">
         
-        <div>
-          <div class="flex items-center justify-between pb-3 border-b border-white/10">
-            <h3 class="font-serif font-bold text-base text-white" data-i18n="camera_settings">Kontrol Kamera</h3>
-            <span class="text-[11px] text-gray-400 font-mono">HD VIEW</span>
-          </div>
+        <!-- Upload from Gallery Button (Left) -->
+        <button onclick="App.triggerGalleryUpload()"
+          class="w-20 h-20 rounded-2xl bg-[#232228] hover:bg-white/15 text-white flex flex-col items-center justify-center gap-1.5 transition-all shadow-md active:scale-95"
+          title="Upload dari galeri">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+          </svg>
+          <span class="text-[11px] font-semibold text-gray-300" data-i18n="upload_label">Upload</span>
+        </button>
 
-          <!-- Camera Parameters -->
-          <div class="py-3 flex flex-col gap-3.5 text-xs">
-            <!-- Timer Countdown -->
-            <div>
-              <label class="block text-gray-400 font-semibold mb-1.5" data-i18n="timer_label">Timer Countdown:</label>
-              <div class="grid grid-cols-4 gap-1.5">
-                <button onclick="CameraStudio.setTimer(0)" id="cam-timer-0"
-                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Off</button>
-                <button onclick="CameraStudio.setTimer(3)" id="cam-timer-3"
-                  class="py-2 rounded-xl bg-pozia-coral text-white font-bold">3 Detik</button>
-                <button onclick="CameraStudio.setTimer(5)" id="cam-timer-5"
-                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">5 Detik</button>
-                <button onclick="CameraStudio.setTimer(10)" id="cam-timer-10"
-                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">10 Detik</button>
-              </div>
-            </div>
+        <!-- Hero Shutter Button (Center) -->
+        <button id="shutter-btn" onclick="CameraStudio.startCaptureSequence()"
+          class="w-20 h-20 sm:w-22 sm:h-22 rounded-full border-4 border-white flex items-center justify-center bg-pozia-coral shutter-glow active:scale-95 transition-transform shadow-2xl">
+          <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/20"></div>
+        </button>
 
-            <!-- Screen Flash Color -->
-            <div>
-              <label class="block text-gray-400 font-semibold mb-1.5" data-i18n="flash_color">Screen Flash Warna:</label>
-              <div class="grid grid-cols-4 gap-1.5">
-                <button onclick="CameraStudio.setFlashColor('white')" id="flash-color-white"
-                  class="py-2 rounded-xl bg-pozia-coral text-white font-bold shadow-sm">White</button>
-                <button onclick="CameraStudio.setFlashColor('peach')" id="flash-color-peach"
-                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Peach</button>
-                <button onclick="CameraStudio.setFlashColor('pink')" id="flash-color-pink"
-                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Pink</button>
-                <button onclick="CameraStudio.setFlashColor('off')" id="flash-color-off"
-                  class="py-2 rounded-xl bg-white/10 text-gray-300 font-bold">Off</button>
-              </div>
-            </div>
+        <!-- Review Button (Right) -->
+        <button onclick="ReviewStudio.openReview()"
+          class="w-20 h-20 rounded-2xl bg-[#232228] hover:bg-white/15 text-white flex flex-col items-center justify-center gap-1.5 transition-all shadow-md active:scale-95"
+          title="Lihat Hasil Foto">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+          <span class="text-[11px] font-semibold text-gray-300" data-i18n="review_label">Review</span>
+        </button>
 
-            <!-- Digital Zoom & Exposure -->
-            <div class="pt-2 border-t border-white/10 flex flex-col gap-2.5">
-              <div class="flex items-center justify-between">
-                <span class="text-gray-400 font-semibold" data-i18n="zoom_label">Digital Zoom:</span>
-                <span id="zoom-val-label" class="font-bold text-white">1.0x</span>
-              </div>
-              <input type="range" id="zoom-slider" min="1.0" max="2.0" step="0.1" value="1.0"
-                oninput="CameraStudio.setZoom(this.value)" class="w-full accent-pozia-coral">
-
-              <div class="flex items-center justify-between pt-1">
-                <span class="text-gray-400 font-semibold" data-i18n="exposure_label">Exposure / Kecerahan:</span>
-                <span id="exposure-val-label" class="font-bold text-white">0</span>
-              </div>
-              <input type="range" id="exposure-slider" min="-30" max="30" step="5" value="0"
-                oninput="CameraStudio.setExposure(this.value)" class="w-full accent-pozia-coral">
-            </div>
-          </div>
-        </div>
-
-        <!-- Camera Bottom Action Row -->
-        <div class="flex items-center justify-between pt-4 border-t border-white/10">
-          <button onclick="App.triggerGalleryUpload()"
-            class="p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-all flex flex-col items-center gap-1"
-            title="Upload dari galeri">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-            </svg>
-            <span class="text-[10px] text-gray-400" data-i18n="upload_label">Upload</span>
-          </button>
-
-          <!-- Hero Shutter Button -->
-          <button id="shutter-btn" onclick="CameraStudio.startCaptureSequence()"
-            class="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center bg-pozia-coral shutter-glow active:scale-95 transition-transform shadow-2xl">
-            <div class="w-14 h-14 rounded-full bg-white/25"></div>
-          </button>
-
-          <!-- Review Button (Enabled if photos taken) -->
-          <button onclick="ReviewStudio.openReview()"
-            class="p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-all flex flex-col items-center gap-1"
-            title="Lihat Hasil Foto">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-            <span class="text-[10px] text-gray-400" data-i18n="review_label">Review</span>
-          </button>
-        </div>
       </div>
+
     </section>
 
     <!-- ====================================================== -->
@@ -4145,8 +4172,39 @@
       zoomLevel: 1.0,
       exposureVal: 0,
       isCapturingSequence: false,
+      _dropdownListenersAttached: false,
+
+      toggleSettingsDropdown() {
+        const dd = document.getElementById('camera-settings-dropdown');
+        if (dd) dd.classList.toggle('hidden');
+      },
+
+      closeSettingsDropdown() {
+        const dd = document.getElementById('camera-settings-dropdown');
+        if (dd) dd.classList.add('hidden');
+      },
+
+      setupDropdownListeners() {
+        if (this._dropdownListenersAttached) return;
+        this._dropdownListenersAttached = true;
+        document.addEventListener('click', (e) => {
+          const dd = document.getElementById('camera-settings-dropdown');
+          const toggleBtn = document.getElementById('cam-settings-toggle-btn');
+          if (!dd || dd.classList.contains('hidden')) return;
+          if (!dd.contains(e.target) && !toggleBtn.contains(e.target)) {
+            dd.classList.add('hidden');
+          }
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            this.closeSettingsDropdown();
+          }
+        });
+      },
 
       async init() {
+        this.closeSettingsDropdown();
+        this.setupDropdownListeners();
         this.updatePoseCounter();
         this.renderFilterDock();
         await this.checkAvailableCameras();
@@ -4194,6 +4252,7 @@
       },
 
       stopStream() {
+        this.closeSettingsDropdown();
         if (this.stream) {
           this.stream.getTracks().forEach(t => t.stop());
           this.stream = null;
@@ -4213,9 +4272,9 @@
         if (topText) topText.textContent = label;
 
         if (this.isMirrored) {
-          if (topBtn) topBtn.className = 'px-3 py-1.5 rounded-full bg-pozia-coral text-white text-xs font-bold shadow-md flex items-center gap-1.5 transition-all';
+          if (topBtn) topBtn.className = 'flex-1 py-1.5 px-3 rounded-full bg-pozia-coral text-white text-xs font-bold shadow-md flex items-center justify-center gap-1.5 transition-all';
         } else {
-          if (topBtn) topBtn.className = 'px-3 py-1.5 rounded-full bg-white/20 text-gray-200 text-xs font-bold shadow-sm flex items-center gap-1.5 transition-all';
+          if (topBtn) topBtn.className = 'flex-1 py-1.5 px-3 rounded-full bg-white/10 hover:bg-white/20 text-gray-200 text-xs font-bold shadow-sm flex items-center justify-center gap-1.5 transition-all';
         }
       },
 
@@ -4244,8 +4303,8 @@
           const btn = document.getElementById(`cam-timer-${s}`);
           if (btn) {
             btn.className = s === sec
-              ? 'py-2 rounded-xl bg-pozia-coral text-white font-bold'
-              : 'py-2 rounded-xl bg-white/10 text-gray-300 font-bold';
+              ? 'py-1.5 rounded-full bg-pozia-coral text-white font-bold text-center text-xs shadow-sm transition-all'
+              : 'py-1.5 rounded-full bg-white/10 text-gray-300 hover:bg-white/15 font-bold text-center text-xs transition-all';
           }
           const sBtn = document.getElementById(`setup-timer-${s}`);
           if (sBtn) {
@@ -4262,8 +4321,8 @@
           const btn = document.getElementById(`flash-color-${c}`);
           if (btn) {
             btn.className = c === col
-              ? 'py-2 rounded-xl bg-pozia-coral text-white font-bold shadow-sm'
-              : 'py-2 rounded-xl bg-white/10 text-gray-300 font-bold';
+              ? 'py-1.5 rounded-full bg-pozia-coral text-white font-bold text-center text-xs shadow-sm transition-all'
+              : 'py-1.5 rounded-full bg-white/10 text-gray-300 hover:bg-white/15 font-bold text-center text-xs transition-all';
           }
           const sBtn = document.getElementById(`setup-flash-${c}`);
           if (sBtn) {
@@ -4315,9 +4374,9 @@
         FilterPresets.forEach(preset => {
           const btn = document.createElement('button');
           const isSelected = State.currentFilter.id === preset.id;
-          btn.className = `px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${isSelected
-            ? 'bg-pozia-coral text-white shadow-lg ring-2 ring-white/30 scale-105'
-            : 'bg-white/15 text-gray-200 hover:bg-white/25'
+          btn.className = `px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${isSelected
+            ? 'bg-pozia-coral text-white font-bold shadow-md'
+            : 'bg-[#232228] text-gray-300 hover:bg-white/15'
             }`;
           btn.textContent = preset.name;
           btn.onclick = () => {
