@@ -1,4 +1,4 @@
-  <!-- ======================================================== -->
+﻿  <!-- ======================================================== -->
   <!-- CORE JAVASCRIPT APPLICATION LOGIC                        -->
   <!-- ======================================================== -->
   <script>
@@ -93,67 +93,311 @@
       current: 'id',
       dict: {
         id: {
+          // Nav & Global
           nav_home: 'Beranda',
           nav_frames: 'Koleksi Bingkai',
           nav_features: 'Fitur Studio',
           cta_start: 'Mulai Studio',
+          history_title: 'Galeri Hasil Tersimpan',
+          clear_history: 'Hapus Riwayat',
+          diag_title: 'Diagnostik Sistem & Arsitektur',
+          diag_close: 'Tutup',
+
+          // Homepage Hero & Showcase
+          hero_badge: 'Digital Creative Photobooth',
           hero_desc: 'Capture your moments, your way. Create beautiful photostrips with Pozia Studio.',
+          cta_upload: 'Upload dari Galeri',
+          try_times: 'Coba Times →',
+          try_coquette: 'Coba Coquette →',
+          try_denim: 'Coba Denim & Stars →',
+          try_chrome: 'Coba Chrome →',
+          try_arcade: 'Coba Arcade →',
+          trust_frames: '20+ Bingkai Orisinal',
+          trust_filters: '14 Filter Analog',
+          trust_download: 'Unduh Ultra HD 300DPI',
+          trust_privacy: '100% Privasi di Peramban',
+          showcase_badge: 'Koleksi Kreatif',
+          showcase_title: 'Koleksi Bingkai Tematik Original',
+          showcase_desc: 'Setiap bingkai memiliki karakter, palet warna, dan detail artistik orisinal dari Pozia Studio untuk melengkapi momen istimewa Anda.',
+          showcase_btn: 'Buka Semua Bingkai',
+
+          // Showcase Frame Cards
+          frame_denim_cat: 'Scrapbook & Stars',
+          frame_denim_desc: 'Kain corduroy navy & aksesoris 3D pin',
+          frame_times_cat: 'Retro Editorial',
+          frame_times_desc: 'Gaya koran vintage & tipografi klasik',
+          frame_chrome_cat: 'Y2K Cyber',
+          frame_chrome_desc: 'Efek chrome cair & bintang futuristik',
+          frame_arcade_cat: 'Arcade Gaming',
+          frame_arcade_desc: 'Layar CRT neon retro & pixel font',
+          frame_ribbon_cat: 'Romantic Pastel',
+          frame_ribbon_desc: 'Aksen pita satin & palet blush manis',
+          frame_lemon_cat: 'Summer Holiday',
+          frame_lemon_desc: 'Nuansa cerah Mediterania & garis biru',
+          frame_tarot_cat: 'Magical & Tarot',
+          frame_tarot_desc: 'Aksen midnight navy & emas mistis',
+          frame_film_cat: 'Analog Contact',
+          frame_film_desc: 'Lubang sprocket film asli & angka strip',
+
+          // Features Section
+          features_badge: 'Kualitas Profesional',
+          features_title: 'Fitur Studio Photobooth',
+          features_desc: 'Semua yang Anda butuhkan untuk menghasilkan cetakan foto photobooth berkualitas studio.',
+          feat1_title: '14 Filter Film Analog Nyata',
+          feat1_desc: 'Preset warna vintage, retro 90s, moody noir, hingga dreamy fairy dengan grading warna nyata yang tampak di kamera langsung, review foto, dan download akhir.',
+          feat2_title: 'Viewfinder & Mirror Pintar',
+          feat2_desc: 'Mirror flip realistis, screen flash lembut, timer hitung mundur 3s/5s, dan kemudahan mengganti lensa kamera depan maupun belakang pada smartphone Anda.',
+          feat3_title: 'Ekspor Ultra HD & 100% Privat',
+          feat3_desc: 'Unduh hasil strip foto beresolusi tinggi (> 1400px) siap cetak tanpa watermark. Seluruh foto diproses secara privat di peramban Anda tanpa dikirim ke server.',
+          footer_home: 'Beranda',
+          footer_frames: 'Bingkai',
+          footer_features: 'Fitur',
+          footer_top: 'Ke Atas',
+          footer_copyright: '© 2026 Pozia Studio. All rights reserved. Creative digital photobooth experience.',
+
+          // Setup Stage
+          setup_back: 'Kembali ke Beranda',
+          setup_step_badge: 'TAHAP 1: PILIH JUMLAH FOTO',
+          setup_badge: 'Photobooth Layout',
+          setup_title: 'Pilih Layout & Jumlah Foto',
+          setup_subtitle: 'Tentukan berapa banyak pose yang ingin Anda ambil dalam satu sesi. Desain bingkai visual bebas dipilih dari seluruh koleksi setelah sesi foto selesai.',
+          layout_1x4_title: 'Strip 4 Pose',
+          layout_1x4_sub: '4x Cekrek Vertikal',
+          layout_1x3_title: 'Strip 3 Pose',
+          layout_1x3_sub: '3x Cekrek Lapang',
+          layout_1x2_title: 'Strip 2 Pose',
+          layout_1x2_sub: '2x Cekrek Cepat',
+          layout_2x2_title: 'Grid 2×2',
+          layout_2x2_sub: '4 Foto Kolase Persegi',
+          layout_polaroid_title: 'Polaroid',
+          layout_polaroid_sub: '1 Pose Portrait Klasik',
+          setup_timer_label: '⏱ Timer:',
+          setup_flash_label: '💡 Screen Flash:',
+          flash_white: 'Putih',
+          flash_warm: 'Warm',
+          flash_off: 'Mati',
+          setup_shutter_label: '🔊 Shutter:',
+          setup_shutter_status: 'Suara Kamera Aktif',
+          setup_gallery_btn: 'Pilih dari Galeri',
+
+          // Camera Stage
           back_btn: 'Kembali',
-          cam_error: 'Kamera tidak dapat diakses atau diblokir. Anda tetap bisa upload foto dari galeri!',
+          cam_switch_text: 'Ganti Lensa',
           camera_settings: 'Kontrol Kamera',
           timer_label: 'Timer Countdown:',
           flash_color: 'Screen Flash Warna:',
+          zoom_label: 'Digital Zoom:',
+          exposure_label: 'Exposure / Kecerahan:',
+          upload_label: 'Upload',
+          review_label: 'Review',
+          cam_error_title: 'Akses Kamera Ditolak / Tidak Tersedia',
+          cam_error: 'Kamera tidak dapat diakses atau diblokir. Anda tetap bisa upload foto dari galeri!',
+          cam_upload_btn: 'Upload Foto dari Galeri',
+
+          // Review Stage
+          review_back: 'Kembali ke Kamera',
+          review_title: 'Pratinjau Hasil Pemotretan',
+          review_subtitle: 'Periksa foto Anda, terapkan filter analog, atau ambil ulang pose tertentu.',
+          review_filter_label: 'Pilih Filter Analog:',
+          review_retake_all: 'Foto Ulang Semua',
+          review_proceed: 'Lanjut Pilih Desain Frame',
+
+          // Editor Stage
+          editor_slot_hint: 'Klik slot foto untuk mengganti',
+          editor_back: 'Review',
+          editor_reset: 'Reset',
           tab_frame: 'Bingkai',
           tab_filter: 'Filter',
           random_vibe: 'Acak Vibe',
           done_btn: 'Selesai',
+          editor_format_label: 'Format Layout:',
+          cat_all: 'Semua',
+          cat_gaming: 'Gaming',
+          cat_scrapbook: 'Scrapbook',
+          cat_cyber: 'Y2K Cyber',
+          cat_comic: 'Pop Comic',
+          cat_music: 'Music',
+          cat_summer: 'Summer',
+          cat_retro: 'Retro',
+          cat_fantasy: 'Magical',
+          cat_solid: 'Minimalist',
+          upload_custom_frame: 'Upload Custom Twibbon PNG',
+          filter_heading: '14 Preset Filter Analog & Film:',
           intensity: 'Intensitas Filter:',
+          fine_brightness: 'Fine Brightness:',
+          fine_contrast: 'Fine Contrast:',
+
+          // Export Stage
           export_title: 'Foto Selesai Dirender!',
           export_desc: 'Komposisi photobooth Anda telah berhasil diproses dalam resolusi ultra tinggi (> 1400px) siap untuk disimpan atau dicetak.',
           hold_save_hint: 'Tips: Jika download otomatis terhambat di HP/WebView, tekan dan tahan gambar di atas untuk "Simpan ke Galeri".',
           bts_title: 'Behind-The-Scenes HD Video',
+          bts_desc: 'Momen hitungan mundur sebelum cekrek (HD 720p)',
+          save_bts: 'Simpan Video BTS HD (WebM / Video)',
           download_hd: 'Simpan Foto Ultra HD (PNG)',
           edit_again: 'Edit Ulang',
-          new_session: 'Buat Foto Baru',
-          diag_title: 'Diagnostik Sistem & Arsitektur',
-          history_title: 'Galeri Hasil Tersimpan',
-          clear_history: 'Hapus Riwayat'
+          new_session: 'Buat Foto Baru'
         },
         en: {
+          // Nav & Global
           nav_home: 'Home',
           nav_frames: 'Frames Collection',
           nav_features: 'Studio Features',
           cta_start: 'Start Studio',
+          history_title: 'Saved History Gallery',
+          clear_history: 'Clear History',
+          diag_title: 'System & Architecture Diagnostics',
+          diag_close: 'Close',
+
+          // Homepage Hero & Showcase
+          hero_badge: 'Digital Creative Photobooth',
           hero_desc: 'Capture your moments, your way. Create beautiful photostrips with Pozia Studio.',
+          cta_upload: 'Upload from Gallery',
+          try_times: 'Try Times →',
+          try_coquette: 'Try Coquette →',
+          try_denim: 'Try Denim & Stars →',
+          try_chrome: 'Try Chrome →',
+          try_arcade: 'Try Arcade →',
+          trust_frames: '20+ Original Frames',
+          trust_filters: '14 Analog Filters',
+          trust_download: 'Ultra HD 300DPI Download',
+          trust_privacy: '100% Client-Side Privacy',
+          showcase_badge: 'Creative Collection',
+          showcase_title: 'Original Themed Frame Collection',
+          showcase_desc: 'Each frame features original character, color palette, and artistic details from Pozia Studio to elevate your special moments.',
+          showcase_btn: 'Browse All Frames',
+
+          // Showcase Frame Cards
+          frame_denim_cat: 'Scrapbook & Stars',
+          frame_denim_desc: 'Navy corduroy fabric & 3D pin accessories',
+          frame_times_cat: 'Retro Editorial',
+          frame_times_desc: 'Vintage newspaper style & classic typography',
+          frame_chrome_cat: 'Y2K Cyber',
+          frame_chrome_desc: 'Liquid chrome effect & futuristic stars',
+          frame_arcade_cat: 'Arcade Gaming',
+          frame_arcade_desc: 'Retro neon CRT screen & pixel font',
+          frame_ribbon_cat: 'Romantic Pastel',
+          frame_ribbon_desc: 'Satin ribbon accents & sweet blush palette',
+          frame_lemon_cat: 'Summer Holiday',
+          frame_lemon_desc: 'Sunny Mediterranean vibe & coastal stripes',
+          frame_tarot_cat: 'Magical & Tarot',
+          frame_tarot_desc: 'Midnight navy & mystical gold accents',
+          frame_film_cat: 'Analog Contact',
+          frame_film_desc: 'Authentic sprocket film holes & strip count',
+
+          // Features Section
+          features_badge: 'Professional Quality',
+          features_title: 'Studio Photobooth Features',
+          features_desc: 'Everything you need to produce studio-quality photobooth prints.',
+          feat1_title: '14 Real Analog Film Filters',
+          feat1_desc: 'Vintage, 90s retro, moody noir, to dreamy fairy presets with real color grading visible on live camera, photo review, and final download.',
+          feat2_title: 'Smart Viewfinder & Mirror',
+          feat2_desc: 'Realistic mirror flip, soft screen flash, 3s/5s countdown timer, and seamless front/rear camera switching on your device.',
+          feat3_title: 'Ultra HD Export & 100% Private',
+          feat3_desc: 'Download high-resolution photostrips (> 1400px) ready to print without watermarks. All photos are processed privately in your browser without uploading to a server.',
+          footer_home: 'Home',
+          footer_frames: 'Frames',
+          footer_features: 'Features',
+          footer_top: 'Back to Top',
+          footer_copyright: '© 2026 Pozia Studio. All rights reserved. Creative digital photobooth experience.',
+
+          // Setup Stage
+          setup_back: 'Back to Home',
+          setup_step_badge: 'STEP 1: SELECT NUMBER OF PHOTOS',
+          setup_badge: 'Photobooth Layout',
+          setup_title: 'Choose Layout & Photo Count',
+          setup_subtitle: 'Decide how many poses you want to capture in one session. Frame designs can be freely chosen from the entire collection once the shoot is complete.',
+          layout_1x4_title: 'Strip 4 Poses',
+          layout_1x4_sub: '4x Vertical Snaps',
+          layout_1x3_title: 'Strip 3 Poses',
+          layout_1x3_sub: '3x Roomy Snaps',
+          layout_1x2_title: 'Strip 2 Poses',
+          layout_1x2_sub: '2x Quick Snaps',
+          layout_2x2_title: 'Grid 2×2',
+          layout_2x2_sub: '4 Square Collage Photos',
+          layout_polaroid_title: 'Polaroid',
+          layout_polaroid_sub: '1 Classic Portrait Pose',
+          setup_timer_label: '⏱ Timer:',
+          setup_flash_label: '💡 Screen Flash:',
+          flash_white: 'White',
+          flash_warm: 'Warm',
+          flash_off: 'Off',
+          setup_shutter_label: '🔊 Shutter:',
+          setup_shutter_status: 'Camera Sound Active',
+          setup_gallery_btn: 'Upload from Gallery',
+
+          // Camera Stage
           back_btn: 'Back',
-          cam_error: 'Camera access denied or unavailable. You can still upload photos from gallery!',
+          cam_switch_text: 'Switch Lens',
           camera_settings: 'Camera Controls',
           timer_label: 'Countdown Timer:',
           flash_color: 'Screen Flash Color:',
+          zoom_label: 'Digital Zoom:',
+          exposure_label: 'Exposure / Brightness:',
+          upload_label: 'Upload',
+          review_label: 'Review',
+          cam_error_title: 'Camera Access Denied / Unavailable',
+          cam_error: 'Camera access denied or unavailable. You can still upload photos from gallery!',
+          cam_upload_btn: 'Upload Photos from Gallery',
+
+          // Review Stage
+          review_back: 'Back to Camera',
+          review_title: 'Review Photo Shots',
+          review_subtitle: 'Inspect your photos, apply analog filters, or retake specific poses.',
+          review_filter_label: 'Select Analog Filter:',
+          review_retake_all: 'Retake All Photos',
+          review_proceed: 'Continue to Frame Design',
+
+          // Editor Stage
+          editor_slot_hint: 'Click photo slot to replace',
+          editor_back: 'Review',
+          editor_reset: 'Reset',
           tab_frame: 'Frame',
           tab_filter: 'Filter',
           random_vibe: 'Random Vibe',
           done_btn: 'Finish',
+          editor_format_label: 'Layout Format:',
+          cat_all: 'All',
+          cat_gaming: 'Gaming',
+          cat_scrapbook: 'Scrapbook',
+          cat_cyber: 'Y2K Cyber',
+          cat_comic: 'Pop Comic',
+          cat_music: 'Music',
+          cat_summer: 'Summer',
+          cat_retro: 'Retro',
+          cat_fantasy: 'Magical',
+          cat_solid: 'Minimalist',
+          upload_custom_frame: 'Upload Custom Twibbon PNG',
+          filter_heading: '14 Analog & Film Filter Presets:',
           intensity: 'Filter Intensity:',
+          fine_brightness: 'Fine Brightness:',
+          fine_contrast: 'Fine Contrast:',
+
+          // Export Stage
           export_title: 'Photo Successfully Rendered!',
           export_desc: 'Your photobooth composition is rendered in sharp ultra-high resolution (> 1400px) ready to save or print.',
           hold_save_hint: 'Tips: If automatic download is blocked in mobile WebView, press and hold the image above to save to gallery.',
           bts_title: 'Behind-The-Scenes HD Video',
+          bts_desc: 'Countdown moments before each snap (HD 720p)',
+          save_bts: 'Save BTS HD Video (WebM / Video)',
           download_hd: 'Save Ultra HD Photo (PNG)',
           edit_again: 'Edit Again',
-          new_session: 'New Session',
-          diag_title: 'System & Architecture Diagnostics',
-          history_title: 'Saved History Gallery',
-          clear_history: 'Clear History'
+          new_session: 'New Session'
         }
       },
       apply(lang) {
         this.current = lang;
+        try { localStorage.setItem('pozia_lang', lang); } catch (e) { }
         const texts = this.dict[lang] || this.dict.id;
         document.querySelectorAll('[data-i18n]').forEach(el => {
           const key = el.getAttribute('data-i18n');
-          if (texts[key]) el.textContent = texts[key];
+          if (texts[key] !== undefined) el.textContent = texts[key];
         });
+        const btn = document.getElementById('lang-btn');
+        if (btn) btn.textContent = lang === 'id' ? 'ID | EN' : 'EN | ID';
+        if (window.App && typeof App.updateSetupUI === 'function') {
+          App.updateSetupUI();
+        }
       }
     };
 
@@ -585,7 +829,10 @@
       },
 
       confirmRetakeAll() {
-        if (confirm('Ulangi seluruh sesi pengambilan foto dari awal?')) {
+        const msg = (I18N.current === 'en')
+          ? 'Retake entire photoshoot session from the beginning?'
+          : 'Ulangi seluruh sesi pengambilan foto dari awal?';
+        if (confirm(msg)) {
           State.photos = [];
           State.currentPoseIndex = 0;
           State.activeSlotToReplace = null;
@@ -632,7 +879,7 @@
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
-                <span>Foto Ulang</span>
+                <span>${I18N.current === "en" ? "Retake" : "Foto Ulang"}</span>
               </button>
             `;
             display.appendChild(card);
@@ -747,7 +994,8 @@
       },
 
       reset() {
-        if (confirm('Kembalikan semua filter dan bingkai ke pengaturan awal? (Foto asli Anda tetap aman tersimpan)')) {
+        const resetMsg = (I18N.current === 'en') ? 'Reset all filters and frames to initial settings? (Your original photos remain safe)' : 'Kembalikan semua filter dan bingkai ke pengaturan awal? (Foto asli Anda tetap aman tersimpan)';
+        if (confirm(resetMsg)) {
           State.frameTheme = 'pixel-arcade';
           State.currentFilter = FilterPresets[0];
           State.filterIntensity = 100;
@@ -1577,7 +1825,8 @@
         } catch (e) { return []; }
       },
       clear() {
-        if (confirm('Hapus seluruh riwayat foto yang tersimpan?')) {
+        const clearMsg = (I18N.current === 'en') ? 'Delete all saved photo history?' : 'Hapus seluruh riwayat foto yang tersimpan?';
+        if (confirm(clearMsg)) {
           localStorage.removeItem(this.KEY);
           this.render();
         }
@@ -1587,7 +1836,7 @@
         if (!container) return;
         const list = this.getAll();
         if (list.length === 0) {
-          container.innerHTML = '<div class="col-span-3 py-12 text-center text-xs text-gray-400">Belum ada foto yang tersimpan.</div>';
+          container.innerHTML = '<div class="col-span-3 py-12 text-center text-xs text-gray-400">${I18N.current === "en" ? "No saved photos yet." : "Belum ada foto yang tersimpan."}</div>';
           return;
         }
         container.innerHTML = list.map(item => `
@@ -1595,7 +1844,7 @@
             <img src="${item.url}" class="w-full h-auto object-cover block">
             <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 p-2">
               <a href="${item.url}" download="Pozia_${item.id}.png"
-                class="px-2.5 py-1 rounded-lg bg-pozia-coral text-white text-[10px] font-bold shadow">Unduh</a>
+                class="px-2.5 py-1 rounded-lg bg-pozia-coral text-white text-[10px] font-bold shadow">${I18N.current === "en" ? "Download" : "Unduh"}</a>
             </div>
           </div>
         `).join('');
@@ -1608,7 +1857,10 @@
     const App = {
       init() {
         this.setLayout('1x4');
-        I18N.apply('id');
+        const savedLang = (() => {
+          try { return localStorage.getItem('pozia_lang'); } catch (e) { return null; }
+        })() || 'id';
+        I18N.apply(savedLang);
         this.initPWA();
         this.updateSetupPreview();
 
@@ -1672,9 +1924,10 @@
       toggleLanguage() {
         const next = I18N.current === 'id' ? 'en' : 'id';
         I18N.apply(next);
-        const btn = document.getElementById('lang-btn');
-        if (btn) btn.textContent = next === 'id' ? 'ID | EN' : 'EN | ID';
         CameraStudio.updatePoseCounter();
+        if (State.stage === 'review') {
+          ReviewStudio.render();
+        }
       },
 
       /* Setup Stage Controllers */
