@@ -616,19 +616,19 @@
           display.innerHTML = '';
           State.photos.forEach((img, idx) => {
             const card = document.createElement('div');
-            card.className = 'flex flex-col items-center gap-2 p-3 rounded-2xl bg-white border border-gray-200/80 shadow-md group hover:shadow-xl transition-all';
+            card.className = 'flex flex-col items-center gap-2 p-2.5 sm:p-3 rounded-2xl bg-white border border-gray-200/80 shadow-sm hover:shadow-md transition-all';
 
             const filterStyle = State.currentFilter.css === 'none' ? '' : `filter: ${State.currentFilter.css};`;
 
             card.innerHTML = `
-              <div class="w-32 h-44 sm:w-40 sm:h-52 rounded-xl overflow-hidden bg-black flex items-center justify-center relative shadow-inner">
+              <div class="w-28 h-38 sm:w-34 sm:h-46 rounded-xl overflow-hidden bg-black flex items-center justify-center relative shadow-inner">
                 <img src="${img.src}" style="${filterStyle}" class="w-full h-full object-cover transition-all duration-300">
-                <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-black/70 text-white font-mono text-[10px] font-bold">
+                <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/70 text-white font-mono text-[9px] sm:text-[10px] font-bold">
                   Pose ${idx + 1}
                 </span>
               </div>
               <button onclick="CameraStudio.retakeSinglePose(${idx})"
-                class="w-full py-1.5 px-3 rounded-xl bg-gray-100 hover:bg-pozia-coral hover:text-white text-gray-700 text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                class="w-full py-1.5 px-2.5 rounded-xl bg-gray-100 hover:bg-pozia-coral hover:text-white text-gray-700 text-xs font-bold transition-all flex items-center justify-center gap-1 shadow-xs">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
@@ -893,7 +893,7 @@
           const x = (e.clientX - rect.left) * scaleX;
           const y = (e.clientY - rect.top) * scaleY;
 
-          if (State.frameTheme === 'denim-stars') {
+          if (State.frameTheme === 'denim-stars' && State.layout === '1x3') {
             let slot = 0;
             if (y > canvas.height * 0.65) slot = 2;
             else if (y > canvas.height * 0.35) slot = 1;
@@ -909,12 +909,16 @@
           }
 
           if (State.layout === '2x2') {
-            const isRight = x > canvas.width / 2;
-            const isBottom = y > (canvas.height - (canvas.width * 0.22)) / 2;
+            const padding = Math.round(canvas.width * 0.055);
+            const gap = Math.round(canvas.width * 0.035);
+            const availableW = canvas.width - padding * 2;
+            const cellSize = Math.floor((availableW - gap) / 2);
+            const midX = padding + cellSize + gap / 2;
+            const midY = padding + cellSize + gap / 2;
             let slot = 0;
-            if (!isBottom && !isRight) slot = 0;
-            else if (!isBottom && isRight) slot = 1;
-            else if (isBottom && !isRight) slot = 2;
+            if (x < midX && y < midY) slot = 0;
+            else if (x >= midX && y < midY) slot = 1;
+            else if (x < midX && y >= midY) slot = 2;
             else slot = 3;
             State.activeSlotToReplace = slot;
             App.triggerGalleryUpload();
@@ -923,11 +927,11 @@
 
           // Strip 1x4, 1x3, 1x2
           const poses = State.layout === '1x2' ? 2 : (State.layout === '1x3' ? 3 : 4);
-          const topMargin = (State.frameTheme === 'the-pozia-times') ? canvas.width * 0.17 : canvas.width * 0.08;
-          const bottomMargin = canvas.width * 0.22;
+          const topMargin = (State.frameTheme === 'the-pozia-times' || State.frameTheme === 'pop-art-comic') ? Math.round(canvas.width * 0.16) : Math.round(canvas.width * 0.075);
+          const bottomMargin = Math.round(canvas.width * 0.22);
           const availableH = canvas.height - topMargin - bottomMargin;
-          const gap = canvas.width * 0.035;
-          const slotH = (availableH - gap * (poses - 1)) / poses;
+          const gap = State.layout === '1x4' ? Math.round(canvas.width * 0.026) : (State.layout === '1x3' ? Math.round(canvas.width * 0.032) : Math.round(canvas.width * 0.038));
+          const slotH = Math.round((availableH - gap * (poses - 1)) / poses);
 
           let clickedSlot = Math.floor((y - topMargin) / (slotH + gap));
           if (clickedSlot < 0) clickedSlot = 0;
@@ -937,11 +941,15 @@
         };
       },
 
-      /* Render Canvas */
+      /* Render Canvas with subtle crossfade transition */
       renderCanvas() {
         const previewCanvas = document.getElementById('editor-preview-canvas');
         if (previewCanvas) {
+          previewCanvas.classList.add('canvas-updating');
           this.renderToCanvas(previewCanvas, false);
+          requestAnimationFrame(() => {
+            setTimeout(() => previewCanvas.classList.remove('canvas-updating'), 120);
+          });
         }
       },
 
@@ -1013,14 +1021,25 @@
         }
 
         // Standard Designer Frames: Dimensions based on layout
-        let width = isHighRes ? 1400 : 440;
-        let height;
+        let width, height;
 
-        if (activeLayout === '1x4') height = width * 3.2;
-        else if (activeLayout === '1x3') height = width * 2.5;
-        else if (activeLayout === '1x2') height = width * 1.8;
-        else if (activeLayout === '2x2') { width = isHighRes ? 1500 : 480; height = width * 1.18; }
-        else { width = isHighRes ? 1300 : 420; height = width * 1.25; }
+        if (activeLayout === '1x4') {
+          width = isHighRes ? 900 : 380;
+          height = Math.round(width * 2.95);
+        } else if (activeLayout === '1x3') {
+          width = isHighRes ? 900 : 380;
+          height = Math.round(width * 2.30);
+        } else if (activeLayout === '1x2') {
+          width = isHighRes ? 900 : 380;
+          height = Math.round(width * 1.65);
+        } else if (activeLayout === '2x2') {
+          width = isHighRes ? 1400 : 560;
+          height = width; // BENTUK PERSEGI MURNI (1:1 square canvas)
+        } else {
+          // Polaroid: Satu foto portrait dengan bingkai proporsi khas Polaroid (bagian bawah lebar)
+          width = isHighRes ? 1200 : 480;
+          height = Math.round(width * 1.25);
+        }
 
         canvas.width = width;
         canvas.height = height;
@@ -1029,32 +1048,37 @@
         this.drawCuteFramePattern(ctx, width, height, isHighRes);
 
         // 2. Compute Slots Coordinates
-        const marginX = State.frameTheme === 'film-contact-sheet' ? width * 0.11 : width * 0.08;
-        const topMargin = (State.frameTheme === 'the-pozia-times' || State.frameTheme === 'pop-art-comic') ? width * 0.17 : width * 0.08;
-        const bottomMargin = width * 0.22;
-        const availableW = width - marginX * 2;
-        const availableH = height - topMargin - bottomMargin;
-
         const slotRects = [];
         const poses = activeLayout === '1x4' ? 4 : activeLayout === '1x3' ? 3 : activeLayout === '1x2' ? 2 : activeLayout === '2x2' ? 4 : 1;
+        const bottomMargin = Math.round(width * 0.22);
 
         if (activeLayout === '1x4' || activeLayout === '1x3' || activeLayout === '1x2') {
-          const gap = width * 0.035;
-          const slotH = (availableH - gap * (poses - 1)) / poses;
+          const marginX = State.frameTheme === 'film-contact-sheet' ? Math.round(width * 0.11) : Math.round(width * 0.08);
+          const topMargin = (State.frameTheme === 'the-pozia-times' || State.frameTheme === 'pop-art-comic') ? Math.round(width * 0.16) : Math.round(width * 0.075);
+          const availableW = width - marginX * 2;
+          const availableH = height - topMargin - bottomMargin;
+          const gap = activeLayout === '1x4' ? Math.round(width * 0.026) : (activeLayout === '1x3' ? Math.round(width * 0.032) : Math.round(width * 0.038));
+          const slotH = Math.round((availableH - gap * (poses - 1)) / poses);
           for (let i = 0; i < poses; i++) {
             slotRects.push({ x: marginX, y: topMargin + i * (slotH + gap), w: availableW, h: slotH });
           }
         } else if (activeLayout === '2x2') {
-          const gap = width * 0.04;
-          const cellW = (availableW - gap) / 2;
-          const cellH = (availableH - gap) / 2;
-          slotRects.push({ x: marginX, y: topMargin, w: cellW, h: cellH });
-          slotRects.push({ x: marginX + cellW + gap, y: topMargin, w: cellW, h: cellH });
-          slotRects.push({ x: marginX, y: topMargin + cellH + gap, w: cellW, h: cellH });
-          slotRects.push({ x: marginX + cellW + gap, y: topMargin + cellH + gap, w: cellW, h: cellH });
+          // Grid 2x2: Bentuk persegi 2 kolom x 2 baris, 4 foto bujur sangkar sama sisi, jarak konsisten
+          const padding = Math.round(width * 0.055);
+          const gap = Math.round(width * 0.035);
+          const availableW = width - padding * 2;
+          const cellSize = Math.floor((availableW - gap) / 2);
+          slotRects.push({ x: padding, y: padding, w: cellSize, h: cellSize });
+          slotRects.push({ x: padding + cellSize + gap, y: padding, w: cellSize, h: cellSize });
+          slotRects.push({ x: padding, y: padding + cellSize + gap, w: cellSize, h: cellSize });
+          slotRects.push({ x: padding + cellSize + gap, y: padding + cellSize + gap, w: cellSize, h: cellSize });
         } else {
-          // Polaroid single slot
-          slotRects.push({ x: marginX, y: topMargin, w: availableW, h: availableW * 1.05 });
+          // Polaroid: Satu foto portrait proporsional, bagian bawah bingkai lebih lebar khas Polaroid klasik
+          const marginX = Math.round(width * 0.08);
+          const topMargin = Math.round(width * 0.08);
+          const photoW = width - marginX * 2;
+          const photoH = Math.round(photoW * 1.08);
+          slotRects.push({ x: marginX, y: topMargin, w: photoW, h: photoH });
         }
 
         // 3. Draw Photos with Filter into Slots (Object-Fit: Cover)
@@ -1112,8 +1136,27 @@
         }
 
         // 6. PERMANENT BRANDING "Pozia Studio"
-        const brandY = height - bottomMargin * 0.42;
-        const brandSize = Math.round(width * 0.048);
+        let brandY, brandSize;
+        if (activeLayout === '2x2') {
+          const padding = Math.round(width * 0.055);
+          const gap = Math.round(width * 0.035);
+          const availableW = width - padding * 2;
+          const cellSize = Math.floor((availableW - gap) / 2);
+          const cellsBottom = padding + cellSize * 2 + gap;
+          brandY = cellsBottom + (height - cellsBottom) * 0.58;
+          brandSize = Math.round(width * 0.038);
+        } else if (activeLayout === 'polaroid') {
+          const marginX = Math.round(width * 0.08);
+          const topMargin = Math.round(width * 0.08);
+          const photoW = width - marginX * 2;
+          const photoH = Math.round(photoW * 1.08);
+          const photoBottom = topMargin + photoH;
+          brandY = photoBottom + (height - photoBottom) * 0.44;
+          brandSize = Math.round(width * 0.046);
+        } else {
+          brandY = height - bottomMargin * 0.44;
+          brandSize = Math.round(width * 0.048);
+        }
         ctx.textAlign = 'center';
 
         if (State.frameTheme === 'pixel-arcade') {
@@ -1144,6 +1187,12 @@
           ctx.fillStyle = '#1C1917';
           ctx.font = `600 ${brandSize}px "Playfair Display", serif`;
           ctx.fillText('Pozia Studio', width / 2, brandY);
+        }
+
+        if (activeLayout === 'polaroid') {
+          ctx.fillStyle = '#9CA3AF';
+          ctx.font = `bold ${Math.round(brandSize * 0.38)}px "Courier Prime", monospace`;
+          ctx.fillText('POLAROID CLASSIC', width / 2, brandY + brandSize * 0.65);
         }
       },
 
@@ -1646,8 +1695,8 @@
           const isSelected = (l === State.layout);
           if (card) {
             card.className = isSelected
-              ? 'p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-pozia-coral ring-2 ring-pozia-coral/25 bg-pink-50/20 shadow-md cursor-pointer transition-all flex flex-col items-center justify-between gap-3'
-              : 'p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-3';
+              ? 'p-3 sm:p-3.5 rounded-2xl bg-white border-2 border-pozia-coral ring-2 ring-pozia-coral/25 bg-pink-50/20 shadow-md cursor-pointer transition-all flex flex-col items-center justify-between gap-2.5'
+              : 'p-3 sm:p-3.5 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-2.5';
           }
           if (ind) {
             ind.className = isSelected
@@ -1665,18 +1714,18 @@
           'polaroid': 'Polaroid'
         };
         const ratios = {
-          '1x4': '1:3.2',
-          '1x3': '1:2.5',
-          '1x2': '1:1.8',
-          '2x2': '1:1.18',
-          'polaroid': '4:4.2'
+          '1x4': '1:2.95',
+          '1x3': '1:2.3',
+          '1x2': '1:1.65',
+          '2x2': '1:1 Square',
+          'polaroid': 'Classic Chin'
         };
         const descs = {
-          '1x4': '4 kali pengambilan foto berturut-turut vertikal. Desain bingkai bebas dipilih setelah foto selesai.',
-          '1x3': '3 kali pengambilan foto berturut-turut lapang. Desain bingkai bebas dipilih setelah foto selesai.',
+          '1x4': '4 kali pengambilan foto vertikal photostrip. Desain bingkai bebas dipilih setelah foto selesai.',
+          '1x3': '3 kali pengambilan foto vertikal lapang. Desain bingkai bebas dipilih setelah foto selesai.',
           '1x2': '2 kali pengambilan foto cepat vertikal. Desain bingkai bebas dipilih setelah foto selesai.',
-          '2x2': '4 foto dalam kolase persegi modern 2x2. Desain bingkai bebas dipilih setelah foto selesai.',
-          'polaroid': '1 foto tunggal dengan area branding klasik. Desain bingkai bebas dipilih setelah foto selesai.'
+          '2x2': '4 foto persegi 2x2 seimbang & modern. Desain bingkai bebas dipilih setelah foto selesai.',
+          'polaroid': '1 foto portrait dengan bingkai Polaroid klasik. Desain bingkai bebas dipilih setelah foto selesai.'
         };
 
         const titleEl = document.getElementById('setup-selected-title');
@@ -1685,7 +1734,7 @@
         const btnText = document.getElementById('setup-btn-text');
 
         if (titleEl) titleEl.textContent = names[State.layout] || 'Strip 4 Pose';
-        if (ratioEl) ratioEl.textContent = ratios[State.layout] || '1:3.2';
+        if (ratioEl) ratioEl.textContent = ratios[State.layout] || '1:2.95';
         if (descEl) descEl.textContent = descs[State.layout] || '';
         if (btnText) btnText.textContent = `Buka Kamera (${State.targetPoseCount} Pose)`;
 
@@ -1720,8 +1769,8 @@
           const fBtn = document.getElementById(`frame-layout-${l}`);
           if (fBtn) {
             fBtn.className = l === layout
-              ? 'px-2.5 py-1 text-xs font-bold rounded-lg bg-pink-50 text-pozia-coral border border-pozia-coral transition-all'
-              : 'px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 transition-all';
+              ? 'px-2.5 py-1 text-xs font-bold rounded-lg bg-pink-50 text-pozia-coral border border-pozia-coral transition-all shrink-0'
+              : 'px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 transition-all shrink-0';
           }
         });
       },
@@ -1736,8 +1785,15 @@
         ['home', 'setup', 'camera', 'review', 'editor', 'export'].forEach(s => {
           const sec = document.getElementById(`stage-${s}`);
           if (sec) {
-            if (s === stage) sec.classList.remove('hidden');
-            else sec.classList.add('hidden');
+            if (s === stage) {
+              sec.classList.remove('hidden');
+              sec.classList.remove('stage-transition');
+              void sec.offsetWidth; // Force reflow to restart CSS animation cleanly
+              sec.classList.add('stage-transition');
+            } else {
+              sec.classList.add('hidden');
+              sec.classList.remove('stage-transition');
+            }
           }
         });
 
