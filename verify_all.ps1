@@ -39,7 +39,11 @@ $checks = @(
     @{ Name = "CAMERA REDESIGN: No permanent side column in stage-camera"; Passed = ($html -notmatch 'id="stage-camera"[\s\S]*?w-full lg:w-\[38%\]') },
     @{ Name = "CAMERA REDESIGN: Horizontal filter dock below viewport"; Passed = ($html -match 'id="camera-filter-dock"') },
     @{ Name = "CAMERA REDESIGN: Shutter, Upload, and Review controls present"; Passed = ($html -match 'id="shutter-btn"' -and $html -match 'App\.triggerGalleryUpload\(\)' -and $html -match 'ReviewStudio\.openReview\(\)') },
-    @{ Name = "CAMERA REDESIGN: Dropdown controls (timer, flash, zoom, exposure, mirror, switch)"; Passed = ($html -match 'cam-timer-3' -and $html -match 'flash-color-white' -and $html -match 'zoom-slider' -and $html -match 'exposure-slider' -and $html -match 'cam-mirror-btn' -and $html -match 'cam-switch-btn') }
+    @{ Name = "CAMERA REDESIGN: Dropdown controls (timer, flash, zoom, exposure, mirror, switch)"; Passed = ($html -match 'cam-timer-3' -and $html -match 'flash-color-white' -and $html -match 'zoom-slider' -and $html -match 'exposure-slider' -and $html -match 'cam-mirror-btn' -and $html -match 'cam-switch-btn') },
+    @{ Name = "HERO I18N: data-i18n attributes on hero_title and hero_desc"; Passed = ($html -match 'data-i18n="hero_title"' -and $html -match 'data-i18n="hero_desc"') },
+    @{ Name = "HERO I18N: Indonesian hero_title and hero_desc registered"; Passed = ($html -match 'Abadikan Setiap Momen' -and $html -match 'Abadikan momen dengan caramu sendiri\. Buat photostrip yang indah bersama Pozia Studio\.') },
+    @{ Name = "HERO I18N: English hero_title and hero_desc registered"; Passed = ($html -match 'Make Every Moment' -and $html -match 'Capture your moments, your way\. Create beautiful photostrips with Pozia Studio\.') },
+    @{ Name = "HERO I18N: innerHTML support for styled elements in I18N.apply"; Passed = ($html -match 'texts\[key\]\.includes\(''<''\)\)\s*\{\s*el\.innerHTML\s*=\s*texts\[key\];') }
 )
 
 $allPassed = $true
