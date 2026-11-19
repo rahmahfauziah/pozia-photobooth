@@ -498,8 +498,39 @@
       zoomLevel: 1.0,
       exposureVal: 0,
       isCapturingSequence: false,
+      _dropdownListenersAttached: false,
+
+      toggleSettingsDropdown() {
+        const dd = document.getElementById('camera-settings-dropdown');
+        if (dd) dd.classList.toggle('hidden');
+      },
+
+      closeSettingsDropdown() {
+        const dd = document.getElementById('camera-settings-dropdown');
+        if (dd) dd.classList.add('hidden');
+      },
+
+      setupDropdownListeners() {
+        if (this._dropdownListenersAttached) return;
+        this._dropdownListenersAttached = true;
+        document.addEventListener('click', (e) => {
+          const dd = document.getElementById('camera-settings-dropdown');
+          const toggleBtn = document.getElementById('cam-settings-toggle-btn');
+          if (!dd || dd.classList.contains('hidden')) return;
+          if (!dd.contains(e.target) && !toggleBtn.contains(e.target)) {
+            dd.classList.add('hidden');
+          }
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            this.closeSettingsDropdown();
+          }
+        });
+      },
 
       async init() {
+        this.closeSettingsDropdown();
+        this.setupDropdownListeners();
         this.updatePoseCounter();
         this.renderFilterDock();
         await this.checkAvailableCameras();
@@ -547,6 +578,7 @@
       },
 
       stopStream() {
+        this.closeSettingsDropdown();
         if (this.stream) {
           this.stream.getTracks().forEach(t => t.stop());
           this.stream = null;
@@ -566,9 +598,9 @@
         if (topText) topText.textContent = label;
 
         if (this.isMirrored) {
-          if (topBtn) topBtn.className = 'px-3 py-1.5 rounded-full bg-pozia-coral text-white text-xs font-bold shadow-md flex items-center gap-1.5 transition-all';
+          if (topBtn) topBtn.className = 'flex-1 py-1.5 px-3 rounded-full bg-pozia-coral text-white text-xs font-bold shadow-md flex items-center justify-center gap-1.5 transition-all';
         } else {
-          if (topBtn) topBtn.className = 'px-3 py-1.5 rounded-full bg-white/20 text-gray-200 text-xs font-bold shadow-sm flex items-center gap-1.5 transition-all';
+          if (topBtn) topBtn.className = 'flex-1 py-1.5 px-3 rounded-full bg-white/10 hover:bg-white/20 text-gray-200 text-xs font-bold shadow-sm flex items-center justify-center gap-1.5 transition-all';
         }
       },
 
@@ -597,8 +629,8 @@
           const btn = document.getElementById(`cam-timer-${s}`);
           if (btn) {
             btn.className = s === sec
-              ? 'py-2 rounded-xl bg-pozia-coral text-white font-bold'
-              : 'py-2 rounded-xl bg-white/10 text-gray-300 font-bold';
+              ? 'py-1.5 rounded-full bg-pozia-coral text-white font-bold text-center text-xs shadow-sm transition-all'
+              : 'py-1.5 rounded-full bg-white/10 text-gray-300 hover:bg-white/15 font-bold text-center text-xs transition-all';
           }
           const sBtn = document.getElementById(`setup-timer-${s}`);
           if (sBtn) {
@@ -615,8 +647,8 @@
           const btn = document.getElementById(`flash-color-${c}`);
           if (btn) {
             btn.className = c === col
-              ? 'py-2 rounded-xl bg-pozia-coral text-white font-bold shadow-sm'
-              : 'py-2 rounded-xl bg-white/10 text-gray-300 font-bold';
+              ? 'py-1.5 rounded-full bg-pozia-coral text-white font-bold text-center text-xs shadow-sm transition-all'
+              : 'py-1.5 rounded-full bg-white/10 text-gray-300 hover:bg-white/15 font-bold text-center text-xs transition-all';
           }
           const sBtn = document.getElementById(`setup-flash-${c}`);
           if (sBtn) {
@@ -668,9 +700,9 @@
         FilterPresets.forEach(preset => {
           const btn = document.createElement('button');
           const isSelected = State.currentFilter.id === preset.id;
-          btn.className = `px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${isSelected
-            ? 'bg-pozia-coral text-white shadow-lg ring-2 ring-white/30 scale-105'
-            : 'bg-white/15 text-gray-200 hover:bg-white/25'
+          btn.className = `px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${isSelected
+            ? 'bg-pozia-coral text-white font-bold shadow-md'
+            : 'bg-[#232228] text-gray-300 hover:bg-white/15'
             }`;
           btn.textContent = preset.name;
           btn.onclick = () => {
