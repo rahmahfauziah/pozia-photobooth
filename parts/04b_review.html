@@ -1,4 +1,4 @@
-    <!-- ====================================================== -->
+﻿    <!-- ====================================================== -->
     <!-- STAGE 4 (REVIEW): PRATINJAU HASIL FOTO & RETAKE        -->
     <!-- ====================================================== -->
     <section id="stage-review"
@@ -11,14 +11,14 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          <span>Kembali ke Kamera</span>
+          <span data-i18n="review_back">Kembali ke Kamera</span>
         </button>
 
         <div class="text-center">
-          <h2 class="text-base sm:text-lg font-bold font-serif text-pozia-charcoal">
+          <h2 class="text-base sm:text-lg font-bold font-serif text-pozia-charcoal" data-i18n="review_title">
             Pratinjau Hasil Pemotretan
           </h2>
-          <p class="text-[11px] text-gray-500 hidden sm:block">
+          <p class="text-[11px] text-gray-500 hidden sm:block" data-i18n="review_subtitle">
             Periksa foto Anda, terapkan filter analog, atau ambil ulang pose tertentu.
           </p>
         </div>
@@ -39,7 +39,7 @@
       <!-- C. DEDICATED FILTER SECTION (HORIZONTAL SCROLLING DOCK) -->
       <div class="max-w-5xl mx-auto w-full py-2.5 bg-white/80 backdrop-blur-md rounded-2xl border border-gray-200/80 p-2.5 sm:p-3 shadow-sm flex flex-col gap-2">
         <div class="flex items-center justify-between text-xs px-1">
-          <span class="font-bold text-gray-600">Pilih Filter Analog:</span>
+          <span class="font-bold text-gray-600" data-i18n="review_filter_label">Pilih Filter Analog:</span>
           <span id="review-active-filter-name" class="font-bold text-pozia-coral">Original</span>
         </div>
 
@@ -51,13 +51,14 @@
       <!-- D. BOTTOM BUTTONS ROW: RETAKE ALL & PROCEED TO EDITOR -->
       <div class="max-w-5xl mx-auto w-full pt-3 flex flex-col sm:flex-row items-center justify-between gap-3">
         <button onclick="CameraStudio.confirmRetakeAll()"
-          class="w-full sm:w-auto px-5 py-3 rounded-xl bg-white border border-gray-200 text-gray-600 hover:text-red-600 hover:border-red-200 text-xs font-bold transition-all shadow-sm">
+          class="w-full sm:w-auto px-5 py-3 rounded-xl bg-white border border-gray-200 text-gray-600 hover:text-red-600 hover:border-red-200 text-xs font-bold transition-all shadow-sm"
+          data-i18n="review_retake_all">
           Foto Ulang Semua
         </button>
 
         <button onclick="App.navigate('editor')"
           class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-pozia-coral text-white font-bold text-sm shadow-xl shadow-pozia-coral/30 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center justify-center gap-2">
-          <span>Lanjut Pilih Desain Frame</span> &rarr;
+          <span data-i18n="review_proceed">Lanjut Pilih Desain Frame</span> &rarr;
         </button>
       </div>
     </section>
