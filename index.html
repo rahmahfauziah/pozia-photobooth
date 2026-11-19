@@ -677,200 +677,463 @@
     </section>
 
     <!-- ====================================================== -->
-    <!-- STAGE 2 (SETUP): PENGATURAN SESI PHOTOBOOTH            -->
+    <!-- STAGE 2 (SETUP): PEMILIHAN LAYOUT & JUMLAH FOTO        -->
     <!-- ====================================================== -->
-    <section id="stage-setup" class="hidden flex-1 w-full overflow-y-auto no-scrollbar studio-editorial-bg">
-      <div class="max-w-5xl mx-auto px-4 sm:px-6 md:px-12 py-8 md:py-12 flex flex-col gap-8">
+    <section id="stage-setup" class="hidden flex-1 w-full overflow-y-auto no-scrollbar studio-editorial-bg flex flex-col justify-between p-4 sm:p-6 md:p-10">
+      
+      <div class="max-w-6xl mx-auto w-full flex flex-col gap-6 select-none">
         
-        <!-- Setup Header with Back Button -->
-        <div class="flex items-center justify-between pb-4 border-b border-gray-200/80">
+        <!-- Setup Header: Back Button & Step Badge -->
+        <div class="flex items-center justify-between pb-3 border-b border-stone-200/70">
           <button onclick="App.navigate('home')"
-            class="px-3.5 py-1.5 rounded-full bg-white border border-gray-200 text-pozia-charcoal text-xs font-bold hover:bg-gray-50 transition-all flex items-center gap-1.5 shadow-sm">
+            class="px-3.5 py-1.5 rounded-full bg-white border border-stone-200 text-pozia-charcoal text-xs font-bold hover:bg-stone-50 transition-all flex items-center gap-1.5 shadow-xs">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             <span>Kembali ke Beranda</span>
           </button>
 
-          <span class="text-xs font-mono font-bold text-gray-400 uppercase tracking-widest">LANGKAH 1 DARI 3</span>
+          <span class="text-[11px] font-mono font-bold text-stone-400 uppercase tracking-widest">
+            TAHAP 1: PILIH JUMLAH FOTO
+          </span>
         </div>
 
-        <div>
-          <span class="text-xs font-bold text-pozia-coral uppercase tracking-wider">Session Setup</span>
+        <!-- Section Title & Description -->
+        <div class="text-center sm:text-left">
+          <span class="text-xs font-bold text-pozia-coral uppercase tracking-wider">Photobooth Layout</span>
           <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-pozia-charcoal font-serif mt-1">
-            Pengaturan Sesi Photobooth
+            Pilih Layout & Jumlah Foto
           </h2>
-          <p class="text-xs sm:text-sm text-gray-500 mt-1 max-w-lg">
-            Pilih format layout dan tema bingkai yang ingin digunakan sebelum masuk ke studio kamera.
+          <p class="text-xs sm:text-sm text-stone-500 mt-1 max-w-xl">
+            Tentukan berapa banyak pose yang ingin Anda ambil dalam satu sesi. Desain bingkai visual bebas dipilih dari seluruh koleksi setelah sesi foto selesai.
           </p>
         </div>
 
-        <!-- Setup Main Grid: Options on Left, Real-Time Preview on Right -->
-        <div class="flex flex-col md:flex-row items-start gap-8 md:gap-12">
+        <!-- Layout Cards Gallery (All 5 Project Layouts) -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 md:gap-5 py-2">
           
-          <!-- Left Column: Step-by-Step Options -->
-          <div class="w-full md:w-[58%] flex flex-col gap-6">
+          <!-- ========================================== -->
+          <!-- 1. STRIP 4 POSE (1x4)                       -->
+          <!-- ========================================== -->
+          <div onclick="App.setSetupLayout('1x4')" id="setup-card-1x4"
+            class="p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-pozia-coral ring-2 ring-pozia-coral/25 bg-pink-50/20 shadow-md cursor-pointer transition-all flex flex-col items-center justify-between gap-3">
             
-            <!-- Step 1: Format Layout & Pose Count -->
-            <div class="flex flex-col gap-3">
-              <div class="flex items-center justify-between">
-                <label class="text-xs font-bold text-pozia-charcoal uppercase tracking-wider flex items-center gap-1.5">
-                  <span class="w-5 h-5 rounded-full bg-pozia-coral text-white text-[11px] font-bold flex items-center justify-center">1</span>
-                  <span>Pilih Format Layout & Jumlah Pose:</span>
-                </label>
-                <span id="setup-active-badge" class="px-2.5 py-0.5 rounded-full bg-pozia-coral-light text-pozia-coral font-bold text-[11px]">
-                  Strip 4 Pose
-                </span>
+            <!-- Visual Strip Preview Container (100% STATIC) -->
+            <div class="w-28 sm:w-32 h-64 sm:h-72 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-2 flex flex-col justify-between shadow-inner">
+              <!-- 4 Static Photo Slots with Animated Crossfade Photos Inside -->
+              <div class="w-full h-[21%] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
+                <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g0_1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE4E8"/><stop offset="100%" stop-color="#FFCCD5"/></linearGradient></defs><rect width="200" height="150" fill="url(#g0_1)"/><path d="M70 150 C70 115 85 105 100 105 C115 105 130 115 130 150 Z" fill="#E24564" opacity="0.85"/><circle cx="100" cy="72" r="28" fill="#FAD4C0"/><path d="M72 65 C72 45 82 38 100 38 C118 38 128 45 128 65 C128 72 124 78 120 78 C116 55 110 52 100 52 C90 52 84 55 80 78 C76 78 72 72 72 65 Z" fill="#4A3B32"/><circle cx="92" cy="72" r="2.5" fill="#2C2523"/><circle cx="108" cy="72" r="2.5" fill="#2C2523"/><ellipse cx="88" cy="78" rx="4" ry="2" fill="#FF758F" opacity="0.5"/><ellipse cx="112" cy="78" rx="4" ry="2" fill="#FF758F" opacity="0.5"/><path d="M96 82 Q100 86 104 82" stroke="#B04052" stroke-width="2" fill="none" stroke-linecap="round"/><text x="165" y="30" font-size="12" fill="#FF5A79">✦</text></svg>
+                </div>
+                <div class="slot-slide slot-slide-1 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g1_1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs><rect width="200" height="150" fill="url(#g1_1)"/><path d="M68 150 C68 115 82 105 100 105 C118 105 132 115 132 150 Z" fill="#7C3AED" opacity="0.85"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><path d="M70 65 C70 42 80 36 100 36 C120 36 130 42 130 65 C130 74 126 80 122 80 C118 56 112 50 100 50 C88 50 82 56 78 80 C74 80 70 74 70 65 Z" fill="#2E2420"/><path d="M90 73 Q92 70 95 73" stroke="#2C2523" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="108" cy="72" r="2.5" fill="#2C2523"/><text x="132" y="102" font-size="18">✌️</text></svg>
+                </div>
+                <div class="slot-slide slot-slide-2 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g2_1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="150" fill="url(#g2_1)"/><path d="M68 150 C68 116 82 106 100 106 C118 106 132 116 132 150 Z" fill="#D97706" opacity="0.85"/><circle cx="100" cy="72" r="28" fill="#F6C8B0"/><rect x="85" y="66" width="13" height="9" rx="2" fill="#18181B"/><rect x="102" y="66" width="13" height="9" rx="2" fill="#18181B"/><path d="M98 70 L102 70" stroke="#18181B" stroke-width="2"/></svg>
+                </div>
+                <div class="slot-slide slot-slide-3 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g3_1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs><rect width="200" height="150" fill="url(#g3_1)"/><path d="M68 150 C68 116 82 106 100 106 C118 106 132 116 132 150 Z" fill="#0D9488" opacity="0.85"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><circle cx="92" cy="72" r="2.5" fill="#2C2523"/><circle cx="108" cy="72" r="2.5" fill="#2C2523"/><text x="88" y="110" font-size="18">🫶</text></svg>
+                </div>
               </div>
 
-              <div class="grid grid-cols-2 gap-3">
-                <!-- 1x4 Strip -->
-                <div onclick="App.setSetupLayout('1x4')" id="setup-card-1x4"
-                  class="p-4 rounded-2xl bg-white border-2 border-pozia-coral shadow-sm cursor-pointer hover:shadow-md transition-all flex flex-col gap-1.5 ring-2 ring-pozia-coral/20">
-                  <div class="flex items-center justify-between">
-                    <span class="font-extrabold text-sm text-pozia-charcoal">Strip 4 Pose</span>
-                    <span class="w-2 h-2 rounded-full bg-pozia-coral"></span>
-                  </div>
-                  <span class="text-[11px] text-gray-400">4 kali cekrek berturut-turut vertikal</span>
-                  <span class="text-[10px] font-mono text-pozia-coral font-bold mt-1">Format 1:3.2</span>
+              <!-- Slot 2 -->
+              <div class="w-full h-[21%] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
+                <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g1_1b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs><rect width="200" height="150" fill="url(#g1_1b)"/><path d="M68 150 C68 115 82 105 100 105 C118 105 132 115 132 150 Z" fill="#7C3AED" opacity="0.85"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="132" y="102" font-size="18">✌️</text></svg>
                 </div>
+                <div class="slot-slide slot-slide-1 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g2_1b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="150" fill="url(#g2_1b)"/><path d="M68 150 C68 116 82 106 100 106 C118 106 132 116 132 150 Z" fill="#D97706" opacity="0.85"/><circle cx="100" cy="72" r="28" fill="#F6C8B0"/><rect x="85" y="66" width="13" height="9" rx="2" fill="#18181B"/><rect x="102" y="66" width="13" height="9" rx="2" fill="#18181B"/></svg>
+                </div>
+                <div class="slot-slide slot-slide-2 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g3_1b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs><rect width="200" height="150" fill="url(#g3_1b)"/><path d="M68 150 C68 116 82 106 100 106 C118 106 132 116 132 150 Z" fill="#0D9488" opacity="0.85"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="88" y="110" font-size="18">🫶</text></svg>
+                </div>
+                <div class="slot-slide slot-slide-3 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g0_1b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE4E8"/><stop offset="100%" stop-color="#FFCCD5"/></linearGradient></defs><rect width="200" height="150" fill="url(#g0_1b)"/><circle cx="100" cy="72" r="28" fill="#FAD4C0"/><text x="165" y="30" font-size="12" fill="#FF5A79">✦</text></svg>
+                </div>
+              </div>
 
-                <!-- 1x3 Strip -->
-                <div onclick="App.setSetupLayout('1x3')" id="setup-card-1x3"
-                  class="p-4 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col gap-1.5">
-                  <div class="flex items-center justify-between">
-                    <span class="font-extrabold text-sm text-pozia-charcoal">Strip 3 Pose</span>
-                    <span class="w-2 h-2 rounded-full bg-gray-200"></span>
-                  </div>
-                  <span class="text-[11px] text-gray-400">3 kali cekrek pose lapang</span>
-                  <span class="text-[10px] font-mono text-gray-400 font-bold mt-1">Format 1:2.5</span>
+              <!-- Slot 3 -->
+              <div class="w-full h-[21%] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
+                <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g2_1c" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="150" fill="url(#g2_1c)"/><circle cx="100" cy="72" r="28" fill="#F6C8B0"/><rect x="85" y="66" width="13" height="9" rx="2" fill="#18181B"/><rect x="102" y="66" width="13" height="9" rx="2" fill="#18181B"/></svg>
                 </div>
+                <div class="slot-slide slot-slide-1 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g3_1c" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs><rect width="200" height="150" fill="url(#g3_1c)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="88" y="110" font-size="18">🫶</text></svg>
+                </div>
+                <div class="slot-slide slot-slide-2 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g0_1c" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE4E8"/><stop offset="100%" stop-color="#FFCCD5"/></linearGradient></defs><rect width="200" height="150" fill="url(#g0_1c)"/><circle cx="100" cy="72" r="28" fill="#FAD4C0"/></svg>
+                </div>
+                <div class="slot-slide slot-slide-3 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g1_1c" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs><rect width="200" height="150" fill="url(#g1_1c)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="132" y="102" font-size="18">✌️</text></svg>
+                </div>
+              </div>
 
-                <!-- 2x2 Grid -->
-                <div onclick="App.setSetupLayout('2x2')" id="setup-card-2x2"
-                  class="p-4 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col gap-1.5">
-                  <div class="flex items-center justify-between">
-                    <span class="font-extrabold text-sm text-pozia-charcoal">Grid 2x2</span>
-                    <span class="w-2 h-2 rounded-full bg-gray-200"></span>
-                  </div>
-                  <span class="text-[11px] text-gray-400">4 foto dalam kolase persegi modern</span>
-                  <span class="text-[10px] font-mono text-gray-400 font-bold mt-1">Format 1:1.18</span>
+              <!-- Slot 4 -->
+              <div class="w-full h-[21%] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
+                <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g3_1d" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs><rect width="200" height="150" fill="url(#g3_1d)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="88" y="110" font-size="18">🫶</text></svg>
                 </div>
+                <div class="slot-slide slot-slide-1 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g0_1d" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE4E8"/><stop offset="100%" stop-color="#FFCCD5"/></linearGradient></defs><rect width="200" height="150" fill="url(#g0_1d)"/><circle cx="100" cy="72" r="28" fill="#FAD4C0"/></svg>
+                </div>
+                <div class="slot-slide slot-slide-2 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g1_1d" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs><rect width="200" height="150" fill="url(#g1_1d)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="132" y="102" font-size="18">✌️</text></svg>
+                </div>
+                <div class="slot-slide slot-slide-3 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g2_1d" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="150" fill="url(#g2_1d)"/><circle cx="100" cy="72" r="28" fill="#F6C8B0"/><rect x="85" y="66" width="13" height="9" rx="2" fill="#18181B"/><rect x="102" y="66" width="13" height="9" rx="2" fill="#18181B"/></svg>
+                </div>
+              </div>
 
-                <!-- Polaroid -->
-                <div onclick="App.setSetupLayout('polaroid')" id="setup-card-polaroid"
-                  class="p-4 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col gap-1.5">
-                  <div class="flex items-center justify-between">
-                    <span class="font-extrabold text-sm text-pozia-charcoal">Polaroid</span>
-                    <span class="w-2 h-2 rounded-full bg-gray-200"></span>
-                  </div>
-                  <span class="text-[11px] text-gray-400">1 pose klasik dengan ruang branding</span>
-                  <span class="text-[10px] font-mono text-gray-400 font-bold mt-1">Format 4:4.2</span>
-                </div>
+              <!-- Static Bottom Branding -->
+              <div class="text-center font-serif text-[10px] text-stone-600 font-bold pt-1">
+                Pozia Studio
               </div>
             </div>
 
-            <!-- Step 2: Pilih Tema Bingkai Awal -->
-            <div class="flex flex-col gap-3 pt-2">
-              <label class="text-xs font-bold text-pozia-charcoal uppercase tracking-wider flex items-center gap-1.5">
-                <span class="w-5 h-5 rounded-full bg-pozia-lilac text-white text-[11px] font-bold flex items-center justify-center">2</span>
-                <span>Pilih Tema Bingkai Awal:</span>
-              </label>
-
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-h-52 overflow-y-auto no-scrollbar p-1">
-                <!-- Theme Pills with real thumbnail styling -->
-                <button onclick="App.setSetupTheme('pixel-arcade')" id="setup-theme-pixel-arcade"
-                  class="p-2 rounded-xl border border-pozia-coral bg-pink-50/50 text-left text-xs flex flex-col gap-1 ring-1 ring-pozia-coral shadow-sm">
-                  <span class="h-8 rounded-lg flex items-center justify-center text-cyan-300 font-mono font-bold text-[10px]" style="background: #100C2A;">8-Bit</span>
-                  <span class="font-bold text-pozia-charcoal text-[11px] truncate">8-Bit Arcade</span>
-                </button>
-
-                <button onclick="App.setSetupTheme('denim-stars')" id="setup-theme-denim-stars"
-                  class="p-2 rounded-xl border border-gray-200 bg-white hover:border-gray-300 text-left text-xs flex flex-col gap-1">
-                  <span class="h-8 rounded-lg flex items-center justify-center text-amber-200 font-serif font-bold text-[10px]" style="background: #1E2436;">Denim</span>
-                  <span class="font-bold text-pozia-charcoal text-[11px] truncate">Denim Stars</span>
-                </button>
-
-                <button onclick="App.setSetupTheme('cyber-liquid-chrome')" id="setup-theme-cyber-liquid-chrome"
-                  class="p-2 rounded-xl border border-gray-200 bg-white hover:border-gray-300 text-left text-xs flex flex-col gap-1">
-                  <span class="h-8 rounded-lg flex items-center justify-center text-slate-800 font-mono font-bold text-[10px]" style="background: linear-gradient(135deg, #E2E8F0, #94A3B8);">Chrome</span>
-                  <span class="font-bold text-pozia-charcoal text-[11px] truncate">Liquid Chrome</span>
-                </button>
-
-                <button onclick="App.setSetupTheme('pop-art-comic')" id="setup-theme-pop-art-comic"
-                  class="p-2 rounded-xl border border-gray-200 bg-white hover:border-gray-300 text-left text-xs flex flex-col gap-1">
-                  <span class="h-8 rounded-lg flex items-center justify-center text-red-600 font-sans font-bold text-[10px]" style="background: #FFF9D2;">POW!</span>
-                  <span class="font-bold text-pozia-charcoal text-[11px] truncate">Pop Art Comic</span>
-                </button>
-
-                <button onclick="App.setSetupTheme('mixtape-cassette')" id="setup-theme-mixtape-cassette"
-                  class="p-2 rounded-xl border border-gray-200 bg-white hover:border-gray-300 text-left text-xs flex flex-col gap-1">
-                  <span class="h-8 rounded-lg flex items-center justify-center text-pink-400 font-mono font-bold text-[10px]" style="background: #1E2430;">Tape</span>
-                  <span class="font-bold text-pozia-charcoal text-[11px] truncate">90s Mixtape</span>
-                </button>
-
-                <button onclick="App.setSetupTheme('amalfi-lemon')" id="setup-theme-amalfi-lemon"
-                  class="p-2 rounded-xl border border-gray-200 bg-white hover:border-gray-300 text-left text-xs flex flex-col gap-1">
-                  <span class="h-8 rounded-lg flex items-center justify-center text-yellow-800 font-serif font-bold text-[10px]" style="background: #FFFDEB;">Lemon</span>
-                  <span class="font-bold text-pozia-charcoal text-[11px] truncate">Amalfi Lemon</span>
-                </button>
-
-                <button onclick="App.setSetupTheme('the-pozia-times')" id="setup-theme-the-pozia-times"
-                  class="p-2 rounded-xl border border-gray-200 bg-white hover:border-gray-300 text-left text-xs flex flex-col gap-1">
-                  <span class="h-8 rounded-lg flex items-center justify-center text-stone-900 font-serif font-bold text-[10px]" style="background: #F4ECD8;">Times</span>
-                  <span class="font-bold text-pozia-charcoal text-[11px] truncate">The Pozia Times</span>
-                </button>
-
-                <button onclick="App.setSetupTheme('celestial-tarot')" id="setup-theme-celestial-tarot"
-                  class="p-2 rounded-xl border border-gray-200 bg-white hover:border-gray-300 text-left text-xs flex flex-col gap-1">
-                  <span class="h-8 rounded-lg flex items-center justify-center text-amber-300 font-serif font-bold text-[10px]" style="background: #0B1120;">Tarot</span>
-                  <span class="font-bold text-pozia-charcoal text-[11px] truncate">Celestial Tarot</span>
-                </button>
-              </div>
-              <p class="text-[10px] text-gray-400 italic">Anda juga dapat mengganti tema bingkai kapan saja di editor.</p>
-            </div>
-
-            <!-- Primary Action Buttons -->
-            <div class="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <button onclick="App.startCameraFromSetup()" id="setup-start-cam-btn"
-                class="flex-1 py-4 px-6 rounded-2xl bg-pozia-coral text-white font-bold text-sm shadow-xl shadow-pozia-coral/30 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span id="setup-btn-text">Buka Kamera (4 Pose)</span> &rarr;
-              </button>
-
-              <button onclick="App.triggerGalleryUpload()"
-                class="py-4 px-5 rounded-2xl bg-white border border-gray-200 text-pozia-charcoal font-semibold text-xs hover:bg-gray-50 active:scale-95 transition-all shadow-sm flex items-center justify-center gap-2">
-                <svg class="w-4 h-4 text-pozia-lilac" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                </svg>
-                <span>Pilih Foto Galeri</span>
-              </button>
+            <!-- Card Labels & Active Indicator -->
+            <div class="w-full text-center flex flex-col items-center gap-1">
+              <span class="font-extrabold text-xs sm:text-sm text-pozia-charcoal">Strip 4 Pose</span>
+              <span class="text-[10px] text-stone-400">4x Cekrek Vertikal</span>
+              <span id="setup-indicator-1x4"
+                class="setup-indicator-badge mt-1 px-2.5 py-0.5 rounded-full bg-pozia-coral text-white text-[10px] font-bold shadow-xs">
+                ✔ Terpilih
+              </span>
             </div>
           </div>
 
-          <!-- Right Column: Real-Time Visual Representation -->
-          <div class="w-full md:w-[42%] flex flex-col items-center justify-center p-6 rounded-3xl bg-white border border-gray-200/80 shadow-md">
-            <div class="w-full flex items-center justify-between pb-3 border-b border-gray-100 text-xs">
-              <span class="font-bold text-gray-500 uppercase tracking-wider text-[11px]">Pratinjau Format</span>
-              <span id="setup-ratio-label" class="px-2 py-0.5 rounded-full bg-gray-100 font-mono text-[10px] text-gray-500 font-bold">1:3.2</span>
+          <!-- ========================================== -->
+          <!-- 2. STRIP 3 POSE (1x3)                       -->
+          <!-- ========================================== -->
+          <div onclick="App.setSetupLayout('1x3')" id="setup-card-1x3"
+            class="p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-3">
+            
+            <!-- Visual Strip Preview Container (100% STATIC) -->
+            <div class="w-28 sm:w-32 h-64 sm:h-72 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-2.5 flex flex-col justify-between shadow-inner">
+              <!-- 3 Static Photo Slots -->
+              <div class="w-full h-[28%] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
+                <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g0_2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE4E8"/><stop offset="100%" stop-color="#FFCCD5"/></linearGradient></defs><rect width="200" height="150" fill="url(#g0_2)"/><circle cx="100" cy="72" r="28" fill="#FAD4C0"/><path d="M70 150 C70 115 85 105 100 105 C115 105 130 115 130 150 Z" fill="#E24564" opacity="0.85"/><text x="165" y="30" font-size="12" fill="#FF5A79">✦</text></svg>
+                </div>
+                <div class="slot-slide slot-slide-1 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g1_2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs><rect width="200" height="150" fill="url(#g1_2)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="132" y="102" font-size="18">✌️</text></svg>
+                </div>
+                <div class="slot-slide slot-slide-2 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g2_2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="150" fill="url(#g2_2)"/><circle cx="100" cy="72" r="28" fill="#F6C8B0"/><rect x="85" y="66" width="13" height="9" rx="2" fill="#18181B"/><rect x="102" y="66" width="13" height="9" rx="2" fill="#18181B"/></svg>
+                </div>
+                <div class="slot-slide slot-slide-3 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g3_2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs><rect width="200" height="150" fill="url(#g3_2)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="88" y="110" font-size="18">🫶</text></svg>
+                </div>
+              </div>
+
+              <!-- Slot 2 -->
+              <div class="w-full h-[28%] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
+                <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g1_2b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs><rect width="200" height="150" fill="url(#g1_2b)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="132" y="102" font-size="18">✌️</text></svg>
+                </div>
+                <div class="slot-slide slot-slide-1 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g2_2b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="150" fill="url(#g2_2b)"/><circle cx="100" cy="72" r="28" fill="#F6C8B0"/><rect x="85" y="66" width="13" height="9" rx="2" fill="#18181B"/><rect x="102" y="66" width="13" height="9" rx="2" fill="#18181B"/></svg>
+                </div>
+                <div class="slot-slide slot-slide-2 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g3_2b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs><rect width="200" height="150" fill="url(#g3_2b)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="88" y="110" font-size="18">🫶</text></svg>
+                </div>
+                <div class="slot-slide slot-slide-3 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g0_2b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE4E8"/><stop offset="100%" stop-color="#FFCCD5"/></linearGradient></defs><rect width="200" height="150" fill="url(#g0_2b)"/><circle cx="100" cy="72" r="28" fill="#FAD4C0"/></svg>
+                </div>
+              </div>
+
+              <!-- Slot 3 -->
+              <div class="w-full h-[28%] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
+                <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g2_2c" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="150" fill="url(#g2_2c)"/><circle cx="100" cy="72" r="28" fill="#F6C8B0"/><rect x="85" y="66" width="13" height="9" rx="2" fill="#18181B"/><rect x="102" y="66" width="13" height="9" rx="2" fill="#18181B"/></svg>
+                </div>
+                <div class="slot-slide slot-slide-1 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g3_2c" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs><rect width="200" height="150" fill="url(#g3_2c)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="88" y="110" font-size="18">🫶</text></svg>
+                </div>
+                <div class="slot-slide slot-slide-2 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g0_2c" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE4E8"/><stop offset="100%" stop-color="#FFCCD5"/></linearGradient></defs><rect width="200" height="150" fill="url(#g0_2c)"/><circle cx="100" cy="72" r="28" fill="#FAD4C0"/></svg>
+                </div>
+                <div class="slot-slide slot-slide-3 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g1_2c" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs><rect width="200" height="150" fill="url(#g1_2c)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="132" y="102" font-size="18">✌️</text></svg>
+                </div>
+              </div>
+
+              <!-- Static Bottom Branding -->
+              <div class="text-center font-serif text-[10px] text-stone-600 font-bold pt-1">
+                Pozia Studio
+              </div>
             </div>
 
-            <div id="setup-preview-wrapper" class="w-full min-h-[380px] flex items-center justify-center py-4">
-              <!-- Dynamically populated by App.updateSetupPreview() -->
+            <!-- Card Labels & Active Indicator -->
+            <div class="w-full text-center flex flex-col items-center gap-1">
+              <span class="font-extrabold text-xs sm:text-sm text-pozia-charcoal">Strip 3 Pose</span>
+              <span class="text-[10px] text-stone-400">3x Cekrek Lapang</span>
+              <span id="setup-indicator-1x3"
+                class="setup-indicator-badge mt-1 px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-500 text-[10px] font-semibold">
+                Pilih
+              </span>
+            </div>
+          </div>
+
+          <!-- ========================================== -->
+          <!-- 3. STRIP 2 POSE (1x2)                       -->
+          <!-- ========================================== -->
+          <div onclick="App.setSetupLayout('1x2')" id="setup-card-1x2"
+            class="p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-3">
+            
+            <!-- Visual Strip Preview Container (100% STATIC) -->
+            <div class="w-28 sm:w-32 h-64 sm:h-72 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-3 flex flex-col justify-between shadow-inner">
+              <!-- 2 Static Photo Slots -->
+              <div class="w-full h-[43%] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
+                <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g0_3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE4E8"/><stop offset="100%" stop-color="#FFCCD5"/></linearGradient></defs><rect width="200" height="150" fill="url(#g0_3)"/><circle cx="100" cy="72" r="28" fill="#FAD4C0"/><path d="M70 150 C70 115 85 105 100 105 C115 105 130 115 130 150 Z" fill="#E24564" opacity="0.85"/><text x="165" y="30" font-size="12" fill="#FF5A79">✦</text></svg>
+                </div>
+                <div class="slot-slide slot-slide-1 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g1_3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs><rect width="200" height="150" fill="url(#g1_3)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="132" y="102" font-size="18">✌️</text></svg>
+                </div>
+                <div class="slot-slide slot-slide-2 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g2_3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="150" fill="url(#g2_3)"/><circle cx="100" cy="72" r="28" fill="#F6C8B0"/><rect x="85" y="66" width="13" height="9" rx="2" fill="#18181B"/><rect x="102" y="66" width="13" height="9" rx="2" fill="#18181B"/></svg>
+                </div>
+                <div class="slot-slide slot-slide-3 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g3_3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs><rect width="200" height="150" fill="url(#g3_3)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="88" y="110" font-size="18">🫶</text></svg>
+                </div>
+              </div>
+
+              <!-- Slot 2 -->
+              <div class="w-full h-[43%] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
+                <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g1_3b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs><rect width="200" height="150" fill="url(#g1_3b)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="132" y="102" font-size="18">✌️</text></svg>
+                </div>
+                <div class="slot-slide slot-slide-1 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g2_3b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="150" fill="url(#g2_3b)"/><circle cx="100" cy="72" r="28" fill="#F6C8B0"/><rect x="85" y="66" width="13" height="9" rx="2" fill="#18181B"/><rect x="102" y="66" width="13" height="9" rx="2" fill="#18181B"/></svg>
+                </div>
+                <div class="slot-slide slot-slide-2 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g3_3b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs><rect width="200" height="150" fill="url(#g3_3b)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="88" y="110" font-size="18">🫶</text></svg>
+                </div>
+                <div class="slot-slide slot-slide-3 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g0_3b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE4E8"/><stop offset="100%" stop-color="#FFCCD5"/></linearGradient></defs><rect width="200" height="150" fill="url(#g0_3b)"/><circle cx="100" cy="72" r="28" fill="#FAD4C0"/></svg>
+                </div>
+              </div>
+
+              <!-- Static Bottom Branding -->
+              <div class="text-center font-serif text-[10px] text-stone-600 font-bold pt-1">
+                Pozia Studio
+              </div>
             </div>
 
-            <p class="text-[11px] text-gray-400 text-center pt-2 border-t border-gray-100 w-full">
-              Jumlah pose dan posisi frame otomatis disesuaikan dengan format yang Anda pilih.
-            </p>
+            <!-- Card Labels & Active Indicator -->
+            <div class="w-full text-center flex flex-col items-center gap-1">
+              <span class="font-extrabold text-xs sm:text-sm text-pozia-charcoal">Strip 2 Pose</span>
+              <span class="text-[10px] text-stone-400">2x Cekrek Cepat</span>
+              <span id="setup-indicator-1x2"
+                class="setup-indicator-badge mt-1 px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-500 text-[10px] font-semibold">
+                Pilih
+              </span>
+            </div>
+          </div>
+
+          <!-- ========================================== -->
+          <!-- 4. GRID 2x2 (2x2)                          -->
+          <!-- ========================================== -->
+          <div onclick="App.setSetupLayout('2x2')" id="setup-card-2x2"
+            class="p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-3">
+            
+            <!-- Visual Grid Preview Container (100% STATIC) -->
+            <div class="w-28 sm:w-32 h-64 sm:h-72 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-2.5 flex flex-col justify-between shadow-inner">
+              <!-- 2x2 Grid with 4 Photo Slots -->
+              <div class="grid grid-cols-2 gap-1.5 flex-1 my-auto">
+                <!-- Slot 1 -->
+                <div class="aspect-square rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
+                  <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g0_4a" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE4E8"/><stop offset="100%" stop-color="#FFCCD5"/></linearGradient></defs><rect width="200" height="150" fill="url(#g0_4a)"/><circle cx="100" cy="72" r="28" fill="#FAD4C0"/></svg>
+                  </div>
+                  <div class="slot-slide slot-slide-1 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g1_4a" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs><rect width="200" height="150" fill="url(#g1_4a)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="132" y="102" font-size="18">✌️</text></svg>
+                  </div>
+                  <div class="slot-slide slot-slide-2 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g2_4a" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="150" fill="url(#g2_4a)"/><circle cx="100" cy="72" r="28" fill="#F6C8B0"/></svg>
+                  </div>
+                  <div class="slot-slide slot-slide-3 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g3_4a" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs><rect width="200" height="150" fill="url(#g3_4a)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="88" y="110" font-size="18">🫶</text></svg>
+                  </div>
+                </div>
+
+                <!-- Slot 2 -->
+                <div class="aspect-square rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
+                  <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g1_4b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs><rect width="200" height="150" fill="url(#g1_4b)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="132" y="102" font-size="18">✌️</text></svg>
+                  </div>
+                  <div class="slot-slide slot-slide-1 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g2_4b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="150" fill="url(#g2_4b)"/><circle cx="100" cy="72" r="28" fill="#F6C8B0"/></svg>
+                  </div>
+                  <div class="slot-slide slot-slide-2 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g3_4b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs><rect width="200" height="150" fill="url(#g3_4b)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="88" y="110" font-size="18">🫶</text></svg>
+                  </div>
+                  <div class="slot-slide slot-slide-3 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g0_4b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE4E8"/><stop offset="100%" stop-color="#FFCCD5"/></linearGradient></defs><rect width="200" height="150" fill="url(#g0_4b)"/><circle cx="100" cy="72" r="28" fill="#FAD4C0"/></svg>
+                  </div>
+                </div>
+
+                <!-- Slot 3 -->
+                <div class="aspect-square rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
+                  <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g2_4c" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="150" fill="url(#g2_4c)"/><circle cx="100" cy="72" r="28" fill="#F6C8B0"/></svg>
+                  </div>
+                  <div class="slot-slide slot-slide-1 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g3_4c" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs><rect width="200" height="150" fill="url(#g3_4c)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="88" y="110" font-size="18">🫶</text></svg>
+                  </div>
+                  <div class="slot-slide slot-slide-2 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g0_4c" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE4E8"/><stop offset="100%" stop-color="#FFCCD5"/></linearGradient></defs><rect width="200" height="150" fill="url(#g0_4c)"/><circle cx="100" cy="72" r="28" fill="#FAD4C0"/></svg>
+                  </div>
+                  <div class="slot-slide slot-slide-3 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g1_4c" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs><rect width="200" height="150" fill="url(#g1_4c)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="132" y="102" font-size="18">✌️</text></svg>
+                  </div>
+                </div>
+
+                <!-- Slot 4 -->
+                <div class="aspect-square rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
+                  <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g3_4d" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs><rect width="200" height="150" fill="url(#g3_4d)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="88" y="110" font-size="18">🫶</text></svg>
+                  </div>
+                  <div class="slot-slide slot-slide-1 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g0_4d" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE4E8"/><stop offset="100%" stop-color="#FFCCD5"/></linearGradient></defs><rect width="200" height="150" fill="url(#g0_4d)"/><circle cx="100" cy="72" r="28" fill="#FAD4C0"/></svg>
+                  </div>
+                  <div class="slot-slide slot-slide-2 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g1_4d" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs><rect width="200" height="150" fill="url(#g1_4d)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="132" y="102" font-size="18">✌️</text></svg>
+                  </div>
+                  <div class="slot-slide slot-slide-3 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g2_4d" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="150" fill="url(#g2_4d)"/><circle cx="100" cy="72" r="28" fill="#F6C8B0"/></svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Static Bottom Branding -->
+              <div class="text-center font-serif text-[10px] text-stone-600 font-bold pt-1">
+                Pozia Studio
+              </div>
+            </div>
+
+            <!-- Card Labels & Active Indicator -->
+            <div class="w-full text-center flex flex-col items-center gap-1">
+              <span class="font-extrabold text-xs sm:text-sm text-pozia-charcoal">Grid 2×2</span>
+              <span class="text-[10px] text-stone-400">4 Foto Kolase Persegi</span>
+              <span id="setup-indicator-2x2"
+                class="setup-indicator-badge mt-1 px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-500 text-[10px] font-semibold">
+                Pilih
+              </span>
+            </div>
+          </div>
+
+          <!-- ========================================== -->
+          <!-- 5. POLAROID (polaroid)                     -->
+          <!-- ========================================== -->
+          <div onclick="App.setSetupLayout('polaroid')" id="setup-card-polaroid"
+            class="p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-3">
+            
+            <!-- Visual Polaroid Preview Container (100% STATIC) -->
+            <div class="w-28 sm:w-32 h-64 sm:h-72 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-3 flex flex-col justify-between shadow-inner">
+              <!-- 1 Large Single Photo Slot -->
+              <div class="w-full aspect-[4/3.8] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
+                <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g0_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE4E8"/><stop offset="100%" stop-color="#FFCCD5"/></linearGradient></defs><rect width="200" height="150" fill="url(#g0_5)"/><circle cx="100" cy="72" r="28" fill="#FAD4C0"/><path d="M70 150 C70 115 85 105 100 105 C115 105 130 115 130 150 Z" fill="#E24564" opacity="0.85"/><text x="165" y="30" font-size="12" fill="#FF5A79">✦</text></svg>
+                </div>
+                <div class="slot-slide slot-slide-1 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g1_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs><rect width="200" height="150" fill="url(#g1_5)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="132" y="102" font-size="18">✌️</text></svg>
+                </div>
+                <div class="slot-slide slot-slide-2 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g2_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="150" fill="url(#g2_5)"/><circle cx="100" cy="72" r="28" fill="#F6C8B0"/><rect x="85" y="66" width="13" height="9" rx="2" fill="#18181B"/><rect x="102" y="66" width="13" height="9" rx="2" fill="#18181B"/></svg>
+                </div>
+                <div class="slot-slide slot-slide-3 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g3_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs><rect width="200" height="150" fill="url(#g3_5)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="88" y="110" font-size="18">🫶</text></svg>
+                </div>
+              </div>
+
+              <!-- Static Bottom Polaroid Chin Area -->
+              <div class="pt-4 pb-2 text-center flex flex-col items-center">
+                <span class="font-serif text-xs text-stone-800 font-bold tracking-wider">Pozia Studio</span>
+                <span class="text-[9px] text-stone-400 font-mono mt-0.5">POLAROID CLASSIC</span>
+              </div>
+            </div>
+
+            <!-- Card Labels & Active Indicator -->
+            <div class="w-full text-center flex flex-col items-center gap-1">
+              <span class="font-extrabold text-xs sm:text-sm text-pozia-charcoal">Polaroid</span>
+              <span class="text-[10px] text-stone-400">1 Pose Klasik</span>
+              <span id="setup-indicator-polaroid"
+                class="setup-indicator-badge mt-1 px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-500 text-[10px] font-semibold">
+                Pilih
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TAHAP 1: Studio Settings Bar (Timer, Flash, Sound) -->
+        <div class="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-2xl bg-white border border-stone-200/70 text-xs text-stone-600 shadow-xs">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-pozia-charcoal text-[11px] uppercase tracking-wider">⏱ Timer:</span>
+            <div class="flex items-center gap-1 bg-stone-100 p-0.5 rounded-lg">
+              <button onclick="CameraStudio.setTimer(3)" id="setup-timer-3" class="px-2.5 py-1 rounded-md font-bold text-[11px] bg-white text-pozia-coral shadow-xs">3s</button>
+              <button onclick="CameraStudio.setTimer(5)" id="setup-timer-5" class="px-2.5 py-1 rounded-md font-semibold text-[11px] text-stone-600 hover:text-pozia-coral">5s</button>
+              <button onclick="CameraStudio.setTimer(10)" id="setup-timer-10" class="px-2.5 py-1 rounded-md font-semibold text-[11px] text-stone-600 hover:text-pozia-coral">10s</button>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-pozia-charcoal text-[11px] uppercase tracking-wider">💡 Screen Flash:</span>
+            <div class="flex items-center gap-1 bg-stone-100 p-0.5 rounded-lg">
+              <button onclick="CameraStudio.setFlashColor('white')" id="setup-flash-white" class="px-2.5 py-1 rounded-md font-bold text-[11px] bg-white text-pozia-coral shadow-xs">Putih</button>
+              <button onclick="CameraStudio.setFlashColor('warm')" id="setup-flash-warm" class="px-2.5 py-1 rounded-md font-semibold text-[11px] text-stone-600 hover:text-pozia-coral">Warm</button>
+              <button onclick="CameraStudio.setFlashColor('off')" id="setup-flash-off" class="px-2.5 py-1 rounded-md font-semibold text-[11px] text-stone-600 hover:text-pozia-coral">Mati</button>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-pozia-charcoal text-[11px] uppercase tracking-wider">🔊 Shutter:</span>
+            <span class="text-[11px] text-stone-500 font-medium flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Suara Kamera Aktif
+            </span>
           </div>
         </div>
+
+        <!-- Action Dock (Bottom Bar) -->
+        <div class="w-full bg-white border border-stone-200/90 rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 mt-1">
+          <div class="flex items-center gap-3 text-left">
+            <div class="w-10 h-10 rounded-xl bg-pozia-coral/10 text-pozia-coral flex items-center justify-center font-bold text-lg shrink-0">
+              📸
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs sm:text-sm font-bold text-pozia-charcoal" id="setup-selected-title">Strip 4 Pose</span>
+                <span class="px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 font-mono text-[10px] font-bold" id="setup-selected-ratio">1:3.2</span>
+              </div>
+              <p class="text-[11px] text-stone-400 mt-0.5" id="setup-selected-desc">
+                4 kali pengambilan foto berturut-turut. Desain bingkai bebas dipilih setelah foto selesai.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2.5 w-full sm:w-auto">
+            <button onclick="App.triggerGalleryUpload()"
+              class="flex-1 sm:flex-initial px-4 py-3 rounded-xl bg-stone-100 text-stone-700 font-bold text-xs hover:bg-stone-200 transition-all flex items-center justify-center gap-1.5 shadow-xs">
+              <svg class="w-4 h-4 text-pozia-coral" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+              </svg>
+              <span>Pilih dari Galeri</span>
+            </button>
+
+            <button onclick="App.startCameraFromSetup()" id="setup-start-cam-btn"
+              class="flex-1 sm:flex-initial px-6 py-3 rounded-xl bg-pozia-coral text-white font-bold text-xs sm:text-sm shadow-lg shadow-pozia-coral/25 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span id="setup-btn-text">Buka Kamera (4 Pose)</span> &rarr;
+            </button>
+          </div>
+        </div>
+
       </div>
+
     </section>
 
     <!-- ====================================================== -->
@@ -1135,7 +1398,7 @@
 
         <button onclick="App.navigate('editor')"
           class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-pozia-coral text-white font-bold text-sm shadow-xl shadow-pozia-coral/30 hover:bg-pozia-coral-hover active:scale-95 transition-all flex items-center justify-center gap-2">
-          <span>Lanjut ke Editor</span> &rarr;
+          <span>Lanjut Pilih Desain Frame</span> &rarr;
         </button>
       </div>
     </section>
@@ -1605,6 +1868,39 @@
     };
 
     /* ===================================================
+       1b. LAYOUT SLIDESHOW CONTROLLER (CROSSFADE IN SLOTS ONLY)
+       =================================================== */
+    const LayoutSlideshow = {
+      activeSlide: 0,
+      timer: null,
+      totalSlides: 4,
+      init() {
+        if (this.timer) clearInterval(this.timer);
+        this.timer = setInterval(() => {
+          this.next();
+        }, 2800);
+      },
+      stop() {
+        if (this.timer) {
+          clearInterval(this.timer);
+          this.timer = null;
+        }
+      },
+      next() {
+        const prev = this.activeSlide;
+        this.activeSlide = (this.activeSlide + 1) % this.totalSlides;
+        document.querySelectorAll(`.slot-slide-${prev}`).forEach(el => {
+          el.classList.remove('opacity-100');
+          el.classList.add('opacity-0');
+        });
+        document.querySelectorAll(`.slot-slide-${this.activeSlide}`).forEach(el => {
+          el.classList.remove('opacity-0');
+          el.classList.add('opacity-100');
+        });
+      }
+    };
+
+    /* ===================================================
        2. BILINGUAL I18N DICTIONARY (ID & EN)
        =================================================== */
     const I18N = {
@@ -1874,17 +2170,29 @@
               ? 'py-2 rounded-xl bg-pozia-coral text-white font-bold'
               : 'py-2 rounded-xl bg-white/10 text-gray-300 font-bold';
           }
+          const sBtn = document.getElementById(`setup-timer-${s}`);
+          if (sBtn) {
+            sBtn.className = s === sec
+              ? 'px-2.5 py-1 rounded-md font-bold text-[11px] bg-white text-pozia-coral shadow-xs'
+              : 'px-2.5 py-1 rounded-md font-semibold text-[11px] text-stone-600 hover:text-pozia-coral';
+          }
         });
       },
 
       setFlashColor(col) {
         this.flashColor = col;
-        ['white', 'peach', 'pink', 'off'].forEach(c => {
+        ['white', 'peach', 'warm', 'pink', 'off'].forEach(c => {
           const btn = document.getElementById(`flash-color-${c}`);
           if (btn) {
             btn.className = c === col
               ? 'py-2 rounded-xl bg-pozia-coral text-white font-bold shadow-sm'
               : 'py-2 rounded-xl bg-white/10 text-gray-300 font-bold';
+          }
+          const sBtn = document.getElementById(`setup-flash-${c}`);
+          if (sBtn) {
+            sBtn.className = c === col
+              ? 'px-2.5 py-1 rounded-md font-bold text-[11px] bg-white text-pozia-coral shadow-xs'
+              : 'px-2.5 py-1 rounded-md font-semibold text-[11px] text-stone-600 hover:text-pozia-coral';
           }
         });
       },
@@ -2427,8 +2735,8 @@
             return;
           }
 
-          // Strip 1x4 and 1x3
-          const poses = State.layout === '1x3' ? 3 : 4;
+          // Strip 1x4, 1x3, 1x2
+          const poses = State.layout === '1x2' ? 2 : (State.layout === '1x3' ? 3 : 4);
           const topMargin = (State.frameTheme === 'the-pozia-times') ? canvas.width * 0.17 : canvas.width * 0.08;
           const bottomMargin = canvas.width * 0.22;
           const availableH = canvas.height - topMargin - bottomMargin;
@@ -2456,8 +2764,8 @@
         const ctx = canvas.getContext('2d');
         const activeLayout = State.layout;
 
-        // Custom Scrapbook Denim & Stars Frame
-        if (State.frameTheme === 'denim-stars') {
+        // Custom Scrapbook Denim & Stars Frame (1x3 Special Tilted Slots)
+        if (State.frameTheme === 'denim-stars' && activeLayout === '1x3') {
           const width = isHighRes ? 1152 : 576;
           const height = isHighRes ? 2048 : 1024;
           canvas.width = width;
@@ -2524,6 +2832,7 @@
 
         if (activeLayout === '1x4') height = width * 3.2;
         else if (activeLayout === '1x3') height = width * 2.5;
+        else if (activeLayout === '1x2') height = width * 1.8;
         else if (activeLayout === '2x2') { width = isHighRes ? 1500 : 480; height = width * 1.18; }
         else { width = isHighRes ? 1300 : 420; height = width * 1.25; }
 
@@ -2541,9 +2850,9 @@
         const availableH = height - topMargin - bottomMargin;
 
         const slotRects = [];
-        const poses = activeLayout === '1x4' ? 4 : activeLayout === '1x3' ? 3 : activeLayout === '2x2' ? 4 : 1;
+        const poses = activeLayout === '1x4' ? 4 : activeLayout === '1x3' ? 3 : activeLayout === '1x2' ? 2 : activeLayout === '2x2' ? 4 : 1;
 
-        if (activeLayout === '1x4' || activeLayout === '1x3') {
+        if (activeLayout === '1x4' || activeLayout === '1x3' || activeLayout === '1x2') {
           const gap = width * 0.035;
           const slotH = (availableH - gap * (poses - 1)) / poses;
           for (let i = 0; i < poses; i++) {
@@ -2641,6 +2950,10 @@
           ctx.fillStyle = '#F59E0B';
           ctx.font = `italic 700 ${brandSize}px "Playfair Display", serif`;
           ctx.fillText('The Pozia Studio', width / 2, brandY);
+        } else if (State.frameTheme === 'denim-stars') {
+          ctx.fillStyle = '#E2E8F0';
+          ctx.font = `800 ${brandSize * 0.9}px "Plus Jakarta Sans", sans-serif`;
+          ctx.fillText('POZIA', width / 2, brandY);
         } else {
           ctx.fillStyle = '#1C1917';
           ctx.font = `600 ${brandSize}px "Playfair Display", serif`;
@@ -2707,6 +3020,25 @@
             ctx.lineTo(width * 0.85 + i * 12, height - width * 0.05);
             ctx.stroke();
           }
+        }
+        // 2b. Scrapbook Denim & Stars
+        else if (th === 'denim-stars') {
+          ctx.fillStyle = '#1E2436';
+          ctx.fillRect(0, 0, width, height);
+
+          // Corduroy ridges
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+          for (let x = 0; x < width; x += 6) {
+            ctx.fillRect(x, 0, 2, height);
+          }
+
+          // Gold stars & scrapbook accents
+          ctx.fillStyle = '#F59E0B';
+          ctx.font = `${width * 0.045}px serif`;
+          ctx.textAlign = 'center';
+          ctx.fillText('★', width * 0.06, width * 0.08);
+          ctx.fillText('★', width * 0.94, width * 0.12);
+          ctx.fillText('★', width * 0.92, height * 0.88);
         }
         // 3. Botanical Herbarium & Washi
         else if (th === 'washi-botanical') {
@@ -3118,121 +3450,60 @@
 
       setSetupTheme(themeId) {
         State.frameTheme = themeId;
-        if (themeId === 'denim-stars') {
-          this.setLayout('1x3');
-        }
-        const themes = ['pixel-arcade', 'denim-stars', 'cyber-liquid-chrome', 'pop-art-comic', 'mixtape-cassette', 'amalfi-lemon', 'the-pozia-times', 'celestial-tarot'];
-        themes.forEach(t => {
-          const btn = document.getElementById(`setup-theme-${t}`);
-          if (btn) {
-            btn.className = t === themeId
-              ? 'p-2 rounded-xl border border-pozia-coral bg-pink-50/50 text-left text-xs flex flex-col gap-1 ring-1 ring-pozia-coral shadow-sm'
-              : 'p-2 rounded-xl border border-gray-200 bg-white hover:border-gray-300 text-left text-xs flex flex-col gap-1';
-          }
-        });
-        this.updateSetupPreview();
       },
 
       updateSetupUI() {
-        ['1x4', '1x3', '2x2', 'polaroid'].forEach(l => {
+        const layouts = ['1x4', '1x3', '1x2', '2x2', 'polaroid'];
+        layouts.forEach(l => {
           const card = document.getElementById(`setup-card-${l}`);
+          const ind = document.getElementById(`setup-indicator-${l}`);
+          const isSelected = (l === State.layout);
           if (card) {
-            card.className = l === State.layout
-              ? 'p-4 rounded-2xl bg-white border-2 border-pozia-coral shadow-sm cursor-pointer hover:shadow-md transition-all flex flex-col gap-1.5 ring-2 ring-pozia-coral/20'
-              : 'p-4 rounded-2xl bg-white border-2 border-transparent hover:border-gray-200 shadow-sm cursor-pointer transition-all flex flex-col gap-1.5';
+            card.className = isSelected
+              ? 'p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-pozia-coral ring-2 ring-pozia-coral/25 bg-pink-50/20 shadow-md cursor-pointer transition-all flex flex-col items-center justify-between gap-3'
+              : 'p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-3';
+          }
+          if (ind) {
+            ind.className = isSelected
+              ? 'setup-indicator-badge mt-1 px-2.5 py-0.5 rounded-full bg-pozia-coral text-white text-[10px] font-bold shadow-xs'
+              : 'setup-indicator-badge mt-1 px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-500 text-[10px] font-semibold';
+            ind.textContent = isSelected ? '✔ Terpilih' : 'Pilih';
           }
         });
-
-        const activeBadge = document.getElementById('setup-active-badge');
-        const ratioLabel = document.getElementById('setup-ratio-label');
-        const btnText = document.getElementById('setup-btn-text');
 
         const names = {
           '1x4': 'Strip 4 Pose',
           '1x3': 'Strip 3 Pose',
-          '2x2': 'Grid 2x2',
+          '1x2': 'Strip 2 Pose',
+          '2x2': 'Grid 2×2',
           'polaroid': 'Polaroid'
         };
         const ratios = {
           '1x4': '1:3.2',
           '1x3': '1:2.5',
+          '1x2': '1:1.8',
           '2x2': '1:1.18',
           'polaroid': '4:4.2'
         };
+        const descs = {
+          '1x4': '4 kali pengambilan foto berturut-turut vertikal. Desain bingkai bebas dipilih setelah foto selesai.',
+          '1x3': '3 kali pengambilan foto berturut-turut lapang. Desain bingkai bebas dipilih setelah foto selesai.',
+          '1x2': '2 kali pengambilan foto cepat vertikal. Desain bingkai bebas dipilih setelah foto selesai.',
+          '2x2': '4 foto dalam kolase persegi modern 2x2. Desain bingkai bebas dipilih setelah foto selesai.',
+          'polaroid': '1 foto tunggal dengan area branding klasik. Desain bingkai bebas dipilih setelah foto selesai.'
+        };
 
-        if (activeBadge) activeBadge.textContent = names[State.layout] || '';
-        if (ratioLabel) ratioLabel.textContent = ratios[State.layout] || '';
+        const titleEl = document.getElementById('setup-selected-title');
+        const ratioEl = document.getElementById('setup-selected-ratio');
+        const descEl = document.getElementById('setup-selected-desc');
+        const btnText = document.getElementById('setup-btn-text');
+
+        if (titleEl) titleEl.textContent = names[State.layout] || 'Strip 4 Pose';
+        if (ratioEl) ratioEl.textContent = ratios[State.layout] || '1:3.2';
+        if (descEl) descEl.textContent = descs[State.layout] || '';
         if (btnText) btnText.textContent = `Buka Kamera (${State.targetPoseCount} Pose)`;
 
-        this.updateSetupPreview();
-      },
-
-      updateSetupPreview() {
-        const container = document.getElementById('setup-preview-wrapper');
-        if (!container) return;
-
-        const layout = State.layout;
-        let html = '';
-
-        if (layout === '1x4') {
-          html = `
-            <div class="relative w-36 bg-[#FFE8EC] p-3 rounded-2xl shadow-xl border-2 border-pink-200 flex flex-col gap-2 transition-all">
-              <div class="absolute -top-3 left-4 w-12 h-5 washi-tape-pink -rotate-12 rounded-sm pointer-events-none"></div>
-              <div class="h-14 bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">1</div>
-              <div class="h-14 bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">2</div>
-              <div class="h-14 bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">3</div>
-              <div class="h-14 bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">4</div>
-              <div class="text-center font-serif text-[11px] text-pozia-charcoal font-bold pt-1">Pozia Studio</div>
-            </div>
-          `;
-        } else if (layout === '1x3') {
-          if (State.frameTheme === 'denim-stars') {
-            html = `
-              <div class="relative w-40 bg-[#1E2436] p-3 rounded-2xl shadow-xl border-2 border-slate-700 flex flex-col gap-2 transition-all">
-                <div class="h-16 bg-white/95 rounded-lg border border-[#EADBB6] -rotate-2 flex items-center justify-center text-[10px] text-slate-400 font-bold">1</div>
-                <div class="h-16 bg-white/95 rounded-lg border border-[#EADBB6] rotate-2 flex items-center justify-center text-[10px] text-slate-400 font-bold">2</div>
-                <div class="h-16 bg-white/95 rounded-lg border border-[#EADBB6] -rotate-2 flex items-center justify-center text-[10px] text-slate-400 font-bold">3</div>
-                <div class="text-center font-bold tracking-widest text-[11px] text-slate-200 pt-1">POZIA</div>
-              </div>
-            `;
-          } else {
-            html = `
-              <div class="relative w-40 bg-[#F3E8FF] p-3.5 rounded-2xl shadow-xl border-2 border-purple-200 flex flex-col gap-2.5 transition-all">
-                <div class="absolute -top-3 right-4 w-12 h-5 washi-tape-yellow rotate-12 rounded-sm pointer-events-none"></div>
-                <div class="h-20 bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-purple-300 font-bold">1</div>
-                <div class="h-20 bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-purple-300 font-bold">2</div>
-                <div class="h-20 bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-purple-300 font-bold">3</div>
-                <div class="text-center font-serif text-xs text-pozia-charcoal font-bold pt-1">Pozia Studio</div>
-              </div>
-            `;
-          }
-        } else if (layout === '2x2') {
-          html = `
-            <div class="relative w-48 bg-[#FFF9E6] p-4 rounded-3xl shadow-xl border-2 border-amber-200 flex flex-col gap-2.5 transition-all">
-              <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-5 washi-tape-mint -rotate-3 rounded-sm pointer-events-none"></div>
-              <div class="grid grid-cols-2 gap-2">
-                <div class="aspect-square bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-amber-300 font-bold">1</div>
-                <div class="aspect-square bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-amber-300 font-bold">2</div>
-                <div class="aspect-square bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-amber-300 font-bold">3</div>
-                <div class="aspect-square bg-white/95 rounded-xl flex items-center justify-center shadow-inner text-xs text-amber-300 font-bold">4</div>
-              </div>
-              <div class="text-center font-serif text-xs text-pozia-charcoal font-bold pt-1">Pozia Studio</div>
-            </div>
-          `;
-        } else {
-          // Polaroid single
-          html = `
-            <div class="relative w-44 bg-white p-4 pb-8 rounded-2xl shadow-xl border border-gray-200 flex flex-col gap-3 transition-all">
-              <div class="absolute -top-3 left-6 w-14 h-5 washi-tape-pink -rotate-6 rounded-sm pointer-events-none"></div>
-              <div class="w-full aspect-[4/4.2] bg-gradient-to-b from-rose-50 to-pink-100 rounded-xl flex items-center justify-center shadow-inner text-xs text-rose-300 font-bold">
-                1 Pose
-              </div>
-              <div class="text-center font-serif text-sm text-pozia-charcoal font-bold tracking-wider pt-2">Pozia Studio</div>
-            </div>
-          `;
-        }
-
-        container.innerHTML = html;
+        LayoutSlideshow.init();
       },
 
       startCameraFromSetup() {
@@ -3240,24 +3511,26 @@
         State.currentPoseIndex = 0;
         State.activeSlotToReplace = null;
         State.isRetakingSingle = false;
+        LayoutSlideshow.stop();
         this.navigate('camera');
       },
 
       startSetupWithFrame(frameId) {
         State.frameTheme = frameId;
         this.navigate('setup');
-        this.setSetupTheme(frameId);
       },
 
       setLayout(layout) {
         State.layout = layout;
         if (layout === '1x4') State.targetPoseCount = 4;
         else if (layout === '1x3') State.targetPoseCount = 3;
+        else if (layout === '1x2') State.targetPoseCount = 2;
         else if (layout === '2x2') State.targetPoseCount = 4;
         else if (layout === 'polaroid') State.targetPoseCount = 1;
+        else State.targetPoseCount = 4;
 
         // Update Editor layout buttons
-        ['1x4', '1x3', '2x2', 'polaroid'].forEach(l => {
+        ['1x4', '1x3', '1x2', '2x2', 'polaroid'].forEach(l => {
           const fBtn = document.getElementById(`frame-layout-${l}`);
           if (fBtn) {
             fBtn.className = l === layout
