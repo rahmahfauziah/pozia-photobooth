@@ -83,6 +83,32 @@
       box-shadow: 0 30px 65px -15px rgba(20, 18, 17, 0.4), 0 12px 25px -10px rgba(20, 18, 17, 0.25);
     }
 
+    /* Stage Transition (Smooth Fade & Subtle Slide) */
+    .stage-transition {
+      animation: stageFadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes stageFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Smooth Canvas Update Transition */
+    #editor-preview-canvas {
+      transition: opacity 0.22s ease-out, transform 0.22s ease-out;
+    }
+
+    .canvas-updating {
+      opacity: 0.88;
+      transform: scale(0.995);
+    }
+
     /* Screen Flash FX */
     #screen-flash {
       position: absolute;
@@ -679,9 +705,9 @@
     <!-- ====================================================== -->
     <!-- STAGE 2 (SETUP): PEMILIHAN LAYOUT & JUMLAH FOTO        -->
     <!-- ====================================================== -->
-    <section id="stage-setup" class="hidden flex-1 w-full overflow-y-auto no-scrollbar studio-editorial-bg flex flex-col justify-between p-4 sm:p-6 md:p-10">
+    <section id="stage-setup" class="hidden flex-1 w-full overflow-y-auto no-scrollbar studio-editorial-bg flex flex-col justify-between p-3.5 sm:p-5 md:p-7">
       
-      <div class="max-w-6xl mx-auto w-full flex flex-col gap-6 select-none">
+      <div class="max-w-6xl mx-auto w-full flex flex-col gap-4 sm:gap-5 select-none">
         
         <!-- Setup Header: Back Button & Step Badge -->
         <div class="flex items-center justify-between pb-3 border-b border-stone-200/70">
@@ -710,16 +736,17 @@
         </div>
 
         <!-- Layout Cards Gallery (All 5 Project Layouts) -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 md:gap-5 py-2">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5 md:gap-4 py-1.5">
           
           <!-- ========================================== -->
           <!-- 1. STRIP 4 POSE (1x4)                       -->
           <!-- ========================================== -->
           <div onclick="App.setSetupLayout('1x4')" id="setup-card-1x4"
-            class="p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-pozia-coral ring-2 ring-pozia-coral/25 bg-pink-50/20 shadow-md cursor-pointer transition-all flex flex-col items-center justify-between gap-3">
+            class="p-3 sm:p-3.5 rounded-2xl bg-white border-2 border-pozia-coral ring-2 ring-pozia-coral/25 bg-pink-50/20 shadow-md cursor-pointer transition-all flex flex-col items-center justify-between gap-2.5">
             
             <!-- Visual Strip Preview Container (100% STATIC) -->
-            <div class="w-28 sm:w-32 h-64 sm:h-72 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-2 flex flex-col justify-between shadow-inner">
+            <div class="h-48 sm:h-54 w-full flex items-center justify-center">
+              <div class="w-20 sm:w-22 h-48 sm:h-52 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-1.5 flex flex-col justify-between shadow-inner">
               <!-- 4 Static Photo Slots with Animated Crossfade Photos Inside -->
               <div class="w-full h-[21%] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
                 <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
@@ -784,14 +811,15 @@
                 </div>
               </div>
 
-              <!-- Static Bottom Branding -->
-              <div class="text-center font-serif text-[10px] text-stone-600 font-bold pt-1">
-                Pozia Studio
+                <!-- Static Bottom Branding -->
+                <div class="text-center font-serif text-[8px] text-stone-600 font-bold pt-0.5">
+                  Pozia Studio
+                </div>
               </div>
             </div>
 
             <!-- Card Labels & Active Indicator -->
-            <div class="w-full text-center flex flex-col items-center gap-1">
+            <div class="w-full text-center flex flex-col items-center gap-0.5">
               <span class="font-extrabold text-xs sm:text-sm text-pozia-charcoal">Strip 4 Pose</span>
               <span class="text-[10px] text-stone-400">4x Cekrek Vertikal</span>
               <span id="setup-indicator-1x4"
@@ -805,10 +833,11 @@
           <!-- 2. STRIP 3 POSE (1x3)                       -->
           <!-- ========================================== -->
           <div onclick="App.setSetupLayout('1x3')" id="setup-card-1x3"
-            class="p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-3">
+            class="p-3 sm:p-3.5 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-2.5">
             
             <!-- Visual Strip Preview Container (100% STATIC) -->
-            <div class="w-28 sm:w-32 h-64 sm:h-72 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-2.5 flex flex-col justify-between shadow-inner">
+            <div class="h-48 sm:h-54 w-full flex items-center justify-center">
+              <div class="w-20 sm:w-22 h-44 sm:h-48 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-1.5 flex flex-col justify-between shadow-inner">
               <!-- 3 Static Photo Slots -->
               <div class="w-full h-[28%] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
                 <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
@@ -857,14 +886,15 @@
                 </div>
               </div>
 
-              <!-- Static Bottom Branding -->
-              <div class="text-center font-serif text-[10px] text-stone-600 font-bold pt-1">
-                Pozia Studio
+                <!-- Static Bottom Branding -->
+                <div class="text-center font-serif text-[8px] text-stone-600 font-bold pt-0.5">
+                  Pozia Studio
+                </div>
               </div>
             </div>
 
             <!-- Card Labels & Active Indicator -->
-            <div class="w-full text-center flex flex-col items-center gap-1">
+            <div class="w-full text-center flex flex-col items-center gap-0.5">
               <span class="font-extrabold text-xs sm:text-sm text-pozia-charcoal">Strip 3 Pose</span>
               <span class="text-[10px] text-stone-400">3x Cekrek Lapang</span>
               <span id="setup-indicator-1x3"
@@ -878,10 +908,11 @@
           <!-- 3. STRIP 2 POSE (1x2)                       -->
           <!-- ========================================== -->
           <div onclick="App.setSetupLayout('1x2')" id="setup-card-1x2"
-            class="p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-3">
+            class="p-3 sm:p-3.5 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-2.5">
             
             <!-- Visual Strip Preview Container (100% STATIC) -->
-            <div class="w-28 sm:w-32 h-64 sm:h-72 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-3 flex flex-col justify-between shadow-inner">
+            <div class="h-48 sm:h-54 w-full flex items-center justify-center">
+              <div class="w-20 sm:w-22 h-36 sm:h-40 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-1.5 flex flex-col justify-between shadow-inner">
               <!-- 2 Static Photo Slots -->
               <div class="w-full h-[43%] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
                 <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
@@ -914,14 +945,15 @@
                 </div>
               </div>
 
-              <!-- Static Bottom Branding -->
-              <div class="text-center font-serif text-[10px] text-stone-600 font-bold pt-1">
-                Pozia Studio
+                <!-- Static Bottom Branding -->
+                <div class="text-center font-serif text-[8px] text-stone-600 font-bold pt-0.5">
+                  Pozia Studio
+                </div>
               </div>
             </div>
 
             <!-- Card Labels & Active Indicator -->
-            <div class="w-full text-center flex flex-col items-center gap-1">
+            <div class="w-full text-center flex flex-col items-center gap-0.5">
               <span class="font-extrabold text-xs sm:text-sm text-pozia-charcoal">Strip 2 Pose</span>
               <span class="text-[10px] text-stone-400">2x Cekrek Cepat</span>
               <span id="setup-indicator-1x2"
@@ -935,12 +967,13 @@
           <!-- 4. GRID 2x2 (2x2)                          -->
           <!-- ========================================== -->
           <div onclick="App.setSetupLayout('2x2')" id="setup-card-2x2"
-            class="p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-3">
+            class="p-3 sm:p-3.5 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-2.5">
             
-            <!-- Visual Grid Preview Container (100% STATIC) -->
-            <div class="w-28 sm:w-32 h-64 sm:h-72 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-2.5 flex flex-col justify-between shadow-inner">
-              <!-- 2x2 Grid with 4 Photo Slots -->
-              <div class="grid grid-cols-2 gap-1.5 flex-1 my-auto">
+            <!-- Visual Grid Preview Container (100% STATIC SQUARE) -->
+            <div class="h-48 sm:h-54 w-full flex items-center justify-center">
+              <div class="w-32 sm:w-36 h-32 sm:h-36 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-2 flex flex-col justify-between shadow-inner">
+                <!-- 2x2 Grid with 4 Photo Slots (Identical Square Cells) -->
+                <div class="grid grid-cols-2 gap-1 w-full flex-1 my-auto">
                 <!-- Slot 1 -->
                 <div class="aspect-square rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
                   <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
@@ -1006,14 +1039,15 @@
                 </div>
               </div>
 
-              <!-- Static Bottom Branding -->
-              <div class="text-center font-serif text-[10px] text-stone-600 font-bold pt-1">
-                Pozia Studio
+                <!-- Static Bottom Branding -->
+                <div class="text-center font-serif text-[8px] text-stone-600 font-bold pt-1">
+                  Pozia Studio
+                </div>
               </div>
             </div>
 
             <!-- Card Labels & Active Indicator -->
-            <div class="w-full text-center flex flex-col items-center gap-1">
+            <div class="w-full text-center flex flex-col items-center gap-0.5">
               <span class="font-extrabold text-xs sm:text-sm text-pozia-charcoal">Grid 2×2</span>
               <span class="text-[10px] text-stone-400">4 Foto Kolase Persegi</span>
               <span id="setup-indicator-2x2"
@@ -1027,38 +1061,45 @@
           <!-- 5. POLAROID (polaroid)                     -->
           <!-- ========================================== -->
           <div onclick="App.setSetupLayout('polaroid')" id="setup-card-polaroid"
-            class="p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-3">
+            class="p-3 sm:p-3.5 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-2.5">
             
             <!-- Visual Polaroid Preview Container (100% STATIC) -->
-            <div class="w-28 sm:w-32 h-64 sm:h-72 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-3 flex flex-col justify-between shadow-inner">
-              <!-- 1 Large Single Photo Slot -->
-              <div class="w-full aspect-[4/3.8] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
-                <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
-                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g0_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE4E8"/><stop offset="100%" stop-color="#FFCCD5"/></linearGradient></defs><rect width="200" height="150" fill="url(#g0_5)"/><circle cx="100" cy="72" r="28" fill="#FAD4C0"/><path d="M70 150 C70 115 85 105 100 105 C115 105 130 115 130 150 Z" fill="#E24564" opacity="0.85"/><text x="165" y="30" font-size="12" fill="#FF5A79">✦</text></svg>
+            <div class="h-48 sm:h-54 w-full flex items-center justify-center">
+              <div class="w-28 sm:w-30 h-36 sm:h-40 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-2 flex flex-col justify-between shadow-inner">
+                <!-- 1 Large Portrait Photo Slot -->
+                <div class="w-full aspect-[4/4.3] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
+                  <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g0_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE4E8"/><stop offset="100%" stop-color="#FFCCD5"/></linearGradient></defs><rect width="200" height="150" fill="url(#g0_5)"/><circle cx="100" cy="72" r="28" fill="#FAD4C0"/><path d="M70 150 C70 115 85 105 100 105 C115 105 130 115 130 150 Z" fill="#E24564" opacity="0.85"/><text x="165" y="30" font-size="12" fill="#FF5A79">✦</text></svg>
+                  </div>
+                  <div class="slot-slide slot-slide-1 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g1_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs><rect width="200" height="150" fill="url(#g1_5)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="132" y="102" font-size="18">✌️</text></svg>
+                  </div>
+                  <div class="slot-slide slot-slide-2 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g2_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="150" fill="url(#g2_5)"/><circle cx="100" cy="72" r="28" fill="#F6C8B0"/><rect x="85" y="66" width="13" height="9" rx="2" fill="#18181B"/><rect x="102" y="66" width="13" height="9" rx="2" fill="#18181B"/></svg>
+                  </div>
+                  <div class="slot-slide slot-slide-3 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g3_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs><rect width="200" height="150" fill="url(#g3_5)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="88" y="110" font-size="18">🫶</text></svg>
+                  </div>
                 </div>
-                <div class="slot-slide slot-slide-1 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
-                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g1_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs><rect width="200" height="150" fill="url(#g1_5)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="132" y="102" font-size="18">✌️</text></svg>
-                </div>
-                <div class="slot-slide slot-slide-2 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
-                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g2_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="150" fill="url(#g2_5)"/><circle cx="100" cy="72" r="28" fill="#F6C8B0"/><rect x="85" y="66" width="13" height="9" rx="2" fill="#18181B"/><rect x="102" y="66" width="13" height="9" rx="2" fill="#18181B"/></svg>
-                </div>
-                <div class="slot-slide slot-slide-3 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
-                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g3_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs><rect width="200" height="150" fill="url(#g3_5)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="88" y="110" font-size="18">🫶</text></svg>
-                </div>
-              </div>
 
-              <!-- Static Bottom Polaroid Chin Area -->
-              <div class="pt-4 pb-2 text-center flex flex-col items-center">
-                <span class="font-serif text-xs text-stone-800 font-bold tracking-wider">Pozia Studio</span>
-                <span class="text-[9px] text-stone-400 font-mono mt-0.5">POLAROID CLASSIC</span>
+                <!-- Static Bottom Polaroid Chin Area -->
+                <div class="pt-2 pb-0.5 text-center flex flex-col items-center">
+                  <span class="font-serif text-[9px] text-stone-800 font-bold tracking-wider">Pozia Studio</span>
+                  <span class="text-[7px] text-stone-400 font-mono">POLAROID CLASSIC</span>
+                </div>
               </div>
             </div>
 
             <!-- Card Labels & Active Indicator -->
-            <div class="w-full text-center flex flex-col items-center gap-1">
+            <div class="w-full text-center flex flex-col items-center gap-0.5">
               <span class="font-extrabold text-xs sm:text-sm text-pozia-charcoal">Polaroid</span>
-              <span class="text-[10px] text-stone-400">1 Pose Klasik</span>
+              <span class="text-[10px] text-stone-400">1 Pose Portrait Klasik</span>
               <span id="setup-indicator-polaroid"
+                class="setup-indicator-badge mt-1 px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-500 text-[10px] font-semibold">
+                Pilih
+              </span>
+            </div>
+          </div>
                 class="setup-indicator-badge mt-1 px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-500 text-[10px] font-semibold">
                 Pilih
               </span>
@@ -1161,7 +1202,7 @@
           <!-- Pose Progress Counter -->
           <div
             class="px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-xs font-extrabold tracking-wider flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-pozia-coral animate-ping"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-pozia-coral ring-2 ring-pozia-coral/30"></span>
             <span id="pose-counter-text">Foto 1 dari 4</span>
           </div>
 
@@ -1343,10 +1384,10 @@
     <!-- STAGE 4 (REVIEW): PRATINJAU HASIL FOTO & RETAKE        -->
     <!-- ====================================================== -->
     <section id="stage-review"
-      class="hidden flex-1 w-full overflow-y-auto no-scrollbar studio-editorial-bg flex flex-col justify-between p-4 sm:p-6 md:p-8">
+      class="hidden flex-1 w-full overflow-y-auto no-scrollbar studio-editorial-bg flex flex-col justify-between p-3.5 sm:p-5 md:p-6">
       
       <!-- A. REVIEW HEADER -->
-      <div class="max-w-5xl mx-auto w-full flex items-center justify-between pb-4 border-b border-gray-200/80 gap-3">
+      <div class="max-w-5xl mx-auto w-full flex items-center justify-between pb-3 border-b border-gray-200/80 gap-3">
         <button onclick="App.navigate('camera')"
           class="px-3.5 py-1.5 rounded-full bg-white border border-gray-200 text-pozia-charcoal text-xs font-bold hover:bg-gray-50 transition-all flex items-center gap-1.5 shadow-sm">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1356,7 +1397,7 @@
         </button>
 
         <div class="text-center">
-          <h2 class="text-lg sm:text-xl font-bold font-serif text-pozia-charcoal">
+          <h2 class="text-base sm:text-lg font-bold font-serif text-pozia-charcoal">
             Pratinjau Hasil Pemotretan
           </h2>
           <p class="text-[11px] text-gray-500 hidden sm:block">
@@ -1369,16 +1410,16 @@
         </span>
       </div>
 
-      <!-- B. MAIN PHOTO PREVIEW AREA (LARGE & PROMINENT) -->
-      <div class="max-w-5xl mx-auto w-full flex-1 flex items-center justify-center py-6">
+      <!-- B. MAIN PHOTO PREVIEW AREA (BALANCED & PROPORTIONAL) -->
+      <div class="max-w-5xl mx-auto w-full flex-1 flex items-center justify-center py-3 sm:py-4">
         <div id="review-photos-display"
-          class="w-full flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+          class="w-full flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-5">
           <!-- Dynamically populated by ReviewStudio.render() -->
         </div>
       </div>
 
       <!-- C. DEDICATED FILTER SECTION (HORIZONTAL SCROLLING DOCK) -->
-      <div class="max-w-5xl mx-auto w-full py-3 bg-white/80 backdrop-blur-md rounded-2xl border border-gray-200/80 p-3 shadow-sm flex flex-col gap-2">
+      <div class="max-w-5xl mx-auto w-full py-2.5 bg-white/80 backdrop-blur-md rounded-2xl border border-gray-200/80 p-2.5 sm:p-3 shadow-sm flex flex-col gap-2">
         <div class="flex items-center justify-between text-xs px-1">
           <span class="font-bold text-gray-600">Pilih Filter Analog:</span>
           <span id="review-active-filter-name" class="font-bold text-pozia-coral">Original</span>
@@ -1390,7 +1431,7 @@
       </div>
 
       <!-- D. BOTTOM BUTTONS ROW: RETAKE ALL & PROCEED TO EDITOR -->
-      <div class="max-w-5xl mx-auto w-full pt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="max-w-5xl mx-auto w-full pt-3 flex flex-col sm:flex-row items-center justify-between gap-3">
         <button onclick="CameraStudio.confirmRetakeAll()"
           class="w-full sm:w-auto px-5 py-3 rounded-xl bg-white border border-gray-200 text-gray-600 hover:text-red-600 hover:border-red-200 text-xs font-bold transition-all shadow-sm">
           Foto Ulang Semua
@@ -1408,9 +1449,9 @@
     <!-- ====================================================== -->
     <section id="stage-editor" class="hidden flex-1 w-full flex flex-col md:flex-row overflow-hidden bg-pozia-bg">
       
-      <!-- Left / Center: Soft Editorial Studio Artboard (Well-Proportioned: 48% Width, Whole Frame Visible) -->
+      <!-- Left / Center: Soft Editorial Studio Artboard (Well-Proportioned: 46% Width, Whole Frame Visible) -->
       <div
-        class="w-full md:w-[48%] h-[50vh] md:h-full studio-artboard-bg p-4 md:p-6 flex flex-col items-center justify-center relative overflow-hidden select-none">
+        class="w-full md:w-[46%] h-[42vh] md:h-full studio-artboard-bg p-3 md:p-6 flex flex-col items-center justify-center relative overflow-hidden select-none shrink-0">
         
         <!-- Artboard Alignment Marks -->
         <div class="absolute top-4 left-4 text-white/20 font-mono text-sm pointer-events-none">+</div>
@@ -1423,25 +1464,25 @@
 
         <!-- Interactive Canvas Viewport (100% Whole Frame Visible from Top to Bottom) -->
         <div id="interactive-preview-container"
-          class="relative transition-all duration-300 studio-elevation rounded-2xl overflow-hidden bg-white max-h-[82vh] max-w-full flex items-center justify-center border border-white/20">
-          <canvas id="editor-preview-canvas" class="max-h-[74vh] max-w-full w-auto h-auto block select-none cursor-pointer object-contain"></canvas>
+          class="relative transition-all duration-300 studio-elevation rounded-2xl overflow-hidden bg-transparent max-h-[72vh] max-w-full flex items-center justify-center border border-white/20">
+          <canvas id="editor-preview-canvas" class="max-h-[34vh] md:max-h-[66vh] max-w-[92%] w-auto h-auto block select-none cursor-pointer object-contain rounded-xl"></canvas>
         </div>
 
         <!-- Artboard Floating Status Badges -->
-        <div class="mt-3 flex items-center gap-2">
-          <div class="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-[11px] text-gray-300 font-medium flex items-center gap-1.5 shadow-sm">
-            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <div class="mt-2.5 flex items-center gap-2">
+          <div class="px-2.5 py-0.5 md:px-3 md:py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-[10px] md:text-[11px] text-gray-300 font-medium flex items-center gap-1.5 shadow-sm">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
             <span>Pozia Live Studio Canvas</span>
           </div>
-          <div class="hidden sm:flex px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[10px] text-gray-400">
+          <div class="hidden sm:flex px-2.5 py-0.5 md:px-3 md:py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[10px] text-gray-400">
             <span>Klik slot foto untuk mengganti</span>
           </div>
         </div>
       </div>
 
-      <!-- Right Control Panel: Spacious Workstation (52% Width, Independent Scrolling) -->
+      <!-- Right Control Panel: Spacious Workstation (54% Width, Independent Scrolling) -->
       <div
-        class="w-full md:w-[52%] h-[50vh] md:h-full bg-white border-t md:border-t-0 md:border-l border-gray-200/80 flex flex-col justify-between overflow-hidden shadow-sm">
+        class="w-full md:w-[54%] flex-1 md:h-full bg-white border-t md:border-t-0 md:border-l border-gray-200/80 flex flex-col justify-between overflow-hidden shadow-sm min-h-0">
 
         <!-- Top Navigation Bar: Back + Undo/Redo/Reset + Tabs + Finish -->
         <div class="border-b border-gray-100 px-4 py-3 flex items-center justify-between bg-white z-10 gap-2 overflow-x-auto no-scrollbar">
@@ -1518,17 +1559,19 @@
           <div id="tab-content-frame" class="flex flex-col gap-4">
             
             <!-- Format Layout Switcher -->
-            <div class="flex items-center justify-between pb-3 border-b border-gray-100">
-              <span class="text-xs text-gray-500 font-bold">Format Layout:</span>
-              <div class="flex items-center gap-1.5">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-100 gap-2">
+              <span class="text-xs text-gray-500 font-bold shrink-0">Format Layout:</span>
+              <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
                 <button onclick="App.setLayout('1x4'); EditorStudio.renderCanvas();" id="frame-layout-1x4"
-                  class="px-2.5 py-1 text-xs font-bold rounded-lg bg-pink-50 text-pozia-coral border border-pozia-coral transition-all">Strip 4</button>
+                  class="px-2.5 py-1 text-xs font-bold rounded-lg bg-pink-50 text-pozia-coral border border-pozia-coral transition-all shrink-0">Strip 4</button>
                 <button onclick="App.setLayout('1x3'); EditorStudio.renderCanvas();" id="frame-layout-1x3"
-                  class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 transition-all">Strip 3</button>
+                  class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 transition-all shrink-0">Strip 3</button>
+                <button onclick="App.setLayout('1x2'); EditorStudio.renderCanvas();" id="frame-layout-1x2"
+                  class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 transition-all shrink-0">Strip 2</button>
                 <button onclick="App.setLayout('2x2'); EditorStudio.renderCanvas();" id="frame-layout-2x2"
-                  class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 transition-all">Grid 2x2</button>
+                  class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 transition-all shrink-0">Grid 2x2</button>
                 <button onclick="App.setLayout('polaroid'); EditorStudio.renderCanvas();" id="frame-layout-polaroid"
-                  class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 transition-all">Polaroid</button>
+                  class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 transition-all shrink-0">Polaroid</button>
               </div>
             </div>
 
@@ -1630,10 +1673,10 @@
       class="hidden flex-1 w-full flex flex-col md:flex-row overflow-y-auto no-scrollbar bg-pozia-bg">
       
       <!-- Left Plinth Viewport: High Resolution Final Render -->
-      <div class="w-full md:w-[58%] studio-editorial-bg p-6 md:p-10 flex flex-col items-center justify-center relative">
-        <div class="bg-white p-3 rounded-3xl shadow-2xl border border-gray-100 max-h-[82vh] flex flex-col items-center">
+      <div class="w-full md:w-[56%] studio-editorial-bg p-4 md:p-8 flex flex-col items-center justify-center relative">
+        <div class="bg-white p-3 rounded-3xl shadow-xl border border-gray-100 max-h-[75vh] flex flex-col items-center">
           <img id="final-export-img" alt="Pozia Strip Ultra HD"
-            class="max-h-[72vh] w-auto h-auto rounded-xl shadow-sm block select-none">
+            class="max-h-[64vh] w-auto h-auto rounded-xl shadow-xs block select-none">
           <p class="text-[11px] text-gray-400 mt-2 text-center" data-i18n="hold_save_hint">
             Tips: Jika download otomatis terhambat di HP/WebView, tekan dan tahan gambar di atas untuk "Simpan ke Galeri".
           </p>
@@ -1642,7 +1685,7 @@
 
       <!-- Right Export Action Panel -->
       <div
-        class="w-full md:w-[42%] p-6 md:p-10 bg-white border-t md:border-t-0 md:border-l border-gray-100 flex flex-col justify-center gap-6">
+        class="w-full md:w-[44%] p-5 md:p-8 bg-white border-t md:border-t-0 md:border-l border-gray-100 flex flex-col justify-center gap-5">
         <div>
           <div class="flex items-center gap-2 mb-2">
             <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
@@ -2430,19 +2473,19 @@
           display.innerHTML = '';
           State.photos.forEach((img, idx) => {
             const card = document.createElement('div');
-            card.className = 'flex flex-col items-center gap-2 p-3 rounded-2xl bg-white border border-gray-200/80 shadow-md group hover:shadow-xl transition-all';
+            card.className = 'flex flex-col items-center gap-2 p-2.5 sm:p-3 rounded-2xl bg-white border border-gray-200/80 shadow-sm hover:shadow-md transition-all';
 
             const filterStyle = State.currentFilter.css === 'none' ? '' : `filter: ${State.currentFilter.css};`;
 
             card.innerHTML = `
-              <div class="w-32 h-44 sm:w-40 sm:h-52 rounded-xl overflow-hidden bg-black flex items-center justify-center relative shadow-inner">
+              <div class="w-28 h-38 sm:w-34 sm:h-46 rounded-xl overflow-hidden bg-black flex items-center justify-center relative shadow-inner">
                 <img src="${img.src}" style="${filterStyle}" class="w-full h-full object-cover transition-all duration-300">
-                <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-black/70 text-white font-mono text-[10px] font-bold">
+                <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/70 text-white font-mono text-[9px] sm:text-[10px] font-bold">
                   Pose ${idx + 1}
                 </span>
               </div>
               <button onclick="CameraStudio.retakeSinglePose(${idx})"
-                class="w-full py-1.5 px-3 rounded-xl bg-gray-100 hover:bg-pozia-coral hover:text-white text-gray-700 text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                class="w-full py-1.5 px-2.5 rounded-xl bg-gray-100 hover:bg-pozia-coral hover:text-white text-gray-700 text-xs font-bold transition-all flex items-center justify-center gap-1 shadow-xs">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
@@ -2707,7 +2750,7 @@
           const x = (e.clientX - rect.left) * scaleX;
           const y = (e.clientY - rect.top) * scaleY;
 
-          if (State.frameTheme === 'denim-stars') {
+          if (State.frameTheme === 'denim-stars' && State.layout === '1x3') {
             let slot = 0;
             if (y > canvas.height * 0.65) slot = 2;
             else if (y > canvas.height * 0.35) slot = 1;
@@ -2723,12 +2766,16 @@
           }
 
           if (State.layout === '2x2') {
-            const isRight = x > canvas.width / 2;
-            const isBottom = y > (canvas.height - (canvas.width * 0.22)) / 2;
+            const padding = Math.round(canvas.width * 0.055);
+            const gap = Math.round(canvas.width * 0.035);
+            const availableW = canvas.width - padding * 2;
+            const cellSize = Math.floor((availableW - gap) / 2);
+            const midX = padding + cellSize + gap / 2;
+            const midY = padding + cellSize + gap / 2;
             let slot = 0;
-            if (!isBottom && !isRight) slot = 0;
-            else if (!isBottom && isRight) slot = 1;
-            else if (isBottom && !isRight) slot = 2;
+            if (x < midX && y < midY) slot = 0;
+            else if (x >= midX && y < midY) slot = 1;
+            else if (x < midX && y >= midY) slot = 2;
             else slot = 3;
             State.activeSlotToReplace = slot;
             App.triggerGalleryUpload();
@@ -2737,11 +2784,11 @@
 
           // Strip 1x4, 1x3, 1x2
           const poses = State.layout === '1x2' ? 2 : (State.layout === '1x3' ? 3 : 4);
-          const topMargin = (State.frameTheme === 'the-pozia-times') ? canvas.width * 0.17 : canvas.width * 0.08;
-          const bottomMargin = canvas.width * 0.22;
+          const topMargin = (State.frameTheme === 'the-pozia-times' || State.frameTheme === 'pop-art-comic') ? Math.round(canvas.width * 0.16) : Math.round(canvas.width * 0.075);
+          const bottomMargin = Math.round(canvas.width * 0.22);
           const availableH = canvas.height - topMargin - bottomMargin;
-          const gap = canvas.width * 0.035;
-          const slotH = (availableH - gap * (poses - 1)) / poses;
+          const gap = State.layout === '1x4' ? Math.round(canvas.width * 0.026) : (State.layout === '1x3' ? Math.round(canvas.width * 0.032) : Math.round(canvas.width * 0.038));
+          const slotH = Math.round((availableH - gap * (poses - 1)) / poses);
 
           let clickedSlot = Math.floor((y - topMargin) / (slotH + gap));
           if (clickedSlot < 0) clickedSlot = 0;
@@ -2751,11 +2798,15 @@
         };
       },
 
-      /* Render Canvas */
+      /* Render Canvas with subtle crossfade transition */
       renderCanvas() {
         const previewCanvas = document.getElementById('editor-preview-canvas');
         if (previewCanvas) {
+          previewCanvas.classList.add('canvas-updating');
           this.renderToCanvas(previewCanvas, false);
+          requestAnimationFrame(() => {
+            setTimeout(() => previewCanvas.classList.remove('canvas-updating'), 120);
+          });
         }
       },
 
@@ -2827,14 +2878,25 @@
         }
 
         // Standard Designer Frames: Dimensions based on layout
-        let width = isHighRes ? 1400 : 440;
-        let height;
+        let width, height;
 
-        if (activeLayout === '1x4') height = width * 3.2;
-        else if (activeLayout === '1x3') height = width * 2.5;
-        else if (activeLayout === '1x2') height = width * 1.8;
-        else if (activeLayout === '2x2') { width = isHighRes ? 1500 : 480; height = width * 1.18; }
-        else { width = isHighRes ? 1300 : 420; height = width * 1.25; }
+        if (activeLayout === '1x4') {
+          width = isHighRes ? 900 : 380;
+          height = Math.round(width * 2.95);
+        } else if (activeLayout === '1x3') {
+          width = isHighRes ? 900 : 380;
+          height = Math.round(width * 2.30);
+        } else if (activeLayout === '1x2') {
+          width = isHighRes ? 900 : 380;
+          height = Math.round(width * 1.65);
+        } else if (activeLayout === '2x2') {
+          width = isHighRes ? 1400 : 560;
+          height = width; // BENTUK PERSEGI MURNI (1:1 square canvas)
+        } else {
+          // Polaroid: Satu foto portrait dengan bingkai proporsi khas Polaroid (bagian bawah lebar)
+          width = isHighRes ? 1200 : 480;
+          height = Math.round(width * 1.25);
+        }
 
         canvas.width = width;
         canvas.height = height;
@@ -2843,32 +2905,37 @@
         this.drawCuteFramePattern(ctx, width, height, isHighRes);
 
         // 2. Compute Slots Coordinates
-        const marginX = State.frameTheme === 'film-contact-sheet' ? width * 0.11 : width * 0.08;
-        const topMargin = (State.frameTheme === 'the-pozia-times' || State.frameTheme === 'pop-art-comic') ? width * 0.17 : width * 0.08;
-        const bottomMargin = width * 0.22;
-        const availableW = width - marginX * 2;
-        const availableH = height - topMargin - bottomMargin;
-
         const slotRects = [];
         const poses = activeLayout === '1x4' ? 4 : activeLayout === '1x3' ? 3 : activeLayout === '1x2' ? 2 : activeLayout === '2x2' ? 4 : 1;
+        const bottomMargin = Math.round(width * 0.22);
 
         if (activeLayout === '1x4' || activeLayout === '1x3' || activeLayout === '1x2') {
-          const gap = width * 0.035;
-          const slotH = (availableH - gap * (poses - 1)) / poses;
+          const marginX = State.frameTheme === 'film-contact-sheet' ? Math.round(width * 0.11) : Math.round(width * 0.08);
+          const topMargin = (State.frameTheme === 'the-pozia-times' || State.frameTheme === 'pop-art-comic') ? Math.round(width * 0.16) : Math.round(width * 0.075);
+          const availableW = width - marginX * 2;
+          const availableH = height - topMargin - bottomMargin;
+          const gap = activeLayout === '1x4' ? Math.round(width * 0.026) : (activeLayout === '1x3' ? Math.round(width * 0.032) : Math.round(width * 0.038));
+          const slotH = Math.round((availableH - gap * (poses - 1)) / poses);
           for (let i = 0; i < poses; i++) {
             slotRects.push({ x: marginX, y: topMargin + i * (slotH + gap), w: availableW, h: slotH });
           }
         } else if (activeLayout === '2x2') {
-          const gap = width * 0.04;
-          const cellW = (availableW - gap) / 2;
-          const cellH = (availableH - gap) / 2;
-          slotRects.push({ x: marginX, y: topMargin, w: cellW, h: cellH });
-          slotRects.push({ x: marginX + cellW + gap, y: topMargin, w: cellW, h: cellH });
-          slotRects.push({ x: marginX, y: topMargin + cellH + gap, w: cellW, h: cellH });
-          slotRects.push({ x: marginX + cellW + gap, y: topMargin + cellH + gap, w: cellW, h: cellH });
+          // Grid 2x2: Bentuk persegi 2 kolom x 2 baris, 4 foto bujur sangkar sama sisi, jarak konsisten
+          const padding = Math.round(width * 0.055);
+          const gap = Math.round(width * 0.035);
+          const availableW = width - padding * 2;
+          const cellSize = Math.floor((availableW - gap) / 2);
+          slotRects.push({ x: padding, y: padding, w: cellSize, h: cellSize });
+          slotRects.push({ x: padding + cellSize + gap, y: padding, w: cellSize, h: cellSize });
+          slotRects.push({ x: padding, y: padding + cellSize + gap, w: cellSize, h: cellSize });
+          slotRects.push({ x: padding + cellSize + gap, y: padding + cellSize + gap, w: cellSize, h: cellSize });
         } else {
-          // Polaroid single slot
-          slotRects.push({ x: marginX, y: topMargin, w: availableW, h: availableW * 1.05 });
+          // Polaroid: Satu foto portrait proporsional, bagian bawah bingkai lebih lebar khas Polaroid klasik
+          const marginX = Math.round(width * 0.08);
+          const topMargin = Math.round(width * 0.08);
+          const photoW = width - marginX * 2;
+          const photoH = Math.round(photoW * 1.08);
+          slotRects.push({ x: marginX, y: topMargin, w: photoW, h: photoH });
         }
 
         // 3. Draw Photos with Filter into Slots (Object-Fit: Cover)
@@ -2926,8 +2993,27 @@
         }
 
         // 6. PERMANENT BRANDING "Pozia Studio"
-        const brandY = height - bottomMargin * 0.42;
-        const brandSize = Math.round(width * 0.048);
+        let brandY, brandSize;
+        if (activeLayout === '2x2') {
+          const padding = Math.round(width * 0.055);
+          const gap = Math.round(width * 0.035);
+          const availableW = width - padding * 2;
+          const cellSize = Math.floor((availableW - gap) / 2);
+          const cellsBottom = padding + cellSize * 2 + gap;
+          brandY = cellsBottom + (height - cellsBottom) * 0.58;
+          brandSize = Math.round(width * 0.038);
+        } else if (activeLayout === 'polaroid') {
+          const marginX = Math.round(width * 0.08);
+          const topMargin = Math.round(width * 0.08);
+          const photoW = width - marginX * 2;
+          const photoH = Math.round(photoW * 1.08);
+          const photoBottom = topMargin + photoH;
+          brandY = photoBottom + (height - photoBottom) * 0.44;
+          brandSize = Math.round(width * 0.046);
+        } else {
+          brandY = height - bottomMargin * 0.44;
+          brandSize = Math.round(width * 0.048);
+        }
         ctx.textAlign = 'center';
 
         if (State.frameTheme === 'pixel-arcade') {
@@ -2958,6 +3044,12 @@
           ctx.fillStyle = '#1C1917';
           ctx.font = `600 ${brandSize}px "Playfair Display", serif`;
           ctx.fillText('Pozia Studio', width / 2, brandY);
+        }
+
+        if (activeLayout === 'polaroid') {
+          ctx.fillStyle = '#9CA3AF';
+          ctx.font = `bold ${Math.round(brandSize * 0.38)}px "Courier Prime", monospace`;
+          ctx.fillText('POLAROID CLASSIC', width / 2, brandY + brandSize * 0.65);
         }
       },
 
@@ -3460,8 +3552,8 @@
           const isSelected = (l === State.layout);
           if (card) {
             card.className = isSelected
-              ? 'p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-pozia-coral ring-2 ring-pozia-coral/25 bg-pink-50/20 shadow-md cursor-pointer transition-all flex flex-col items-center justify-between gap-3'
-              : 'p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-3';
+              ? 'p-3 sm:p-3.5 rounded-2xl bg-white border-2 border-pozia-coral ring-2 ring-pozia-coral/25 bg-pink-50/20 shadow-md cursor-pointer transition-all flex flex-col items-center justify-between gap-2.5'
+              : 'p-3 sm:p-3.5 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-2.5';
           }
           if (ind) {
             ind.className = isSelected
@@ -3479,18 +3571,18 @@
           'polaroid': 'Polaroid'
         };
         const ratios = {
-          '1x4': '1:3.2',
-          '1x3': '1:2.5',
-          '1x2': '1:1.8',
-          '2x2': '1:1.18',
-          'polaroid': '4:4.2'
+          '1x4': '1:2.95',
+          '1x3': '1:2.3',
+          '1x2': '1:1.65',
+          '2x2': '1:1 Square',
+          'polaroid': 'Classic Chin'
         };
         const descs = {
-          '1x4': '4 kali pengambilan foto berturut-turut vertikal. Desain bingkai bebas dipilih setelah foto selesai.',
-          '1x3': '3 kali pengambilan foto berturut-turut lapang. Desain bingkai bebas dipilih setelah foto selesai.',
+          '1x4': '4 kali pengambilan foto vertikal photostrip. Desain bingkai bebas dipilih setelah foto selesai.',
+          '1x3': '3 kali pengambilan foto vertikal lapang. Desain bingkai bebas dipilih setelah foto selesai.',
           '1x2': '2 kali pengambilan foto cepat vertikal. Desain bingkai bebas dipilih setelah foto selesai.',
-          '2x2': '4 foto dalam kolase persegi modern 2x2. Desain bingkai bebas dipilih setelah foto selesai.',
-          'polaroid': '1 foto tunggal dengan area branding klasik. Desain bingkai bebas dipilih setelah foto selesai.'
+          '2x2': '4 foto persegi 2x2 seimbang & modern. Desain bingkai bebas dipilih setelah foto selesai.',
+          'polaroid': '1 foto portrait dengan bingkai Polaroid klasik. Desain bingkai bebas dipilih setelah foto selesai.'
         };
 
         const titleEl = document.getElementById('setup-selected-title');
@@ -3499,7 +3591,7 @@
         const btnText = document.getElementById('setup-btn-text');
 
         if (titleEl) titleEl.textContent = names[State.layout] || 'Strip 4 Pose';
-        if (ratioEl) ratioEl.textContent = ratios[State.layout] || '1:3.2';
+        if (ratioEl) ratioEl.textContent = ratios[State.layout] || '1:2.95';
         if (descEl) descEl.textContent = descs[State.layout] || '';
         if (btnText) btnText.textContent = `Buka Kamera (${State.targetPoseCount} Pose)`;
 
@@ -3534,8 +3626,8 @@
           const fBtn = document.getElementById(`frame-layout-${l}`);
           if (fBtn) {
             fBtn.className = l === layout
-              ? 'px-2.5 py-1 text-xs font-bold rounded-lg bg-pink-50 text-pozia-coral border border-pozia-coral transition-all'
-              : 'px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 transition-all';
+              ? 'px-2.5 py-1 text-xs font-bold rounded-lg bg-pink-50 text-pozia-coral border border-pozia-coral transition-all shrink-0'
+              : 'px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 transition-all shrink-0';
           }
         });
       },
@@ -3550,8 +3642,15 @@
         ['home', 'setup', 'camera', 'review', 'editor', 'export'].forEach(s => {
           const sec = document.getElementById(`stage-${s}`);
           if (sec) {
-            if (s === stage) sec.classList.remove('hidden');
-            else sec.classList.add('hidden');
+            if (s === stage) {
+              sec.classList.remove('hidden');
+              sec.classList.remove('stage-transition');
+              void sec.offsetWidth; // Force reflow to restart CSS animation cleanly
+              sec.classList.add('stage-transition');
+            } else {
+              sec.classList.add('hidden');
+              sec.classList.remove('stage-transition');
+            }
           }
         });
 
