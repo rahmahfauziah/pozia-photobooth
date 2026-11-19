@@ -1,9 +1,9 @@
     <!-- ====================================================== -->
     <!-- STAGE 2 (SETUP): PEMILIHAN LAYOUT & JUMLAH FOTO        -->
     <!-- ====================================================== -->
-    <section id="stage-setup" class="hidden flex-1 w-full overflow-y-auto no-scrollbar studio-editorial-bg flex flex-col justify-between p-4 sm:p-6 md:p-10">
+    <section id="stage-setup" class="hidden flex-1 w-full overflow-y-auto no-scrollbar studio-editorial-bg flex flex-col justify-between p-3.5 sm:p-5 md:p-7">
       
-      <div class="max-w-6xl mx-auto w-full flex flex-col gap-6 select-none">
+      <div class="max-w-6xl mx-auto w-full flex flex-col gap-4 sm:gap-5 select-none">
         
         <!-- Setup Header: Back Button & Step Badge -->
         <div class="flex items-center justify-between pb-3 border-b border-stone-200/70">
@@ -32,16 +32,17 @@
         </div>
 
         <!-- Layout Cards Gallery (All 5 Project Layouts) -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 md:gap-5 py-2">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5 md:gap-4 py-1.5">
           
           <!-- ========================================== -->
           <!-- 1. STRIP 4 POSE (1x4)                       -->
           <!-- ========================================== -->
           <div onclick="App.setSetupLayout('1x4')" id="setup-card-1x4"
-            class="p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-pozia-coral ring-2 ring-pozia-coral/25 bg-pink-50/20 shadow-md cursor-pointer transition-all flex flex-col items-center justify-between gap-3">
+            class="p-3 sm:p-3.5 rounded-2xl bg-white border-2 border-pozia-coral ring-2 ring-pozia-coral/25 bg-pink-50/20 shadow-md cursor-pointer transition-all flex flex-col items-center justify-between gap-2.5">
             
             <!-- Visual Strip Preview Container (100% STATIC) -->
-            <div class="w-28 sm:w-32 h-64 sm:h-72 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-2 flex flex-col justify-between shadow-inner">
+            <div class="h-48 sm:h-54 w-full flex items-center justify-center">
+              <div class="w-20 sm:w-22 h-48 sm:h-52 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-1.5 flex flex-col justify-between shadow-inner">
               <!-- 4 Static Photo Slots with Animated Crossfade Photos Inside -->
               <div class="w-full h-[21%] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
                 <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
@@ -106,14 +107,15 @@
                 </div>
               </div>
 
-              <!-- Static Bottom Branding -->
-              <div class="text-center font-serif text-[10px] text-stone-600 font-bold pt-1">
-                Pozia Studio
+                <!-- Static Bottom Branding -->
+                <div class="text-center font-serif text-[8px] text-stone-600 font-bold pt-0.5">
+                  Pozia Studio
+                </div>
               </div>
             </div>
 
             <!-- Card Labels & Active Indicator -->
-            <div class="w-full text-center flex flex-col items-center gap-1">
+            <div class="w-full text-center flex flex-col items-center gap-0.5">
               <span class="font-extrabold text-xs sm:text-sm text-pozia-charcoal">Strip 4 Pose</span>
               <span class="text-[10px] text-stone-400">4x Cekrek Vertikal</span>
               <span id="setup-indicator-1x4"
@@ -127,10 +129,11 @@
           <!-- 2. STRIP 3 POSE (1x3)                       -->
           <!-- ========================================== -->
           <div onclick="App.setSetupLayout('1x3')" id="setup-card-1x3"
-            class="p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-3">
+            class="p-3 sm:p-3.5 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-2.5">
             
             <!-- Visual Strip Preview Container (100% STATIC) -->
-            <div class="w-28 sm:w-32 h-64 sm:h-72 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-2.5 flex flex-col justify-between shadow-inner">
+            <div class="h-48 sm:h-54 w-full flex items-center justify-center">
+              <div class="w-20 sm:w-22 h-44 sm:h-48 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-1.5 flex flex-col justify-between shadow-inner">
               <!-- 3 Static Photo Slots -->
               <div class="w-full h-[28%] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
                 <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
@@ -179,14 +182,15 @@
                 </div>
               </div>
 
-              <!-- Static Bottom Branding -->
-              <div class="text-center font-serif text-[10px] text-stone-600 font-bold pt-1">
-                Pozia Studio
+                <!-- Static Bottom Branding -->
+                <div class="text-center font-serif text-[8px] text-stone-600 font-bold pt-0.5">
+                  Pozia Studio
+                </div>
               </div>
             </div>
 
             <!-- Card Labels & Active Indicator -->
-            <div class="w-full text-center flex flex-col items-center gap-1">
+            <div class="w-full text-center flex flex-col items-center gap-0.5">
               <span class="font-extrabold text-xs sm:text-sm text-pozia-charcoal">Strip 3 Pose</span>
               <span class="text-[10px] text-stone-400">3x Cekrek Lapang</span>
               <span id="setup-indicator-1x3"
@@ -200,10 +204,11 @@
           <!-- 3. STRIP 2 POSE (1x2)                       -->
           <!-- ========================================== -->
           <div onclick="App.setSetupLayout('1x2')" id="setup-card-1x2"
-            class="p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-3">
+            class="p-3 sm:p-3.5 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-2.5">
             
             <!-- Visual Strip Preview Container (100% STATIC) -->
-            <div class="w-28 sm:w-32 h-64 sm:h-72 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-3 flex flex-col justify-between shadow-inner">
+            <div class="h-48 sm:h-54 w-full flex items-center justify-center">
+              <div class="w-20 sm:w-22 h-36 sm:h-40 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-1.5 flex flex-col justify-between shadow-inner">
               <!-- 2 Static Photo Slots -->
               <div class="w-full h-[43%] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
                 <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
@@ -236,14 +241,15 @@
                 </div>
               </div>
 
-              <!-- Static Bottom Branding -->
-              <div class="text-center font-serif text-[10px] text-stone-600 font-bold pt-1">
-                Pozia Studio
+                <!-- Static Bottom Branding -->
+                <div class="text-center font-serif text-[8px] text-stone-600 font-bold pt-0.5">
+                  Pozia Studio
+                </div>
               </div>
             </div>
 
             <!-- Card Labels & Active Indicator -->
-            <div class="w-full text-center flex flex-col items-center gap-1">
+            <div class="w-full text-center flex flex-col items-center gap-0.5">
               <span class="font-extrabold text-xs sm:text-sm text-pozia-charcoal">Strip 2 Pose</span>
               <span class="text-[10px] text-stone-400">2x Cekrek Cepat</span>
               <span id="setup-indicator-1x2"
@@ -257,12 +263,13 @@
           <!-- 4. GRID 2x2 (2x2)                          -->
           <!-- ========================================== -->
           <div onclick="App.setSetupLayout('2x2')" id="setup-card-2x2"
-            class="p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-3">
+            class="p-3 sm:p-3.5 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-2.5">
             
-            <!-- Visual Grid Preview Container (100% STATIC) -->
-            <div class="w-28 sm:w-32 h-64 sm:h-72 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-2.5 flex flex-col justify-between shadow-inner">
-              <!-- 2x2 Grid with 4 Photo Slots -->
-              <div class="grid grid-cols-2 gap-1.5 flex-1 my-auto">
+            <!-- Visual Grid Preview Container (100% STATIC SQUARE) -->
+            <div class="h-48 sm:h-54 w-full flex items-center justify-center">
+              <div class="w-32 sm:w-36 h-32 sm:h-36 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-2 flex flex-col justify-between shadow-inner">
+                <!-- 2x2 Grid with 4 Photo Slots (Identical Square Cells) -->
+                <div class="grid grid-cols-2 gap-1 w-full flex-1 my-auto">
                 <!-- Slot 1 -->
                 <div class="aspect-square rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
                   <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
@@ -328,14 +335,15 @@
                 </div>
               </div>
 
-              <!-- Static Bottom Branding -->
-              <div class="text-center font-serif text-[10px] text-stone-600 font-bold pt-1">
-                Pozia Studio
+                <!-- Static Bottom Branding -->
+                <div class="text-center font-serif text-[8px] text-stone-600 font-bold pt-1">
+                  Pozia Studio
+                </div>
               </div>
             </div>
 
             <!-- Card Labels & Active Indicator -->
-            <div class="w-full text-center flex flex-col items-center gap-1">
+            <div class="w-full text-center flex flex-col items-center gap-0.5">
               <span class="font-extrabold text-xs sm:text-sm text-pozia-charcoal">Grid 2×2</span>
               <span class="text-[10px] text-stone-400">4 Foto Kolase Persegi</span>
               <span id="setup-indicator-2x2"
@@ -349,38 +357,45 @@
           <!-- 5. POLAROID (polaroid)                     -->
           <!-- ========================================== -->
           <div onclick="App.setSetupLayout('polaroid')" id="setup-card-polaroid"
-            class="p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-3">
+            class="p-3 sm:p-3.5 rounded-2xl bg-white border-2 border-stone-200/90 hover:border-stone-300 shadow-sm cursor-pointer transition-all flex flex-col items-center justify-between gap-2.5">
             
             <!-- Visual Polaroid Preview Container (100% STATIC) -->
-            <div class="w-28 sm:w-32 h-64 sm:h-72 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-3 flex flex-col justify-between shadow-inner">
-              <!-- 1 Large Single Photo Slot -->
-              <div class="w-full aspect-[4/3.8] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
-                <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
-                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g0_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE4E8"/><stop offset="100%" stop-color="#FFCCD5"/></linearGradient></defs><rect width="200" height="150" fill="url(#g0_5)"/><circle cx="100" cy="72" r="28" fill="#FAD4C0"/><path d="M70 150 C70 115 85 105 100 105 C115 105 130 115 130 150 Z" fill="#E24564" opacity="0.85"/><text x="165" y="30" font-size="12" fill="#FF5A79">✦</text></svg>
+            <div class="h-48 sm:h-54 w-full flex items-center justify-center">
+              <div class="w-28 sm:w-30 h-36 sm:h-40 bg-[#FFFDF9] border border-stone-200/90 rounded-xl p-2 flex flex-col justify-between shadow-inner">
+                <!-- 1 Large Portrait Photo Slot -->
+                <div class="w-full aspect-[4/4.3] rounded-md bg-stone-100 relative overflow-hidden border border-stone-200/40">
+                  <div class="slot-slide slot-slide-0 absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g0_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE4E8"/><stop offset="100%" stop-color="#FFCCD5"/></linearGradient></defs><rect width="200" height="150" fill="url(#g0_5)"/><circle cx="100" cy="72" r="28" fill="#FAD4C0"/><path d="M70 150 C70 115 85 105 100 105 C115 105 130 115 130 150 Z" fill="#E24564" opacity="0.85"/><text x="165" y="30" font-size="12" fill="#FF5A79">✦</text></svg>
+                  </div>
+                  <div class="slot-slide slot-slide-1 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g1_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs><rect width="200" height="150" fill="url(#g1_5)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="132" y="102" font-size="18">✌️</text></svg>
+                  </div>
+                  <div class="slot-slide slot-slide-2 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g2_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="150" fill="url(#g2_5)"/><circle cx="100" cy="72" r="28" fill="#F6C8B0"/><rect x="85" y="66" width="13" height="9" rx="2" fill="#18181B"/><rect x="102" y="66" width="13" height="9" rx="2" fill="#18181B"/></svg>
+                  </div>
+                  <div class="slot-slide slot-slide-3 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
+                    <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g3_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs><rect width="200" height="150" fill="url(#g3_5)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="88" y="110" font-size="18">🫶</text></svg>
+                  </div>
                 </div>
-                <div class="slot-slide slot-slide-1 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
-                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g1_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs><rect width="200" height="150" fill="url(#g1_5)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="132" y="102" font-size="18">✌️</text></svg>
-                </div>
-                <div class="slot-slide slot-slide-2 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
-                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g2_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="150" fill="url(#g2_5)"/><circle cx="100" cy="72" r="28" fill="#F6C8B0"/><rect x="85" y="66" width="13" height="9" rx="2" fill="#18181B"/><rect x="102" y="66" width="13" height="9" rx="2" fill="#18181B"/></svg>
-                </div>
-                <div class="slot-slide slot-slide-3 absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none">
-                  <svg viewBox="0 0 200 150" class="w-full h-full object-cover"><defs><linearGradient id="g3_5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs><rect width="200" height="150" fill="url(#g3_5)"/><circle cx="100" cy="72" r="28" fill="#F8D3BE"/><text x="88" y="110" font-size="18">🫶</text></svg>
-                </div>
-              </div>
 
-              <!-- Static Bottom Polaroid Chin Area -->
-              <div class="pt-4 pb-2 text-center flex flex-col items-center">
-                <span class="font-serif text-xs text-stone-800 font-bold tracking-wider">Pozia Studio</span>
-                <span class="text-[9px] text-stone-400 font-mono mt-0.5">POLAROID CLASSIC</span>
+                <!-- Static Bottom Polaroid Chin Area -->
+                <div class="pt-2 pb-0.5 text-center flex flex-col items-center">
+                  <span class="font-serif text-[9px] text-stone-800 font-bold tracking-wider">Pozia Studio</span>
+                  <span class="text-[7px] text-stone-400 font-mono">POLAROID CLASSIC</span>
+                </div>
               </div>
             </div>
 
             <!-- Card Labels & Active Indicator -->
-            <div class="w-full text-center flex flex-col items-center gap-1">
+            <div class="w-full text-center flex flex-col items-center gap-0.5">
               <span class="font-extrabold text-xs sm:text-sm text-pozia-charcoal">Polaroid</span>
-              <span class="text-[10px] text-stone-400">1 Pose Klasik</span>
+              <span class="text-[10px] text-stone-400">1 Pose Portrait Klasik</span>
               <span id="setup-indicator-polaroid"
+                class="setup-indicator-badge mt-1 px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-500 text-[10px] font-semibold">
+                Pilih
+              </span>
+            </div>
+          </div>
                 class="setup-indicator-badge mt-1 px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-500 text-[10px] font-semibold">
                 Pilih
               </span>
