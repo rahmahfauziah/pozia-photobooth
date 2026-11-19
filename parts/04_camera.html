@@ -1,4 +1,4 @@
-    <!-- ====================================================== -->
+﻿    <!-- ====================================================== -->
     <!-- STAGE 3 (CAMERA): STUDIO KAMERA                        -->
     <!-- ====================================================== -->
     <section id="stage-camera"
@@ -37,7 +37,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
-              <span class="hidden sm:inline">Ganti Lensa</span>
+              <span class="hidden sm:inline" data-i18n="cam_switch_text">Ganti Lensa</span>
             </button>
 
             <!-- Mirror Horizontal Flip Toggle -->
@@ -87,12 +87,13 @@
                   d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
               </svg>
             </div>
-            <h3 class="font-bold text-base text-white mb-1">Akses Kamera Ditolak / Tidak Tersedia</h3>
+            <h3 class="font-bold text-base text-white mb-1" data-i18n="cam_error_title">Akses Kamera Ditolak / Tidak Tersedia</h3>
             <p class="text-xs text-gray-300 max-w-xs mb-4" data-i18n="cam_error">
               Kamera tidak dapat diakses atau diblokir. Anda tetap bisa upload foto dari galeri!
             </p>
             <button onclick="App.triggerGalleryUpload()"
-              class="px-5 py-2.5 rounded-xl bg-pozia-coral text-white text-xs font-bold shadow-lg">
+              class="px-5 py-2.5 rounded-xl bg-pozia-coral text-white text-xs font-bold shadow-lg"
+              data-i18n="cam_upload_btn">
               Upload Foto dari Galeri
             </button>
           </div>
@@ -151,14 +152,14 @@
             <!-- Digital Zoom & Exposure -->
             <div class="pt-2 border-t border-white/10 flex flex-col gap-2.5">
               <div class="flex items-center justify-between">
-                <span class="text-gray-400 font-semibold">Digital Zoom:</span>
+                <span class="text-gray-400 font-semibold" data-i18n="zoom_label">Digital Zoom:</span>
                 <span id="zoom-val-label" class="font-bold text-white">1.0x</span>
               </div>
               <input type="range" id="zoom-slider" min="1.0" max="2.0" step="0.1" value="1.0"
                 oninput="CameraStudio.setZoom(this.value)" class="w-full accent-pozia-coral">
 
               <div class="flex items-center justify-between pt-1">
-                <span class="text-gray-400 font-semibold">Exposure / Kecerahan:</span>
+                <span class="text-gray-400 font-semibold" data-i18n="exposure_label">Exposure / Kecerahan:</span>
                 <span id="exposure-val-label" class="font-bold text-white">0</span>
               </div>
               <input type="range" id="exposure-slider" min="-30" max="30" step="5" value="0"
@@ -176,7 +177,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
             </svg>
-            <span class="text-[10px] text-gray-400">Upload</span>
+            <span class="text-[10px] text-gray-400" data-i18n="upload_label">Upload</span>
           </button>
 
           <!-- Hero Shutter Button -->
@@ -195,7 +196,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
-            <span class="text-[10px] text-gray-400">Review</span>
+            <span class="text-[10px] text-gray-400" data-i18n="review_label">Review</span>
           </button>
         </div>
       </div>
