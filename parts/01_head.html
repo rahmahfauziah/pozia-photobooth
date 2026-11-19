@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-[#FAF8F5]">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Pozia Studio — Photobooth & Photo Strip</title>
+  <meta name="description"
+    content="Pozia Studio: Digital photobooth artistik dengan 20+ bingkai tematik original, 14 filter warna analog, dan privasi penuh 100% di browser.">
+  <meta name="theme-color" content="#FF5A79">
+
+  <!-- Web App Manifest for Offline PWA Support -->
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2226%22 fill=%22%23FF5A79%22/><text y=%2265%22 font-size=%2254%22 font-family=%22serif%22 font-weight=%22bold%22 x=%2226%22 fill=%22white%22>P</text></svg>">
+
+  <!-- Typography: Google Fonts (Editorial Serif Playfair Display + Plus Jakarta Sans + Monospace + Script) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pozia: {
+              bg: '#FAF8F5',            // Warm cream base
+              cream: '#FFFDF9',         // Soft white
+              warm: '#F5EFEB',          // Warm neutral
+              coral: '#FF5A79',         // Pozia Signature Blush Pink
+              'coral-hover': '#E24564',
+              'coral-light': '#FFE8ED',
+              lilac: '#9B87F5',         // Soft purple accent
+              'lilac-light': '#F3E8FF',
+              charcoal: '#1C1917',      // Warm charcoal
+              dark: '#141211',
+              softgray: '#F0EFEA',
+              gold: '#F59E0B'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+            mono: ['"Courier Prime"', 'monospace'],
+            digital: ['"Share Tech Mono"', 'monospace'],
+            handwriting: ['"Caveat"', 'cursive']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar Suppression */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Soft Editorial Studio Backdrop */
+    .studio-editorial-bg {
+      background-color: #FAF8F5;
+      background-image:
+        radial-gradient(circle at 18% 22%, rgba(255, 90, 121, 0.05) 0%, transparent 45%),
+        radial-gradient(circle at 82% 78%, rgba(155, 135, 245, 0.05) 0%, transparent 50%);
+    }
+
+    /* Studio Artboard Workstation Viewport */
+    .studio-artboard-bg {
+      background: radial-gradient(circle at center, #262220 0%, #151312 100%);
+    }
+
+    .studio-elevation {
+      box-shadow: 0 30px 65px -15px rgba(20, 18, 17, 0.4), 0 12px 25px -10px rgba(20, 18, 17, 0.25);
+    }
+
+    /* Stage Transition (Smooth Fade & Subtle Slide) */
+    .stage-transition {
+      animation: stageFadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes stageFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Smooth Canvas Update Transition */
+    #editor-preview-canvas {
+      transition: opacity 0.22s ease-out, transform 0.22s ease-out;
+    }
+
+    .canvas-updating {
+      opacity: 0.88;
+      transform: scale(0.995);
+    }
+
+    /* Screen Flash FX */
+    #screen-flash {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50;
+      opacity: 0;
+      transition: opacity 0.35s ease-out;
+    }
+
+    #screen-flash.flash-active {
+      opacity: 1;
+      transition: none;
+    }
+
+    /* Shutter Button Glow */
+    .shutter-glow {
+      box-shadow: 0 0 0 4px rgba(255, 90, 121, 0.3), 0 10px 25px -5px rgba(255, 90, 121, 0.5);
+    }
+
+    /* Washi Tape Strip Accents */
+    .washi-tape-pink {
+      background: rgba(255, 182, 193, 0.85);
+      border-left: 2px dashed rgba(255, 105, 180, 0.4);
+      border-right: 2px dashed rgba(255, 105, 180, 0.4);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+
+    .washi-tape-yellow {
+      background: rgba(254, 240, 138, 0.88);
+      border-left: 2px dashed rgba(202, 138, 4, 0.4);
+      border-right: 2px dashed rgba(202, 138, 4, 0.4);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+
+    .washi-tape-mint {
+      background: rgba(167, 243, 208, 0.85);
+      border-left: 2px dashed rgba(16, 185, 129, 0.4);
+      border-right: 2px dashed rgba(16, 185, 129, 0.4);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+  </style>
+</head>
+
+<body class="h-full flex flex-col font-sans text-pozia-charcoal selection:bg-pozia-coral selection:text-white bg-[#FAF8F5]">
+
+  <!-- Hidden Photo & PNG Frame Inputs -->
+  <input type="file" id="gallery-file-input" accept="image/*" multiple class="hidden">
+  <input type="file" id="custom-frame-input" accept="image/png" class="hidden">
