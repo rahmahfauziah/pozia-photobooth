@@ -1,4 +1,4 @@
-﻿  <!-- ======================================================== -->
+  <!-- ======================================================== -->
   <!-- CORE JAVASCRIPT APPLICATION LOGIC                        -->
   <!-- ======================================================== -->
   <script>
@@ -105,7 +105,8 @@
 
           // Homepage Hero & Showcase
           hero_badge: 'Digital Creative Photobooth',
-          hero_desc: 'Capture your moments, your way. Create beautiful photostrips with Pozia Studio.',
+          hero_title: 'Abadikan Setiap Momen<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-pozia-coral via-rose-400 to-pink-500 italic font-normal">dengan Sempurna.</span>',
+          hero_desc: 'Abadikan momen dengan caramu sendiri. Buat photostrip yang indah bersama Pozia Studio.',
           cta_upload: 'Upload dari Galeri',
           try_times: 'Coba Times →',
           try_coquette: 'Coba Coquette →',
@@ -251,6 +252,7 @@
 
           // Homepage Hero & Showcase
           hero_badge: 'Digital Creative Photobooth',
+          hero_title: 'Make Every Moment<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-pozia-coral via-rose-400 to-pink-500 italic font-normal">Picture Perfect.</span>',
           hero_desc: 'Capture your moments, your way. Create beautiful photostrips with Pozia Studio.',
           cta_upload: 'Upload from Gallery',
           try_times: 'Try Times →',
@@ -391,7 +393,13 @@
         const texts = this.dict[lang] || this.dict.id;
         document.querySelectorAll('[data-i18n]').forEach(el => {
           const key = el.getAttribute('data-i18n');
-          if (texts[key] !== undefined) el.textContent = texts[key];
+          if (texts[key] !== undefined) {
+            if (typeof texts[key] === 'string' && texts[key].includes('<')) {
+              el.innerHTML = texts[key];
+            } else {
+              el.textContent = texts[key];
+            }
+          }
         });
         const btn = document.getElementById('lang-btn');
         if (btn) btn.textContent = lang === 'id' ? 'ID | EN' : 'EN | ID';
