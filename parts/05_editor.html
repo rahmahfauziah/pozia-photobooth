@@ -1,4 +1,4 @@
-    <!-- ====================================================== -->
+﻿    <!-- ====================================================== -->
     <!-- STAGE 5 (EDITOR): STUDIO EDITOR & FRAME WORKSTATION    -->
     <!-- ====================================================== -->
     <section id="stage-editor" class="hidden flex-1 w-full flex flex-col md:flex-row overflow-hidden bg-pozia-bg">
@@ -29,7 +29,7 @@
             <span>Pozia Live Studio Canvas</span>
           </div>
           <div class="hidden sm:flex px-2.5 py-0.5 md:px-3 md:py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[10px] text-gray-400">
-            <span>Klik slot foto untuk mengganti</span>
+            <span data-i18n="editor_slot_hint">Klik slot foto untuk mengganti</span>
           </div>
         </div>
       </div>
@@ -114,7 +114,7 @@
             
             <!-- Format Layout Switcher -->
             <div class="flex items-center justify-between pb-3 border-b border-gray-100 gap-2">
-              <span class="text-xs text-gray-500 font-bold shrink-0">Format Layout:</span>
+              <span class="text-xs text-gray-500 font-bold shrink-0" data-i18n="editor_format_label">Format Layout:</span>
               <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
                 <button onclick="App.setLayout('1x4'); EditorStudio.renderCanvas();" id="frame-layout-1x4"
                   class="px-2.5 py-1 text-xs font-bold rounded-lg bg-pink-50 text-pozia-coral border border-pozia-coral transition-all shrink-0">Strip 4</button>
@@ -133,25 +133,25 @@
             <div>
               <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1" id="frame-category-pills">
                 <button onclick="EditorStudio.filterCategory('all')" id="cat-btn-all"
-                  class="px-3 py-1 rounded-full text-xs font-bold bg-pozia-coral text-white whitespace-nowrap shadow-sm">Semua</button>
+                  class="px-3 py-1 rounded-full text-xs font-bold bg-pozia-coral text-white whitespace-nowrap shadow-sm" data-i18n="cat_all">Semua</button>
                 <button onclick="EditorStudio.filterCategory('gaming')" id="cat-btn-gaming"
-                  class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap">Gaming</button>
+                  class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap" data-i18n="cat_gaming">Gaming</button>
                 <button onclick="EditorStudio.filterCategory('scrapbook')" id="cat-btn-scrapbook"
-                  class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap">Scrapbook</button>
+                  class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap" data-i18n="cat_scrapbook">Scrapbook</button>
                 <button onclick="EditorStudio.filterCategory('cyber')" id="cat-btn-cyber"
-                  class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap">Y2K Cyber</button>
+                  class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap" data-i18n="cat_cyber">Y2K Cyber</button>
                 <button onclick="EditorStudio.filterCategory('comic')" id="cat-btn-comic"
-                  class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap">Pop Comic</button>
+                  class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap" data-i18n="cat_comic">Pop Comic</button>
                 <button onclick="EditorStudio.filterCategory('music')" id="cat-btn-music"
-                  class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap">Music</button>
+                  class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap" data-i18n="cat_music">Music</button>
                 <button onclick="EditorStudio.filterCategory('summer')" id="cat-btn-summer"
-                  class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap">Summer</button>
+                  class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap" data-i18n="cat_summer">Summer</button>
                 <button onclick="EditorStudio.filterCategory('retro')" id="cat-btn-retro"
-                  class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap">Retro</button>
+                  class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap" data-i18n="cat_retro">Retro</button>
                 <button onclick="EditorStudio.filterCategory('fantasy')" id="cat-btn-fantasy"
-                  class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap">Magical</button>
+                  class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap" data-i18n="cat_fantasy">Magical</button>
                 <button onclick="EditorStudio.filterCategory('solid')" id="cat-btn-solid"
-                  class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap">Minimalist</button>
+                  class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap" data-i18n="cat_solid">Minimalist</button>
               </div>
             </div>
 
@@ -168,7 +168,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                 </svg>
-                <span>Upload Custom Twibbon PNG</span>
+                <span data-i18n="upload_custom_frame">Upload Custom Twibbon PNG</span>
               </button>
             </div>
           </div>
@@ -177,7 +177,7 @@
           <div id="tab-content-filter" class="hidden flex flex-col gap-4">
             
             <div class="flex items-center justify-between pb-2 border-b border-gray-100">
-              <span class="text-xs text-gray-500 font-bold">14 Preset Filter Analog & Film:</span>
+              <span class="text-xs text-gray-500 font-bold" data-i18n="filter_heading">14 Preset Filter Analog & Film:</span>
               <span class="text-xs font-bold text-pozia-coral" id="active-filter-badge">Original</span>
             </div>
 
@@ -199,7 +199,7 @@
 
               <div>
                 <div class="flex items-center justify-between text-xs mb-1">
-                  <span class="text-gray-500 font-semibold">Fine Brightness:</span>
+                  <span class="text-gray-500 font-semibold" data-i18n="fine_brightness">Fine Brightness:</span>
                   <span id="brightness-val-text" class="font-bold text-pozia-coral">0</span>
                 </div>
                 <input type="range" id="manual-brightness-slider" min="-30" max="30" value="0"
@@ -208,7 +208,7 @@
 
               <div>
                 <div class="flex items-center justify-between text-xs mb-1">
-                  <span class="text-gray-500 font-semibold">Fine Contrast:</span>
+                  <span class="text-gray-500 font-semibold" data-i18n="fine_contrast">Fine Contrast:</span>
                   <span id="contrast-val-text" class="font-bold text-pozia-coral">0</span>
                 </div>
                 <input type="range" id="manual-contrast-slider" min="-30" max="30" value="0"
