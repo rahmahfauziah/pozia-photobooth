@@ -43,7 +43,15 @@ $checks = @(
     @{ Name = "HERO I18N: data-i18n attributes on hero_title and hero_desc"; Passed = ($html -match 'data-i18n="hero_title"' -and $html -match 'data-i18n="hero_desc"') },
     @{ Name = "HERO I18N: Indonesian hero_title and hero_desc registered"; Passed = ($html -match 'Abadikan Setiap Momen' -and $html -match 'Abadikan momen dengan caramu sendiri\. Buat photostrip yang indah bersama Pozia Studio\.') },
     @{ Name = "HERO I18N: English hero_title and hero_desc registered"; Passed = ($html -match 'Make Every Moment' -and $html -match 'Capture your moments, your way\. Create beautiful photostrips with Pozia Studio\.') },
-    @{ Name = "HERO I18N: innerHTML support for styled elements in I18N.apply"; Passed = ($html -match 'texts\[key\]\.includes\(''<''\)\)\s*\{\s*el\.innerHTML\s*=\s*texts\[key\];') }
+    @{ Name = "HERO I18N: innerHTML support for styled elements in I18N.apply"; Passed = ($html -match 'texts\[key\]\.includes\(''<''\)\)\s*\{\s*el\.innerHTML\s*=\s*texts\[key\];') },
+    @{ Name = "FLASH: Fullscreen fixed screen-flash overlay present"; Passed = ($html -match 'id="screen-flash"' -and $html -match 'position:\s*fixed;\s*inset:\s*0;\s*pointer-events:\s*none;\s*z-index:\s*99999;') },
+    @{ Name = "FLASH: Setup and Camera both have White, Peach, Pink, Off"; Passed = ($html -match 'setup-flash-white' -and $html -match 'setup-flash-peach' -and $html -match 'setup-flash-pink' -and $html -match 'setup-flash-off' -and $html -match 'flash-color-peach' -and $html -match 'flash-color-pink') },
+    @{ Name = "FLASH: triggerScreenFlash implemented with vibrant color map"; Passed = ($html -match 'triggerScreenFlash\(\)' -and $html -match '#FFE1CC' -and $html -match '#FFB8D0') },
+    @{ Name = "UPLOAD: Native file input accepts JPG, JPEG, PNG, WebP"; Passed = ($html -match 'id="gallery-file-input"\s+accept="image/jpeg,image/png,image/webp,image/jpg"') },
+    @{ Name = "UPLOAD: PhotoAdjuster interactive modal present"; Passed = ($html -match 'id="photo-adjust-modal"' -and $html -match 'PhotoAdjuster\s*=') },
+    @{ Name = "UPLOAD: ReviewStudio per-slot rotate, adjust, replace, remove"; Passed = ($html -match 'ReviewStudio\.rotatePhoto' -and $html -match 'ReviewStudio\.replacePhoto' -and $html -match 'ReviewStudio\.removePhoto') },
+    @{ Name = "UPLOAD: Partial slot filling & dashed unfilled placeholder"; Passed = ($html -match 'Slot \$\{idx \+ 1\} Kosong' -and $html -match '\+ Upload Foto') },
+    @{ Name = "UPLOAD: Canvas rendering applies photoTransforms (scale, pan, rotate)"; Passed = ($html -match 'State\.photoTransforms\[idx\]' -and $html -match 'transform\.rotate' -and $html -match 'transform\.scale') }
 )
 
 $allPassed = $true
