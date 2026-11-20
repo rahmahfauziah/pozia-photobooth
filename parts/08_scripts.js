@@ -175,11 +175,21 @@
           setup_timer_label: '⏱ Timer:',
           setup_flash_label: '💡 Screen Flash:',
           flash_white: 'Putih',
+          flash_peach: 'Peach',
           flash_warm: 'Warm',
+          flash_pink: 'Pink',
           flash_off: 'Mati',
           setup_shutter_label: '🔊 Shutter:',
           setup_shutter_status: 'Suara Kamera Aktif',
           setup_gallery_btn: 'Pilih dari Galeri',
+          adjust_title: 'Atur Posisi & Zoom Foto',
+          adjust_hint: 'Geser foto langsung pada kotak preview atau gunakan kontrol di bawah',
+          adjust_zoom: 'Zoom / Perbesar:',
+          adjust_rotate: 'Putar 90°',
+          adjust_reset: 'Reset Posisi',
+          adjust_replace: 'Ganti Foto',
+          adjust_remove: 'Hapus Foto',
+          adjust_save: 'Simpan & Terapkan',
 
           // Camera Stage
           back_btn: 'Kembali',
@@ -322,11 +332,21 @@
           setup_timer_label: '⏱ Timer:',
           setup_flash_label: '💡 Screen Flash:',
           flash_white: 'White',
+          flash_peach: 'Peach',
           flash_warm: 'Warm',
+          flash_pink: 'Pink',
           flash_off: 'Off',
           setup_shutter_label: '🔊 Shutter:',
           setup_shutter_status: 'Camera Sound Active',
           setup_gallery_btn: 'Upload from Gallery',
+          adjust_title: 'Adjust Photo Position & Zoom',
+          adjust_hint: 'Drag photo directly in preview box or use controls below',
+          adjust_zoom: 'Zoom Level:',
+          adjust_rotate: 'Rotate 90°',
+          adjust_reset: 'Reset Position',
+          adjust_replace: 'Replace Photo',
+          adjust_remove: 'Remove Photo',
+          adjust_save: 'Save & Apply',
 
           // Camera Stage
           back_btn: 'Back',
@@ -491,6 +511,8 @@
       customFrameImage: null,
       activeSlotToReplace: null,
       isRetakingSingle: false,
+      photoTransforms: {},       // Per-slot { scale: 1, panX: 0, panY: 0, rotate: 0 }
+      sourceMethod: 'camera',    // 'camera' or 'upload'
       lastRenderTime: 0
     };
 
@@ -650,8 +672,9 @@
       },
 
       setFlashColor(col) {
+        if (col === 'warm') col = 'peach';
         this.flashColor = col;
-        ['white', 'peach', 'warm', 'pink', 'off'].forEach(c => {
+        ['white', 'peach', 'pink', 'off'].forEach(c => {
           const btn = document.getElementById(`flash-color-${c}`);
           if (btn) {
             btn.className = c === col
@@ -665,6 +688,30 @@
               : 'px-2.5 py-1 rounded-md font-semibold text-[11px] text-stone-600 hover:text-pozia-coral';
           }
         });
+        const warmBtn = document.getElementById('setup-flash-warm');
+        if (warmBtn) {
+          warmBtn.className = (col === 'peach' || col === 'warm')
+            ? 'px-2.5 py-1 rounded-md font-bold text-[11px] bg-white text-pozia-coral shadow-xs'
+            : 'px-2.5 py-1 rounded-md font-semibold text-[11px] text-stone-600 hover:text-pozia-coral';
+        }
+      },
+
+      triggerScreenFlash() {
+        if (this.flashColor === 'off') return;
+        const flash = document.getElementById('screen-flash');
+        if (!flash) return;
+        const colorMap = {
+          white: '#FFFFFF',
+          peach: '#FFE1CC',
+          warm: '#FFE1CC',
+          pink: '#FFB8D0'
+        };
+        const bg = colorMap[this.flashColor] || '#FFFFFF';
+        flash.style.backgroundColor = bg;
+        flash.classList.add('flash-active');
+        setTimeout(() => {
+          flash.classList.remove('flash-active');
+        }, 120);
       },
 
       setZoom(val) {
@@ -726,52 +773,69 @@
       async startCaptureSequence() {
         if (this.isCapturingSequence) return;
         this.isCapturingSequence = true;
+        State.sourceMethod = 'camera';
 
         const overlay = document.getElementById('countdown-overlay');
         const num = document.getElementById('countdown-num');
         let seconds = this.timerDuration;
 
-        if (seconds > 0) {
-          overlay.classList.remove('opacity-0');
-          num.textContent = seconds;
-          SoundEngine.playBeep(440, 0.15);
+        const executeSnap = async () => {
+          this.triggerScreenFlash();
+          SoundEngine.playShutter();
+
+          const currentBurst = [];
+          this.captureHDBurstFrame(currentBurst);
+          await this.grabMainFrame();
+          State.btsBurstGroups.push(currentBurst);
+
+          // If we were just retaking a single pose:
+          if (State.isRetakingSingle) {
+            State.isRetakingSingle = false;
+            State.activeSlotToReplace = null;
+            this.isCapturingSequence = false;
+            const retakeBanner = document.getElementById('retake-banner');
+            if (retakeBanner) retakeBanner.classList.add('hidden');
+            ReviewStudio.openReview();
+            return;
+          }
+
+          State.currentPoseIndex++;
+          if (State.currentPoseIndex < State.targetPoseCount) {
+            this.updatePoseCounter();
+            this.isCapturingSequence = false;
+            setTimeout(() => this.startCaptureSequence(), 1200);
+          } else {
+            this.isCapturingSequence = false;
+            // All poses captured! Proceed to dedicated Review Stage
+            ReviewStudio.openReview();
+          }
+        };
+
+        if (seconds <= 0) {
+          // Instant capture when countdown is Off
+          await executeSnap();
+          return;
         }
+
+        // Countdown sequence
+        overlay.classList.remove('opacity-0');
+        num.textContent = seconds;
+        SoundEngine.playBeep(440, 0.15);
 
         const currentBurst = [];
         const interval = setInterval(async () => {
+          this.captureHDBurstFrame(currentBurst);
+          seconds--;
           if (seconds > 0) {
-            this.captureHDBurstFrame(currentBurst);
-            seconds--;
-            if (seconds > 0) {
-              num.textContent = seconds;
-              SoundEngine.playBeep(880, 0.1);
-            }
-          }
-
-          if (seconds <= 0) {
+            num.textContent = seconds;
+            SoundEngine.playBeep(880, 0.1);
+          } else {
             clearInterval(interval);
             overlay.classList.add('opacity-0');
-
-            if (this.flashColor !== 'off') {
-              const flash = document.getElementById('screen-flash');
-              const flashBg = {
-                white: '#FFFFFF',
-                peach: '#FFF3E6',
-                pink: '#FFE8F0'
-              }[this.flashColor] || '#FFFFFF';
-              flash.style.backgroundColor = flashBg;
-              flash.classList.add('flash-active');
-              setTimeout(() => flash.classList.remove('flash-active'), 350);
-            }
-
-            SoundEngine.playShutter();
-            this.captureHDBurstFrame(currentBurst);
-            await this.grabMainFrame();
-            State.btsBurstGroups.push(currentBurst);
-
-            // If we were just retaking a single pose:
-            if (State.isRetakingSingle) {
-              State.isRetakingSingle = false;
+            await executeSnap();
+          }
+        }, 1000);
+      },
               State.activeSlotToReplace = null;
               this.isCapturingSequence = false;
               document.getElementById('retake-banner').classList.add('hidden');
@@ -891,42 +955,186 @@
         this.render();
       },
 
+      handleBack() {
+        if (State.sourceMethod === 'upload') {
+          App.navigate('setup');
+        } else {
+          App.navigate('camera');
+        }
+      },
+
+      handleRetakeOrReset() {
+        if (State.sourceMethod === 'upload') {
+          const msg = (I18N.current === 'en')
+            ? 'Clear all uploaded photos and start over?'
+            : 'Hapus seluruh foto yang diupload dan mulai ulang?';
+          if (confirm(msg)) {
+            State.photos = [];
+            State.photoTransforms = {};
+            this.render();
+            App.triggerGalleryUpload();
+          }
+        } else {
+          CameraStudio.confirmRetakeAll();
+        }
+      },
+
       render() {
         const display = document.getElementById('review-photos-display');
         const badge = document.getElementById('review-pose-badge');
         const activeFilterName = document.getElementById('review-active-filter-name');
+        const backBtnText = document.getElementById('review-back-text');
+        const retakeBtn = document.getElementById('review-retake-btn');
 
-        if (badge) badge.textContent = `${State.photos.length} Pose Lengkap`;
+        if (backBtnText) {
+          backBtnText.textContent = State.sourceMethod === 'upload'
+            ? (I18N.current === 'en' ? 'Back to Setup' : 'Kembali ke Pengaturan')
+            : (I18N.current === 'en' ? 'Back to Camera' : 'Kembali ke Kamera');
+        }
+
+        if (retakeBtn) {
+          retakeBtn.textContent = State.sourceMethod === 'upload'
+            ? (I18N.current === 'en' ? 'Reset All Photos' : 'Reset Semua Foto')
+            : (I18N.current === 'en' ? 'Retake All Photos' : 'Foto Ulang Semua');
+        }
+
+        const filledCount = State.photos.filter(p => !!p).length;
+        if (badge) {
+          if (filledCount === State.targetPoseCount) {
+            badge.textContent = `${State.targetPoseCount} Pose Lengkap`;
+            badge.className = 'px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 font-bold text-xs';
+          } else {
+            badge.textContent = `${filledCount} dari ${State.targetPoseCount} Terisi`;
+            badge.className = 'px-3 py-1 rounded-full bg-amber-100 text-amber-700 font-bold text-xs';
+          }
+        }
         if (activeFilterName) activeFilterName.textContent = State.currentFilter.name;
 
         if (display) {
           display.innerHTML = '';
-          State.photos.forEach((img, idx) => {
+          for (let idx = 0; idx < State.targetPoseCount; idx++) {
+            const img = State.photos[idx];
             const card = document.createElement('div');
-            card.className = 'flex flex-col items-center gap-2 p-2.5 sm:p-3 rounded-2xl bg-white border border-gray-200/80 shadow-sm hover:shadow-md transition-all';
+            card.className = 'flex flex-col items-center gap-2 p-3 rounded-2xl bg-white border border-gray-200/90 shadow-sm hover:shadow-md transition-all w-36 sm:w-44 shrink-0';
 
-            const filterStyle = State.currentFilter.css === 'none' ? '' : `filter: ${State.currentFilter.css};`;
+            if (img) {
+              const transform = State.photoTransforms[idx] || { scale: 1.0, panX: 0, panY: 0, rotate: 0 };
+              const filterStyle = State.currentFilter.css === 'none' ? '' : `filter: ${State.currentFilter.css};`;
+              const transformStyle = `transform: translate(${transform.panX || 0}px, ${transform.panY || 0}px) rotate(${transform.rotate || 0}deg) scale(${transform.scale || 1.0}); transform-origin: center center;`;
 
-            card.innerHTML = `
-              <div class="w-28 h-38 sm:w-34 sm:h-46 rounded-xl overflow-hidden bg-black flex items-center justify-center relative shadow-inner">
-                <img src="${img.src}" style="${filterStyle}" class="w-full h-full object-cover transition-all duration-300">
-                <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/70 text-white font-mono text-[9px] sm:text-[10px] font-bold">
-                  Pose ${idx + 1}
-                </span>
-              </div>
-              <button onclick="CameraStudio.retakeSinglePose(${idx})"
-                class="w-full py-1.5 px-2.5 rounded-xl bg-gray-100 hover:bg-pozia-coral hover:text-white text-gray-700 text-xs font-bold transition-all flex items-center justify-center gap-1 shadow-xs">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-                <span>${I18N.current === "en" ? "Retake" : "Foto Ulang"}</span>
-              </button>
-            `;
+              card.innerHTML = `
+                <div class="w-full h-44 sm:h-52 rounded-xl overflow-hidden bg-stone-900 flex items-center justify-center relative shadow-inner cursor-pointer group"
+                  onclick="PhotoAdjuster.open(${idx})" title="Klik untuk atur posisi, zoom, atau rotasi">
+                  <img src="${img.src}" style="${filterStyle} ${transformStyle}" class="w-full h-full object-cover pointer-events-none transition-transform duration-100">
+                  <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/70 text-white font-mono text-[9px] sm:text-[10px] font-bold">
+                    Slot ${idx + 1}
+                  </span>
+                  <div class="absolute bottom-2 right-2 px-2 py-0.5 rounded-md bg-black/60 text-white text-[9px] font-medium flex items-center gap-1 backdrop-blur-xs group-hover:bg-pozia-coral transition-colors">
+                    <span>🔍 Atur</span>
+                  </div>
+                </div>
+
+                <!-- Action Toolbar for Filled Slot -->
+                <div class="grid grid-cols-4 gap-1 w-full pt-1">
+                  <!-- Rotate -->
+                  <button onclick="ReviewStudio.rotatePhoto(${idx})"
+                    class="py-1 px-1 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-[10px] font-bold flex flex-col items-center justify-center gap-0.5"
+                    title="Putar 90°">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    <span>Putar</span>
+                  </button>
+
+                  <!-- Adjust (Crop / Pan / Zoom) -->
+                  <button onclick="PhotoAdjuster.open(${idx})"
+                    class="py-1 px-1 rounded-lg bg-gray-100 hover:bg-pozia-coral hover:text-white text-gray-700 text-[10px] font-bold flex flex-col items-center justify-center gap-0.5 transition-colors"
+                    title="Atur Posisi & Zoom">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                    </svg>
+                    <span>Atur</span>
+                  </button>
+
+                  <!-- Replace -->
+                  <button onclick="ReviewStudio.replacePhoto(${idx})"
+                    class="py-1 px-1 rounded-lg bg-gray-100 hover:bg-blue-500 hover:text-white text-gray-700 text-[10px] font-bold flex flex-col items-center justify-center gap-0.5 transition-colors"
+                    title="Ganti Foto">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    </svg>
+                    <span>Ganti</span>
+                  </button>
+
+                  <!-- Remove -->
+                  <button onclick="ReviewStudio.removePhoto(${idx})"
+                    class="py-1 px-1 rounded-lg bg-gray-100 hover:bg-red-500 hover:text-white text-gray-700 text-[10px] font-bold flex flex-col items-center justify-center gap-0.5 transition-colors"
+                    title="Hapus Foto">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    <span>Hapus</span>
+                  </button>
+                </div>
+              `;
+            } else {
+              // Empty Slot Card
+              card.innerHTML = `
+                <div onclick="ReviewStudio.uploadForSlot(${idx})"
+                  class="w-full h-44 sm:h-52 rounded-xl border-2 border-dashed border-stone-300 hover:border-pozia-coral bg-stone-50/80 hover:bg-rose-50/40 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all p-3 text-center group">
+                  <div class="w-9 h-9 rounded-full bg-stone-200/80 group-hover:bg-pozia-coral/20 flex items-center justify-center text-stone-500 group-hover:text-pozia-coral transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                  </div>
+                  <span class="text-xs font-bold text-stone-700">Slot ${idx + 1} Kosong</span>
+                  <span class="text-[10px] text-stone-400">Klik untuk upload foto</span>
+                </div>
+                <div class="w-full pt-1 text-center">
+                  <button onclick="ReviewStudio.uploadForSlot(${idx})"
+                    class="w-full py-1.5 rounded-lg bg-stone-100 hover:bg-pozia-coral hover:text-white text-stone-600 text-[11px] font-bold transition-colors">
+                    + Upload Foto
+                  </button>
+                </div>
+              `;
+            }
             display.appendChild(card);
-          });
+          }
         }
 
         this.renderFiltersDock();
+      },
+
+      rotatePhoto(idx) {
+        if (!State.photoTransforms[idx]) {
+          State.photoTransforms[idx] = { scale: 1.0, panX: 0, panY: 0, rotate: 0 };
+        }
+        State.photoTransforms[idx].rotate = ((State.photoTransforms[idx].rotate || 0) + 90) % 360;
+        this.render();
+        if (State.stage === 'editor') EditorStudio.renderCanvas();
+      },
+
+      replacePhoto(idx) {
+        State.activeSlotToReplace = idx;
+        App.triggerGalleryUpload();
+      },
+
+      uploadForSlot(idx) {
+        State.activeSlotToReplace = idx;
+        App.triggerGalleryUpload();
+      },
+
+      removePhoto(idx) {
+        State.photos.splice(idx, 1);
+        const newTransforms = {};
+        State.photos.forEach((_, i) => {
+          if (State.photoTransforms[i >= idx ? i + 1 : i]) {
+            newTransforms[i] = State.photoTransforms[i >= idx ? i + 1 : i];
+          }
+        });
+        State.photoTransforms = newTransforms;
+        this.render();
+        if (State.stage === 'editor') EditorStudio.renderCanvas();
       },
 
       renderFiltersDock() {
@@ -955,6 +1163,138 @@
 
           dock.appendChild(btn);
         });
+      }
+    };
+
+    /* ===================================================
+       7b. INTERACTIVE PHOTO ADJUSTER (CROP, PAN, ZOOM, ROTATE)
+       =================================================== */
+    const PhotoAdjuster = {
+      activeSlot: 0,
+      isDragging: false,
+      startX: 0,
+      startY: 0,
+      initPanX: 0,
+      initPanY: 0,
+
+      open(slotIdx) {
+        if (!State.photos[slotIdx]) return;
+        this.activeSlot = slotIdx;
+        if (!State.photoTransforms[slotIdx]) {
+          State.photoTransforms[slotIdx] = { scale: 1.0, panX: 0, panY: 0, rotate: 0 };
+        }
+        const modal = document.getElementById('photo-adjust-modal');
+        if (!modal) return;
+        modal.classList.remove('hidden');
+
+        const title = document.getElementById('adjust-slot-title');
+        if (title) title.textContent = `Atur Foto - Slot ${slotIdx + 1}`;
+
+        this.syncUI();
+        this.setupDragEvents();
+      },
+
+      close() {
+        const modal = document.getElementById('photo-adjust-modal');
+        if (modal) modal.classList.add('hidden');
+        if (State.stage === 'review') ReviewStudio.render();
+        else if (State.stage === 'editor') EditorStudio.renderCanvas();
+      },
+
+      syncUI() {
+        const t = State.photoTransforms[this.activeSlot] || { scale: 1.0, panX: 0, panY: 0, rotate: 0 };
+        const img = State.photos[this.activeSlot];
+        const previewImg = document.getElementById('adjust-preview-img');
+        if (previewImg && img) {
+          previewImg.src = img.src;
+          const filterStyle = State.currentFilter.css === 'none' ? '' : `filter: ${State.currentFilter.css};`;
+          previewImg.style.cssText = `${filterStyle} transform: translate(${t.panX || 0}px, ${t.panY || 0}px) rotate(${t.rotate || 0}deg) scale(${t.scale || 1.0}); transform-origin: center center;`;
+        }
+
+        const zoomSlider = document.getElementById('adjust-zoom-slider');
+        const zoomVal = document.getElementById('adjust-zoom-val');
+        if (zoomSlider) zoomSlider.value = (t.scale || 1.0);
+        if (zoomVal) zoomVal.textContent = `${(t.scale || 1.0).toFixed(1)}x`;
+
+        const rotVal = document.getElementById('adjust-rotate-val');
+        if (rotVal) rotVal.textContent = `${t.rotate || 0}°`;
+      },
+
+      setZoom(val) {
+        const t = State.photoTransforms[this.activeSlot];
+        if (!t) return;
+        t.scale = parseFloat(val);
+        this.syncUI();
+      },
+
+      stepZoom(delta) {
+        const t = State.photoTransforms[this.activeSlot];
+        if (!t) return;
+        t.scale = Math.max(1.0, Math.min(3.0, (t.scale || 1.0) + delta));
+        this.syncUI();
+      },
+
+      rotateStep() {
+        const t = State.photoTransforms[this.activeSlot];
+        if (!t) return;
+        t.rotate = ((t.rotate || 0) + 90) % 360;
+        this.syncUI();
+      },
+
+      reset() {
+        State.photoTransforms[this.activeSlot] = { scale: 1.0, panX: 0, panY: 0, rotate: 0 };
+        this.syncUI();
+      },
+
+      replace() {
+        this.close();
+        ReviewStudio.replacePhoto(this.activeSlot);
+      },
+
+      remove() {
+        this.close();
+        ReviewStudio.removePhoto(this.activeSlot);
+      },
+
+      setupDragEvents() {
+        const box = document.getElementById('adjust-preview-box');
+        if (!box || box._dragAttached) return;
+        box._dragAttached = true;
+
+        const onStart = (e) => {
+          this.isDragging = true;
+          const pt = e.touches ? e.touches[0] : e;
+          this.startX = pt.clientX;
+          this.startY = pt.clientY;
+          const t = State.photoTransforms[this.activeSlot];
+          this.initPanX = t ? (t.panX || 0) : 0;
+          this.initPanY = t ? (t.panY || 0) : 0;
+        };
+
+        const onMove = (e) => {
+          if (!this.isDragging) return;
+          const pt = e.touches ? e.touches[0] : e;
+          const dx = pt.clientX - this.startX;
+          const dy = pt.clientY - this.startY;
+          const t = State.photoTransforms[this.activeSlot];
+          if (t) {
+            t.panX = this.initPanX + dx;
+            t.panY = this.initPanY + dy;
+            this.syncUI();
+          }
+        };
+
+        const onEnd = () => {
+          this.isDragging = false;
+        };
+
+        box.addEventListener('mousedown', onStart);
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onEnd);
+
+        box.addEventListener('touchstart', onStart, { passive: true });
+        window.addEventListener('touchmove', onMove, { passive: true });
+        window.addEventListener('touchend', onEnd);
       }
     };
 
@@ -1181,22 +1521,15 @@
           const x = (e.clientX - rect.left) * scaleX;
           const y = (e.clientY - rect.top) * scaleY;
 
+          let clickedSlot = -1;
           if (State.frameTheme === 'denim-stars' && State.layout === '1x3') {
             let slot = 0;
             if (y > canvas.height * 0.65) slot = 2;
             else if (y > canvas.height * 0.35) slot = 1;
-            State.activeSlotToReplace = slot;
-            App.triggerGalleryUpload();
-            return;
-          }
-
-          if (State.layout === 'polaroid') {
-            State.activeSlotToReplace = 0;
-            App.triggerGalleryUpload();
-            return;
-          }
-
-          if (State.layout === '2x2') {
+            clickedSlot = slot;
+          } else if (State.layout === 'polaroid') {
+            clickedSlot = 0;
+          } else if (State.layout === '2x2') {
             const padding = Math.round(canvas.width * 0.055);
             const gap = Math.round(canvas.width * 0.035);
             const availableW = canvas.width - padding * 2;
@@ -1208,24 +1541,30 @@
             else if (x >= midX && y < midY) slot = 1;
             else if (x < midX && y >= midY) slot = 2;
             else slot = 3;
-            State.activeSlotToReplace = slot;
-            App.triggerGalleryUpload();
-            return;
+            clickedSlot = slot;
+          } else {
+            // Strip 1x4, 1x3, 1x2
+            const poses = State.layout === '1x2' ? 2 : (State.layout === '1x3' ? 3 : 4);
+            const topMargin = (State.frameTheme === 'the-pozia-times' || State.frameTheme === 'pop-art-comic') ? Math.round(canvas.width * 0.16) : Math.round(canvas.width * 0.075);
+            const bottomMargin = Math.round(canvas.width * 0.22);
+            const availableH = canvas.height - topMargin - bottomMargin;
+            const gap = State.layout === '1x4' ? Math.round(canvas.width * 0.026) : (State.layout === '1x3' ? Math.round(canvas.width * 0.032) : Math.round(canvas.width * 0.038));
+            const slotH = Math.round((availableH - gap * (poses - 1)) / poses);
+
+            let s = Math.floor((y - topMargin) / (slotH + gap));
+            if (s < 0) s = 0;
+            if (s >= poses) s = poses - 1;
+            clickedSlot = s;
           }
 
-          // Strip 1x4, 1x3, 1x2
-          const poses = State.layout === '1x2' ? 2 : (State.layout === '1x3' ? 3 : 4);
-          const topMargin = (State.frameTheme === 'the-pozia-times' || State.frameTheme === 'pop-art-comic') ? Math.round(canvas.width * 0.16) : Math.round(canvas.width * 0.075);
-          const bottomMargin = Math.round(canvas.width * 0.22);
-          const availableH = canvas.height - topMargin - bottomMargin;
-          const gap = State.layout === '1x4' ? Math.round(canvas.width * 0.026) : (State.layout === '1x3' ? Math.round(canvas.width * 0.032) : Math.round(canvas.width * 0.038));
-          const slotH = Math.round((availableH - gap * (poses - 1)) / poses);
-
-          let clickedSlot = Math.floor((y - topMargin) / (slotH + gap));
-          if (clickedSlot < 0) clickedSlot = 0;
-          if (clickedSlot >= poses) clickedSlot = poses - 1;
-          State.activeSlotToReplace = clickedSlot;
-          App.triggerGalleryUpload();
+          if (clickedSlot !== -1) {
+            if (State.photos[clickedSlot]) {
+              PhotoAdjuster.open(clickedSlot);
+            } else {
+              State.activeSlotToReplace = clickedSlot;
+              App.triggerGalleryUpload();
+            }
+          }
         };
       },
 
@@ -1378,7 +1717,7 @@
           ctx.roundRect(rect.x, rect.y, rect.w, rect.h, width * 0.02);
           ctx.clip();
 
-          const photo = State.photos[idx] !== undefined ? State.photos[idx] : (State.photos[0] || null);
+          const photo = State.photos[idx];
           if (photo) {
             if (photo instanceof HTMLImageElement && !photo.complete) {
               photo.onload = () => EditorStudio.renderCanvas();
@@ -1388,28 +1727,44 @@
               ctx.filter = State.currentFilter.css;
             }
 
+            const transform = State.photoTransforms[idx] || { scale: 1.0, panX: 0, panY: 0, rotate: 0 };
             const pW = photo.videoWidth || photo.naturalWidth || photo.width;
             const pH = photo.videoHeight || photo.naturalHeight || photo.height;
             if (pW && pH) {
-              const imgRatio = pW / pH;
-              const slotRatio = rect.w / rect.h;
-              let sW, sH, sX, sY;
-              if (imgRatio > slotRatio) {
-                sH = pH; sW = pH * slotRatio;
-                sX = (pW - sW) / 2; sY = 0;
-              } else {
-                sW = pW; sH = pW / slotRatio;
-                sX = 0; sY = (pH - sH) / 2;
+              const rot = transform.rotate || 0;
+              const isSideways = (rot % 180 !== 0);
+              const effW = isSideways ? pH : pW;
+              const effH = isSideways ? pW : pH;
+
+              const baseScale = Math.max(rect.w / effW, rect.h / effH);
+              const scale = baseScale * (transform.scale || 1.0);
+
+              const panScale = rect.w / 180;
+              const panX = (transform.panX || 0) * panScale;
+              const panY = (transform.panY || 0) * panScale;
+
+              ctx.save();
+              ctx.translate(rect.x + rect.w / 2 + panX, rect.y + rect.h / 2 + panY);
+              if (rot) {
+                ctx.rotate((rot * Math.PI) / 180);
               }
-              ctx.drawImage(photo, sX, sY, sW, sH, rect.x, rect.y, rect.w, rect.h);
+              ctx.scale(scale, scale);
+              ctx.drawImage(photo, -pW / 2, -pH / 2, pW, pH);
+              ctx.restore();
             }
           } else {
-            // Placeholder slot
-            ctx.fillStyle = '#E5E7EB';
+            // Unfilled slot placeholder with dashed border
+            ctx.fillStyle = '#F9FAFB';
             ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+            ctx.strokeStyle = '#D1D5DB';
+            ctx.lineWidth = Math.max(1, width * 0.002);
+            ctx.setLineDash([width * 0.008, width * 0.008]);
+            ctx.strokeRect(rect.x + 2, rect.y + 2, rect.w - 4, rect.h - 4);
+            ctx.setLineDash([]);
             ctx.fillStyle = '#9CA3AF';
-            ctx.font = `600 ${width * 0.035}px "Plus Jakarta Sans", sans-serif`;
+            ctx.font = `600 ${width * 0.032}px "Plus Jakarta Sans", sans-serif`;
             ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
             ctx.fillText(`+ Foto ${idx + 1}`, rect.x + rect.w / 2, rect.y + rect.h / 2);
           }
           ctx.restore();
@@ -1901,43 +2256,55 @@
           try { return localStorage.getItem('pozia_lang'); } catch (e) { return null; }
         })() || 'id';
         I18N.apply(savedLang);
+        CameraStudio.setFlashColor(CameraStudio.flashColor);
+        CameraStudio.setTimer(CameraStudio.timerDuration);
         this.initPWA();
         this.updateSetupPreview();
 
-        // Gallery File Input (Supports multi-file upload)
+        // Gallery File Input (Supports multi-file upload for JPG, JPEG, PNG, WebP)
         document.getElementById('gallery-file-input').addEventListener('change', async (e) => {
           const files = Array.from(e.target.files);
           if (files.length === 0) return;
 
-          // If replacing a specific clicked slot in editor
-          if (State.activeSlotToReplace !== null && files.length > 0) {
-            const img = await App.loadImageFromFile(files[0]);
-            State.photos[State.activeSlotToReplace] = img;
-            State.activeSlotToReplace = null;
-            if (State.stage === 'editor') EditorStudio.renderCanvas();
-            else if (State.stage === 'review') ReviewStudio.render();
+          // Filter supported image types (JPG, JPEG, PNG, WebP)
+          const validFiles = files.filter(f => /image\/(jpeg|jpg|png|webp)/i.test(f.type) || /\.(jpe?g|png|webp)$/i.test(f.name));
+          if (validFiles.length === 0) {
+            alert(I18N.current === 'en' ? 'Please select valid image files (JPG, JPEG, PNG, WebP).' : 'Silakan pilih file gambar yang didukung (JPG, JPEG, PNG, WebP).');
             e.target.value = '';
             return;
           }
 
-          // Otherwise adding new photos to slots sequentially
-          for (let file of files) {
+          State.sourceMethod = 'upload';
+          CameraStudio.stopStream();
+
+          // If replacing a specific clicked slot in editor or review
+          if (State.activeSlotToReplace !== null && State.activeSlotToReplace !== undefined && validFiles.length > 0) {
+            const slot = State.activeSlotToReplace;
+            const img = await App.loadImageFromFile(validFiles[0]);
+            State.photos[slot] = img;
+            State.photoTransforms[slot] = { scale: 1.0, panX: 0, panY: 0, rotate: 0 };
+            State.activeSlotToReplace = null;
+            if (State.stage === 'editor') EditorStudio.renderCanvas();
+            else ReviewStudio.render();
+            e.target.value = '';
+            return;
+          }
+
+          // Otherwise adding new photos to slots sequentially up to targetPoseCount
+          for (let file of validFiles) {
             if (State.photos.length >= State.targetPoseCount) break;
             const img = await App.loadImageFromFile(file);
+            const slotIdx = State.photos.length;
             State.photos.push(img);
+            if (!State.photoTransforms[slotIdx]) {
+              State.photoTransforms[slotIdx] = { scale: 1.0, panX: 0, panY: 0, rotate: 0 };
+            }
           }
 
           if (State.stage === 'editor') {
             EditorStudio.renderCanvas();
-          } else if (State.stage === 'home' || State.stage === 'setup') {
-            if (State.photos.length > 0) {
-              ReviewStudio.openReview();
-            }
-          } else if (State.photos.length >= State.targetPoseCount) {
-            ReviewStudio.openReview();
           } else {
-            State.currentPoseIndex = State.photos.length;
-            CameraStudio.updatePoseCounter();
+            ReviewStudio.openReview();
           }
           e.target.value = '';
         });
@@ -2213,6 +2580,8 @@
 
       resetAndNew() {
         State.photos = [];
+        State.photoTransforms = {};
+        State.sourceMethod = 'camera';
         State.btsBurstGroups = [];
         State.currentPoseIndex = 0;
         State.activeSlotToReplace = null;
