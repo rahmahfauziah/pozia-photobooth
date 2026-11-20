@@ -4,6 +4,9 @@
     <section id="stage-camera"
       class="hidden flex-1 w-full flex flex-col justify-between bg-[#131215] text-white overflow-y-auto no-scrollbar relative select-none">
 
+      <!-- Fullscreen Screen Flash FX Layer -->
+      <div id="screen-flash"></div>
+
       <!-- ========================================== -->
       <!-- 1. TOP HEADER BAR                          -->
       <!-- ========================================== -->
@@ -134,9 +137,6 @@
         <!-- Viewfinder Outer Frame (Proportional, Centered, Spacious) -->
         <div class="w-full h-full max-h-[52vh] sm:max-h-[56vh] md:max-h-[60vh] aspect-[4/3] sm:aspect-[16/10] bg-[#1e1c22] border border-white/10 rounded-3xl shadow-2xl relative overflow-hidden flex items-center justify-center">
           
-          <!-- Screen Flash Effect Layer -->
-          <div id="screen-flash"></div>
-
           <!-- Countdown Overlay -->
           <div id="countdown-overlay"
             class="absolute z-30 opacity-0 pointer-events-none transition-opacity duration-200 flex flex-col items-center">
