@@ -1,7 +1,8 @@
-const CACHE_NAME = 'pozia-v3.6.0';
+const CACHE_NAME = 'pozia-v3.7.0';
 const ASSETS_TO_CACHE = [
   './manifest.json',
-  './assets/denim-star-frame.png'
+  './assets/denim-star-frame.png',
+  './assets/mystery-investigation-frame.png'
 ];
 
 self.addEventListener('install', (event) => {
