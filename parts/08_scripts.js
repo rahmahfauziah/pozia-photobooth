@@ -836,26 +836,6 @@
           }
         }, 1000);
       },
-              State.activeSlotToReplace = null;
-              this.isCapturingSequence = false;
-              document.getElementById('retake-banner').classList.add('hidden');
-              ReviewStudio.openReview();
-              return;
-            }
-
-            State.currentPoseIndex++;
-            if (State.currentPoseIndex < State.targetPoseCount) {
-              this.updatePoseCounter();
-              this.isCapturingSequence = false;
-              setTimeout(() => this.startCaptureSequence(), 1200);
-            } else {
-              this.isCapturingSequence = false;
-              // All poses captured! Proceed to dedicated Review Stage
-              ReviewStudio.openReview();
-            }
-          }
-        }, 1000);
-      },
 
       captureHDBurstFrame(burstArray) {
         const video = document.getElementById('live-video');
@@ -2259,7 +2239,6 @@
         CameraStudio.setFlashColor(CameraStudio.flashColor);
         CameraStudio.setTimer(CameraStudio.timerDuration);
         this.initPWA();
-        this.updateSetupPreview();
 
         // Gallery File Input (Supports multi-file upload for JPG, JPEG, PNG, WebP)
         document.getElementById('gallery-file-input').addEventListener('change', async (e) => {
