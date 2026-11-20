@@ -4276,6 +4276,7 @@
       { id: 'sunset-beach-club', cat: 'summer', name: 'Sunset Beach Club', desc: 'Golden Hour Aura & Palms', thumb: 'linear-gradient(135deg, #FB923C, #F43F5E, #FDE047)' },
 
       // Retro & Vintage
+      { id: 'mystery-investigation', cat: 'retro', name: 'Mystery Investigation', desc: 'Detective Board & Red Thread', thumb: 'linear-gradient(135deg, #3D2817, #784E2D)' },
       { id: 'the-pozia-times', cat: 'retro', name: 'The Pozia Times', desc: 'Vintage Editorial Newsprint', thumb: '#F4ECD8' },
       { id: 'film-contact-sheet', cat: 'retro', name: '35mm Film Sheet', desc: 'Analog Sprocket Holes & Numbers', thumb: '#121214' },
 
@@ -5081,6 +5082,7 @@
     const EditorStudio = {
       activeTab: 'frame',
       denimFrameImage: null,
+      mysteryFrameImage: null,
       history: [],
       historyIndex: -1,
 
@@ -5299,7 +5301,13 @@
           const y = (e.clientY - rect.top) * scaleY;
 
           let clickedSlot = -1;
-          if (State.frameTheme === 'denim-stars' && State.layout === '1x3') {
+          if (State.frameTheme === 'mystery-investigation') {
+            if (x < canvas.width * 0.45) {
+              clickedSlot = (y < canvas.height * 0.42) ? 0 : 2;
+            } else {
+              clickedSlot = (y < canvas.height * 0.55) ? 1 : 3;
+            }
+          } else if (State.frameTheme === 'denim-stars' && State.layout === '1x3') {
             let slot = 0;
             if (y > canvas.height * 0.65) slot = 2;
             else if (y > canvas.height * 0.35) slot = 1;
@@ -5419,6 +5427,77 @@
               this.denimFrameImage = new Image();
               this.denimFrameImage.onload = () => this.renderCanvas();
               this.denimFrameImage.src = './assets/denim-star-frame.png';
+            }
+          }
+          return;
+        }
+
+        // Custom Mystery Investigation Frame (4-Pose Detective Board with Tilted Polaroids)
+        if (State.frameTheme === 'mystery-investigation') {
+          const width = isHighRes ? 1170 : 585;
+          const height = isHighRes ? 2048 : 1024;
+          canvas.width = width;
+          canvas.height = height;
+
+          const s = width / 585;
+          const mysterySlots = [
+            { cx: 137 * s, cy: 251 * s, w: 146 * s, h: 146 * s, rot: 0.2985 }, // Slot 1: Top-Left (+17.1 deg)
+            { cx: 414 * s, cy: 338 * s, w: 140 * s, h: 140 * s, rot: -0.0855 }, // Slot 2: Top-Right (-4.9 deg)
+            { cx: 94 * s, cy: 561 * s, w: 146 * s, h: 146 * s, rot: 0.2091 },  // Slot 3: Bottom-Left (+12.0 deg)
+            { cx: 472 * s, cy: 730 * s, w: 144 * s, h: 144 * s, rot: 0.4636 }  // Slot 4: Bottom-Right (+26.6 deg)
+          ];
+
+          ctx.fillStyle = '#D3B186';
+          ctx.fillRect(0, 0, width, height);
+
+          mysterySlots.forEach((slot, idx) => {
+            const photo = State.photos[idx] !== undefined ? State.photos[idx] : (State.photos[0] || null);
+            if (photo) {
+              if (photo instanceof HTMLImageElement && !photo.complete) {
+                photo.onload = () => EditorStudio.renderCanvas();
+              }
+              ctx.save();
+              ctx.translate(slot.cx, slot.cy);
+              ctx.rotate(slot.rot);
+
+              if (ctx.filter !== undefined && State.currentFilter && State.currentFilter.css !== 'none') {
+                ctx.filter = State.currentFilter.css;
+              }
+
+              const transform = State.photoTransforms[idx] || { scale: 1.0, panX: 0, panY: 0, rotate: 0 };
+              const userRotRad = ((transform.rotate || 0) * Math.PI) / 180;
+              if (userRotRad !== 0) {
+                ctx.rotate(userRotRad);
+              }
+
+              const pW = photo.videoWidth || photo.naturalWidth || photo.width;
+              const pH = photo.videoHeight || photo.naturalHeight || photo.height;
+              if (pW && pH) {
+                const isSideways = ((transform.rotate || 0) % 180 !== 0);
+                const effW = isSideways ? pH : pW;
+                const effH = isSideways ? pW : pH;
+
+                const baseScale = Math.max(slot.w / effW, slot.h / effH);
+                const scale = baseScale * (transform.scale || 1.0);
+                const drawW = effW * scale;
+                const drawH = effH * scale;
+
+                const panX = (transform.panX || 0) * (isHighRes ? 2 : 1);
+                const panY = (transform.panY || 0) * (isHighRes ? 2 : 1);
+
+                ctx.drawImage(photo, -drawW / 2 + panX, -drawH / 2 + panY, drawW, drawH);
+              }
+              ctx.restore();
+            }
+          });
+
+          if (this.mysteryFrameImage && this.mysteryFrameImage.complete && this.mysteryFrameImage.naturalWidth > 0) {
+            ctx.drawImage(this.mysteryFrameImage, 0, 0, width, height);
+          } else {
+            if (!this.mysteryFrameImage) {
+              this.mysteryFrameImage = new Image();
+              this.mysteryFrameImage.onload = () => this.renderCanvas();
+              this.mysteryFrameImage.src = './assets/mystery-investigation-frame.png';
             }
           }
           return;
@@ -5603,6 +5682,10 @@
           ctx.fillStyle = '#E2E8F0';
           ctx.font = `800 ${brandSize * 0.9}px "Plus Jakarta Sans", sans-serif`;
           ctx.fillText('POZIA', width / 2, brandY);
+        } else if (State.frameTheme === 'mystery-investigation') {
+          ctx.fillStyle = '#E7DFD5';
+          ctx.font = `bold ${brandSize * 0.8}px "Courier Prime", monospace`;
+          ctx.fillText('POZIA EVIDENCE ARCHIVE', width / 2, brandY);
         } else {
           ctx.fillStyle = '#1C1917';
           ctx.font = `600 ${brandSize}px "Playfair Display", serif`;
@@ -5694,6 +5777,19 @@
           ctx.fillText('★', width * 0.06, width * 0.08);
           ctx.fillText('★', width * 0.94, width * 0.12);
           ctx.fillText('★', width * 0.92, height * 0.88);
+        }
+        // 2c. Mystery Investigation
+        else if (th === 'mystery-investigation') {
+          ctx.fillStyle = '#D3B186';
+          ctx.fillRect(0, 0, width, height);
+          ctx.fillStyle = 'rgba(61, 40, 23, 0.06)';
+          for (let i = 0; i < height; i += 6) {
+            ctx.fillRect(0, i, width, 2);
+          }
+          ctx.fillStyle = '#8B0000';
+          ctx.font = `bold ${width * 0.038}px "Courier Prime", monospace`;
+          ctx.textAlign = 'center';
+          ctx.fillText('★ CONFIDENTIAL INVESTIGATION ★', width / 2, width * 0.05);
         }
         // 3. Botanical Herbarium & Washi
         else if (th === 'washi-botanical') {
