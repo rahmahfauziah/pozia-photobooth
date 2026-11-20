@@ -56,6 +56,11 @@
   </script>
 
   <style>
+    /* Strict display hidden rule */
+    .hidden {
+      display: none !important;
+    }
+
     /* Custom Scrollbar Suppression */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
@@ -3594,7 +3599,7 @@
   <!-- ======================================================== -->
 
   <!-- Telemetry & System Diagnostics Modal -->
-  <div id="diagnostics-modal"
+  <div id="diagnostics-modal" style="display: none;"
     class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-gray-100 flex flex-col gap-4">
       <div class="flex items-center justify-between pb-3 border-b border-gray-100">
@@ -3643,7 +3648,7 @@
   </div>
 
   <!-- Saved History Gallery Modal -->
-  <div id="history-modal"
+  <div id="history-modal" style="display: none;"
     class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div
       class="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-gray-100 flex flex-col gap-4 max-h-[85vh] overflow-hidden">
@@ -3675,7 +3680,7 @@
   </div>
 
   <!-- Interactive Photo Position, Crop & Zoom Adjust Modal -->
-  <div id="photo-adjust-modal"
+  <div id="photo-adjust-modal" style="display: none;"
     class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 select-none">
     <div class="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-gray-100 flex flex-col gap-4 max-h-[92vh] overflow-y-auto no-scrollbar">
       
@@ -4625,26 +4630,6 @@
             clearInterval(interval);
             overlay.classList.add('opacity-0');
             await executeSnap();
-          }
-        }, 1000);
-      },
-              State.activeSlotToReplace = null;
-              this.isCapturingSequence = false;
-              document.getElementById('retake-banner').classList.add('hidden');
-              ReviewStudio.openReview();
-              return;
-            }
-
-            State.currentPoseIndex++;
-            if (State.currentPoseIndex < State.targetPoseCount) {
-              this.updatePoseCounter();
-              this.isCapturingSequence = false;
-              setTimeout(() => this.startCaptureSequence(), 1200);
-            } else {
-              this.isCapturingSequence = false;
-              // All poses captured! Proceed to dedicated Review Stage
-              ReviewStudio.openReview();
-            }
           }
         }, 1000);
       },
@@ -6051,7 +6036,6 @@
         CameraStudio.setFlashColor(CameraStudio.flashColor);
         CameraStudio.setTimer(CameraStudio.timerDuration);
         this.initPWA();
-        this.updateSetupPreview();
 
         // Gallery File Input (Supports multi-file upload for JPG, JPEG, PNG, WebP)
         document.getElementById('gallery-file-input').addEventListener('change', async (e) => {
