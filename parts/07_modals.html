@@ -1,0 +1,200 @@
+  <!-- ======================================================== -->
+  <!-- MODALS: DIAGNOSTICS & SAVED GALLERY                     -->
+  <!-- ======================================================== -->
+
+  <!-- Telemetry & System Diagnostics Modal -->
+  <div id="diagnostics-modal"
+    class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-gray-100 flex flex-col gap-4">
+      <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-full bg-pozia-lilac/20 flex items-center justify-center text-pozia-lilac font-bold">
+            i
+          </div>
+          <h3 class="font-serif font-bold text-base text-pozia-charcoal" data-i18n="diag_title">Diagnostik Sistem & Arsitektur</h3>
+        </div>
+        <button onclick="App.closeDiagnosticsModal()"
+          class="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 flex items-center justify-center font-bold text-sm">
+          &times;
+        </button>
+      </div>
+
+      <div class="flex flex-col gap-2.5 text-xs">
+        <div class="p-3 rounded-2xl bg-gray-50 flex items-center justify-between">
+          <span class="text-gray-500 font-semibold">Status Privasi & Server:</span>
+          <span class="font-bold text-emerald-600">100% Client-Side (Zero Server)</span>
+        </div>
+        <div class="p-3 rounded-2xl bg-gray-50 flex items-center justify-between">
+          <span class="text-gray-500 font-semibold">Service Worker & PWA:</span>
+          <span class="font-bold text-pozia-coral" id="diag-sw-status">Aktif & Siap Offline</span>
+        </div>
+        <div class="p-3 rounded-2xl bg-gray-50 flex items-center justify-between">
+          <span class="text-gray-500 font-semibold">Waktu Render Canvas Terakhir:</span>
+          <span class="font-mono font-bold text-pozia-charcoal" id="diag-render-time">0 ms</span>
+        </div>
+        <div class="p-3 rounded-2xl bg-gray-50 flex items-center justify-between">
+          <span class="text-gray-500 font-semibold">Kamera Aktif / Lensa:</span>
+          <span class="font-bold text-pozia-charcoal" id="diag-cam-facing">Kamera Depan (User)</span>
+        </div>
+        <div class="p-3 rounded-2xl bg-gray-50 flex items-center justify-between">
+          <span class="text-gray-500 font-semibold">Status Mirror:</span>
+          <span class="font-bold text-pozia-coral" id="diag-mirror-state">ON (Horizontal Flip)</span>
+        </div>
+      </div>
+
+      <div class="pt-2 flex justify-end">
+        <button onclick="App.closeDiagnosticsModal()"
+          class="px-5 py-2 rounded-xl bg-pozia-charcoal text-white text-xs font-bold hover:bg-black transition-all">
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Saved History Gallery Modal -->
+  <div id="history-modal"
+    class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div
+      class="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-gray-100 flex flex-col gap-4 max-h-[85vh] overflow-hidden">
+      <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-full bg-pozia-coral/20 flex items-center justify-center text-pozia-coral font-bold">
+            ★
+          </div>
+          <h3 class="font-serif font-bold text-base text-pozia-charcoal" data-i18n="history_title">Galeri Hasil Tersimpan</h3>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="HistoryManager.clear()"
+            class="px-3 py-1 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 text-xs font-semibold transition-colors"
+            data-i18n="clear_history">
+            Hapus Riwayat
+          </button>
+          <button onclick="App.closeHistoryModal()"
+            class="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 flex items-center justify-center font-bold text-sm">
+            &times;
+          </button>
+        </div>
+      </div>
+
+      <!-- History Items Container -->
+      <div id="history-items-grid" class="flex-1 overflow-y-auto no-scrollbar grid grid-cols-2 sm:grid-cols-3 gap-3 p-1">
+        <!-- Populated dynamically by HistoryManager.render() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Photo Position, Crop & Zoom Adjust Modal -->
+  <div id="photo-adjust-modal"
+    class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 select-none">
+    <div class="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-gray-100 flex flex-col gap-4 max-h-[92vh] overflow-y-auto no-scrollbar">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-2.5 border-b border-gray-100">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-full bg-pozia-coral/20 flex items-center justify-center text-pozia-coral font-bold text-sm">
+            🔍
+          </div>
+          <div>
+            <h3 id="adjust-slot-title" class="font-serif font-bold text-base text-pozia-charcoal" data-i18n="adjust_title">
+              Atur Foto Slot
+            </h3>
+            <p class="text-[10px] text-stone-500" data-i18n="adjust_hint">
+              Geser foto langsung pada kotak preview atau gunakan kontrol di bawah
+            </p>
+          </div>
+        </div>
+        <button onclick="PhotoAdjuster.close()"
+          class="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 flex items-center justify-center font-bold text-sm">
+          &times;
+        </button>
+      </div>
+
+      <!-- Live Drag & Reposition Viewport -->
+      <div class="relative w-64 h-80 sm:w-72 sm:h-96 mx-auto rounded-2xl overflow-hidden bg-stone-900 border-2 border-stone-200 shadow-inner flex items-center justify-center cursor-grab active:cursor-grabbing"
+        id="adjust-preview-box" title="Klik dan geser foto untuk mengatur posisinya">
+        <img id="adjust-preview-img" class="max-w-none pointer-events-none select-none transition-none" alt="Preview Penyesuaian">
+        <!-- Center Grid Guide -->
+        <div class="absolute inset-0 pointer-events-none border border-white/20 grid grid-cols-3 grid-rows-3">
+          <div class="border-r border-b border-white/10"></div>
+          <div class="border-r border-b border-white/10"></div>
+          <div class="border-b border-white/10"></div>
+          <div class="border-r border-b border-white/10"></div>
+          <div class="border-r border-b border-white/10"></div>
+          <div class="border-b border-white/10"></div>
+          <div class="border-r border-white/10"></div>
+          <div class="border-r border-white/10"></div>
+          <div></div>
+        </div>
+        <div class="absolute top-2 left-2 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-xs text-white text-[10px] font-medium pointer-events-none flex items-center gap-1.5">
+          <span>🖐️</span>
+          <span>Tahan & Geser Foto</span>
+        </div>
+      </div>
+
+      <!-- Controls: Zoom & Rotate -->
+      <div class="flex flex-col gap-3 pt-1">
+        <!-- Zoom Slider -->
+        <div class="flex flex-col gap-1.5">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-bold text-stone-700 flex items-center gap-1" data-i18n="adjust_zoom">
+              <span>🔎</span> Zoom / Perbesar:
+            </span>
+            <span id="adjust-zoom-val" class="font-mono font-bold text-pozia-coral">1.0x</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="PhotoAdjuster.stepZoom(-0.1)"
+              class="w-7 h-7 rounded-lg bg-stone-100 hover:bg-stone-200 font-bold text-xs flex items-center justify-center text-stone-700">
+              -
+            </button>
+            <input type="range" id="adjust-zoom-slider" min="1.0" max="3.0" step="0.05" value="1.0"
+              oninput="PhotoAdjuster.setZoom(this.value)" class="flex-1 accent-pozia-coral cursor-pointer">
+            <button onclick="PhotoAdjuster.stepZoom(0.1)"
+              class="w-7 h-7 rounded-lg bg-stone-100 hover:bg-stone-200 font-bold text-xs flex items-center justify-center text-stone-700">
+              +
+            </button>
+          </div>
+        </div>
+
+        <!-- Rotate & Reset Row -->
+        <div class="flex items-center justify-between gap-2 pt-1">
+          <button onclick="PhotoAdjuster.rotateStep()"
+            class="flex-1 py-2 px-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span data-i18n="adjust_rotate">Putar 90°</span>
+            <span id="adjust-rotate-val" class="text-[10px] text-stone-500 font-mono">0°</span>
+          </button>
+
+          <button onclick="PhotoAdjuster.reset()"
+            class="py-2 px-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-600 font-semibold text-xs flex items-center justify-center gap-1 transition-colors"
+            data-i18n="adjust_reset">
+            🔄 Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Action Buttons Footer -->
+      <div class="pt-3 border-t border-gray-100 flex items-center justify-between gap-2">
+        <div class="flex items-center gap-1.5">
+          <button onclick="PhotoAdjuster.replace()"
+            class="py-2 px-3 rounded-xl bg-stone-100 hover:bg-blue-50 text-blue-600 font-bold text-xs transition-colors"
+            data-i18n="adjust_replace">
+            Ganti
+          </button>
+          <button onclick="PhotoAdjuster.remove()"
+            class="py-2 px-3 rounded-xl bg-stone-100 hover:bg-red-50 text-red-600 font-bold text-xs transition-colors"
+            data-i18n="adjust_remove">
+            Hapus
+          </button>
+        </div>
+
+        <button onclick="PhotoAdjuster.close()"
+          class="flex-1 py-2.5 px-4 rounded-xl bg-pozia-coral text-white font-bold text-xs shadow-md hover:bg-pozia-coral-hover active:scale-95 transition-all text-center"
+          data-i18n="adjust_save">
+          Simpan & Terapkan
+        </button>
+      </div>
+
+    </div>
+  </div>
