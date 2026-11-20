@@ -111,16 +111,16 @@
 
     /* Screen Flash FX */
     #screen-flash {
-      position: absolute;
+      position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 50;
+      z-index: 99999;
       opacity: 0;
       transition: opacity 0.35s ease-out;
     }
 
     #screen-flash.flash-active {
-      opacity: 1;
+      opacity: 0.96;
       transition: none;
     }
 
@@ -155,6 +155,6 @@
 
 <body class="h-full flex flex-col font-sans text-pozia-charcoal selection:bg-pozia-coral selection:text-white bg-[#FAF8F5]">
 
-  <!-- Hidden Photo & PNG Frame Inputs -->
-  <input type="file" id="gallery-file-input" accept="image/*" multiple class="hidden">
+  <!-- Hidden Photo & PNG Frame Inputs (Supports JPG, JPEG, PNG, WebP) -->
+  <input type="file" id="gallery-file-input" accept="image/jpeg,image/png,image/webp,image/jpg" multiple class="hidden">
   <input type="file" id="custom-frame-input" accept="image/png" class="hidden">
