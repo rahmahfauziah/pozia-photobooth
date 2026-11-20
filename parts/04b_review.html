@@ -1,4 +1,4 @@
-﻿    <!-- ====================================================== -->
+    <!-- ====================================================== -->
     <!-- STAGE 4 (REVIEW): PRATINJAU HASIL FOTO & RETAKE        -->
     <!-- ====================================================== -->
     <section id="stage-review"
@@ -6,12 +6,12 @@
       
       <!-- A. REVIEW HEADER -->
       <div class="max-w-5xl mx-auto w-full flex items-center justify-between pb-3 border-b border-gray-200/80 gap-3">
-        <button onclick="App.navigate('camera')"
+        <button onclick="ReviewStudio.handleBack()"
           class="px-3.5 py-1.5 rounded-full bg-white border border-gray-200 text-pozia-charcoal text-xs font-bold hover:bg-gray-50 transition-all flex items-center gap-1.5 shadow-sm">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          <span data-i18n="review_back">Kembali ke Kamera</span>
+          <span id="review-back-text" data-i18n="review_back">Kembali</span>
         </button>
 
         <div class="text-center">
@@ -50,8 +50,9 @@
 
       <!-- D. BOTTOM BUTTONS ROW: RETAKE ALL & PROCEED TO EDITOR -->
       <div class="max-w-5xl mx-auto w-full pt-3 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <button onclick="CameraStudio.confirmRetakeAll()"
+        <button onclick="ReviewStudio.handleRetakeOrReset()"
           class="w-full sm:w-auto px-5 py-3 rounded-xl bg-white border border-gray-200 text-gray-600 hover:text-red-600 hover:border-red-200 text-xs font-bold transition-all shadow-sm"
+          id="review-retake-btn"
           data-i18n="review_retake_all">
           Foto Ulang Semua
         </button>
